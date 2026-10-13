@@ -1,0 +1,9 @@
+---
+description: UI/UX rules for any frontend, component, styling, or screen work
+globs: ["**/*.tsx", "**/*.jsx", "**/*.css", "**/*.scss", "**/*.vue", "**/*.svelte"]
+alwaysApply: false
+---
+
+Before any UI/UX or frontend work, read and follow
+@frontend-ui-ux-engineering-rules.md, then use @docs/ui/ui-registry.md as the
+index of tokens, components, and screens (keep it updated).
