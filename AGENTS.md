@@ -1,5 +1,11 @@
 # Agent Instructions
 
+## Start here
+
+1. Read [`docs/progress.md`](docs/progress.md) for current state, next work and open questions. Update it when you finish a task.
+2. Locate, don't explore. Use the indexes ([`docs/ui/ui-registry.md`](docs/ui/ui-registry.md) lists every component and screen with its path), then search for the exact symbol or file. Do not scan whole directories or read files the task doesn't touch.
+3. Read only the parts of a file you need, and edit only what the task asks for. No drive-by refactors or "while I'm here" changes; suggest them instead.
+
 ## UI / UX work
 
 Before any UI/UX or frontend work, read in this order and stop when you have what the task needs:
@@ -17,6 +23,7 @@ Stitch screens used as references are listed in [`docs/ui/stitch-sources.md`](do
 - Do only what was asked. Anything unknown or optional (a library, a design choice, extra screens) is raised as a question or a suggestion with the reason, not decided silently.
 - Use the Stitch designs as references, not gospel: drop inconsistent or unnecessary content and record each drop in the registry.
 - Backend is not wired yet; the UI talks to the stub in `src/features/auth/auth-client.ts`.
+- Commit messages are short and plain: `type: what changed` (types: feat, fix, refactor, style, docs, test, chore), imperative, under ~60 characters. Add a body only when the reason isn't obvious, in one or two lines. No file lists, no step-by-step narration, no restating the diff.
 
 ## ECC (Everything Claude Code)
 
@@ -32,7 +39,7 @@ Not installed on purpose: ECC hooks (they execute code; add only with approval) 
 
 **Precedence:** explicit task + product rules, then this repo's UI rules (`frontend-ui-ux-engineering-rules.md`, `docs/ui/DESIGN.md`), then ECC. Known overlap, resolved here so agents don't flip-flop:
 
-- ECC `web/design-quality.md` asks for depth, layering, motion, or texture. FaithLink is deliberately flat: no shadow on resting cards, no decorative motion, no gradients. Meet the "four required qualities" through hierarchy, spacing rhythm, typography, semantic colour, and designed states instead.
+- ECC `web/design-quality.md` asks for depth, layering, motion, or texture. FaithLink is calm and restrained: depth comes only from the soft `shadow-raised` on inputs, white buttons, tabs and cards (see `DESIGN.md`); no decorative motion, no gradients, no texture. Meet the "four required qualities" through hierarchy, spacing rhythm, typography, semantic colour, and designed states.
 - ECC's "avoid a default shadcn look" still applies: shadcn components are restyled to the tokens, never shipped with their defaults.
 
 After any UI change, run `react-reviewer` and `a11y-architect`; run `typescript-reviewer` for non-trivial `.ts`/`.tsx`.
