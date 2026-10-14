@@ -140,10 +140,10 @@
     color: var(--color-text-muted);
   }
 
-  /* Scripture: the one typographic moment in the product. Upright, regular
-   * weight (italic hurts long-form legibility for many readers), generous
-   * leading, set off by a 4px accent rule on the start edge. Pair with a
-   * ScriptureReference in sentence case, e.g. "1 Timothy 4:12". */
+  /* Scripture: the one typographic moment in the product. Regular weight,
+   * generous leading, set off by a 4px accent rule on the start edge. Verses
+   * are shown italic in quotation marks (owner's choice; add `italic`), with
+   * the reference after, e.g. "1 Timothy 4:12". */
   .text-scripture {
     font-size: var(--type-lg);
     line-height: var(--type-lg-lh);

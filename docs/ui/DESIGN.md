@@ -42,7 +42,7 @@ Phone and tablet: wordmark, photo banner, tabs, title, form, "or continue with",
 
 ## Imagery and scripture
 
-Photos in `public/images` are AI-generated in Stitch, as placeholders: replace with licensed photography before launch. Text over a photo sits on `--color-bg-scrim-photo` so it stays 4.5:1. Scripture is upright, regular weight, at most 65 characters wide, with a 4px amber rule (`.scripture-rule`). Translation is World English Bible (public domain), set in `src/features/auth/scripture.ts`.
+Photos in `public/images` are AI-generated in Stitch, as placeholders: replace with licensed photography before launch. Text over a photo sits on `--color-bg-scrim-photo` so it stays 4.5:1. Scripture is italic (owner's choice), in quotation marks, regular weight, at most 65 characters wide, with a 4px amber rule (`.scripture-rule`). Translation is King James Version, set in `src/features/auth/scripture.ts`.
 
 ## Copy and vocabulary
 

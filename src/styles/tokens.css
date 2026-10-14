@@ -87,6 +87,7 @@
   --color-text-disabled: var(--palette-slate-400);
   --color-text-inverse: var(--palette-neutral-25);
   --color-text-accent: var(--palette-amber-700); /* links, inline emphasis */
+  --color-text-accent-on-photo: var(--palette-amber-200); /* light amber on a dark photo scrim */
   --color-text-on-accent: var(--palette-slate-900); /* on amber fills: 8.4:1 */
 
   /* Borders. Decorative dividers use subtle; anything that defines a control
@@ -145,6 +146,7 @@
   /* Three radii only. Buttons, chips, tabs, avatars = full. Inputs, cards,
      banners, sheets, hero media = md. Checkboxes, small tags = sm. */
 
+  --round-xs: 0.25rem; /* 4 — small checkbox */
   --round-sm: 0.5rem; /* 8 */
   --round-md: 1rem; /* 16 */
   --round-full: 9999px;

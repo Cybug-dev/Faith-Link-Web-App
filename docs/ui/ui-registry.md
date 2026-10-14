@@ -30,12 +30,12 @@ Keep entries one line each. Paths are repo-relative. Intent and conventions: [`D
 |-------------------|-------|
 | Accent            | Amber `#F3A83B` fill only; dark amber `#845400` for links and focus |
 | Ink / canvas      | `#1A1E24` text, slate `#2C3440` for secondary buttons and the logo tile, canvas `#FBF9F5` |
-| Radius            | 8 (checkbox) / 16 (cards, banners, photos, code boxes) / full (buttons, inputs, tabs, chips), per the Stitch auth screens |
+| Radius            | 4 (checkbox) / 8 (small tags) / 16 (cards, banners, photos, code boxes) / full (buttons, inputs, tabs, chips), per the Stitch auth screens |
 | Elevation         | Soft `shadow-raised` on inputs, white buttons, tabs and cards (Stitch design); popover and modal for floating things |
 | Dark mode         | Not in MVP |
 | Breakpoints       | tablet 600, desktop 1024 (`tablet:` / `desktop:`) |
 | Imagery           | Two AI-generated Stitch photos in `public/images` as placeholders; replace with licensed photos |
-| Scripture         | World English Bible (public domain) in `src/features/auth/scripture.ts` |
+| Scripture         | King James Version (owner's choice; public domain outside the UK) in `src/features/auth/scripture.ts`; verses italic with quotation marks |
 
 ## Token Index
 
@@ -49,7 +49,7 @@ Use the semantic names; never `--palette-*` in components. Full values in `token
 | Accent | `--color-accent-bg` `-bg-hover` `-bg-active` `-subtle-bg` `-subtle-text` `-border`; `--color-focus-ring` |
 | Status | `--color-{success,danger,warning,info}-{bg,border,text}`; `--color-success-icon`, `--color-info-icon`, `--color-danger-solid` |
 | Space | `--space-{0,1,2,3,4,5,6,8,10,12,16,20}`; `--page-margin`, `--gutter` |
-| Shape | `--round-sm` `-md` `-full`; `--border-width`; `--accent-rule-width`; `--focus-ring-width` `-offset` |
+| Shape | `--round-xs` `-sm` `-md` `-full`; `--border-width`; `--accent-rule-width`; `--focus-ring-width` `-offset` |
 | Elevation | `--elevation-raised` `-popover` `-modal` |
 | Control | `--control-h-sm` `-md` `-lg`; `--hit-min`; `--icon-sm` `-md` `-lg` |
 | Layout | `--w-form` `--w-reading` `--w-content` `--w-shell`; `--sidebar-w` `--bottom-nav-h` `--topbar-h` |
@@ -68,12 +68,13 @@ Role classes and base rules are in Tailwind layers, so utilities (`text-fg-secon
 | PasswordInput | `src/components/ui/password-input.tsx` | show/hide toggle (44px hit area); icon shows state: slashed eye = hidden, open eye = visible |
 | FormField, FieldError | `src/components/ui/form-field.tsx` | render-prop wiring label/hint/error/aria; `hideLabel`, `labelAction` |
 | Alert | `src/components/ui/alert.tsx` | danger (role=alert), warning, success, info (role=status) |
-| Checkbox | `src/components/ui/checkbox.tsx` | native input + drawn box; label may hold links |
+| Checkbox | `src/components/ui/checkbox.tsx` | native input + drawn 16px box (`rounded-xs`, 4px) sized for small label text; label may hold links |
 | OrDivider | `src/components/ui/or-divider.tsx` | lowercase labelled rule |
 | OtpInput | `src/components/ui/otp-input.tsx` | 6 digits, paste and autofill, invalid state |
 | Logo, GoogleIcon | `src/components/brand/` | Google fills are brand colours (allowed hex) |
 | AuthLayout | `src/features/auth/auth-layout.tsx` | `banner` slot (text over the phone/tablet photo) + desktop photo/verse panel, sticky at viewport height; per-photo crop in `authImages`. Sign in: brand line; Create account: verse |
-| AuthTabs | `src/features/auth/auth-tabs.tsx` | Sign in / Create account (NavLink) |
+| AuthTabs | `src/features/auth/auth-tabs.tsx` | Sign in / Create account (NavLink); active pill slides on switch (view transition) |
+| SignInBanner, CreateAccountBanner | `src/features/auth/auth-banners.tsx` | text over the photo banner, per Stitch |
 | GoogleButton | `src/features/auth/google-button.tsx` | |
 | ScriptureCard | `src/features/auth/scripture-card.tsx` | phone/tablet verse under the form |
 
@@ -96,14 +97,13 @@ Per the owner's instruction to drop inconsistent and unnecessary content.
 |---------|--------|
 | Header with back arrow, title and profile avatar | A signed-out screen has no profile; replaced by the wordmark |
 | "Remember me" | Not in the auth contract (sessions are managed by the provider) |
-| Uppercase "OR CONTINUE WITH", "FAITH • FELLOWSHIP • PURPOSE", uppercase verse reference | Sentence case everywhere; the eyebrow was decorative |
+| Uppercase "OR CONTINUE WITH" | Sentence case outside the photo banner |
 | Arrow icon on the submit button | Decorative |
 | Per-field red errors plus a banner, "Invalid syntax" tag, "256-bit secure", "Join hundreds of young believers" | Contradicted the single contract error, reveal account state, or were invented claims |
 | Garbled "Sign-in" text baked into the sign-in photo | AI artifact; cropped out of the image |
-| "Daily Verse" label and the "Together in faith, stronger in purpose" quote (Philippians 1:6) | Verse isn't daily and the quote was not Scripture; real WEB text used |
-| "FaithLink Fellowship" chip on the create-account banner | Decorative, and "Fellowship" is off-vocabulary |
+| "Daily Verse" label and the "Together in faith, stronger in purpose" quote (Philippians 1:6) | Verse isn't daily and the quote was not Scripture; real KJV text used |
 | Create-account tabs above the banner | Kept below the banner as on Sign in, so the tabs don't jump when switching |
-| Italic, paraphrased banner verse | Scripture is upright (DESIGN.md); WEB text of 1 Timothy 4:12 used |
+| Paraphrased (NIV-style) banner verse | KJV text of 1 Timothy 4:12 used, shortened with an ellipsis as Stitch does |
 | 14px text inside inputs | Kept 16px so iOS Safari doesn't zoom on focus |
 
 ## Temporary and open items
@@ -122,4 +122,6 @@ Per the owner's instruction to drop inconsistent and unnecessary content.
 
 | Date | Scope | Deviation | Reason | Approved by |
 |------|-------|-----------|--------|-------------|
+| 2026-10-14 | Auth photo banners (`auth-banners.tsx`) | Rendered as Stitch: uppercase eyebrow and verse reference (white on create account), italic verse, "FaithLink Fellowship" tag; one size smaller on phone. Desktop panel verse also italic, in quotation marks, with an amber quote icon | Owner asked for the banners exactly as Stitch | Owner |
+| 2026-10-14 | Motion | Screen changes use view transitions (content fade/rise, sliding tab pill); off under reduced motion | Owner asked for smooth, not static, switching | Owner |
 | 2026-10-14 | ECC `web/design-quality.md` | No depth, motion or texture added to satisfy its checklist | Flat, token-disciplined direction; see AGENTS.md precedence | Proposed by agent; awaiting owner confirmation |

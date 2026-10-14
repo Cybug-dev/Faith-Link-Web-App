@@ -17,6 +17,8 @@ UI inventory (tokens, components, screens, drops) lives in [`ui/ui-registry.md`]
 - Commit message convention added to `AGENTS.md`.
 - Auth refinements from Stitch "Mobile Auth UI Design" › Create Account: borderless inputs (amber focus ring), smaller labels/hints/terms/subtitle/footer, per-page banner (Sign in: brand line; Create account: verse), Stitch password hint, password now needs a number and symbol.
 - `/` opens sign in; temporary home moved to `/home`.
+- Photo banners rendered as Stitch (smaller on phone); smooth screen switches with a sliding tab pill.
+- Scripture switched to KJV; verses italic with quotation marks everywhere (desktop panel adds a quote icon).
 - Forms validate on submit only; desktop photo panel pinned to screen height (no more zoom/over-crop); inputs 52px with 14px text; confirm-password step on create account; eye icon shows state.
 
 ## Next
@@ -33,4 +35,4 @@ UI inventory (tokens, components, screens, drops) lives in [`ui/ui-registry.md`]
 - **ECC design-quality deviation:** proposed by an agent, awaiting your confirmation (registry, Approved Deviations).
 - **Input focus contrast:** the amber focus ring is ~2:1 (WCAG wants 3:1). Keep it, or use a darker amber ring?
 - **Resend cooldown:** 30s is assumed, not in the backend contract.
-- **Content:** hero photos are AI placeholders; Scripture translation and licence to confirm.
+- **Content:** hero photos are AI placeholders. KJV chosen; if the app will serve UK users, confirm its Crown patent terms.

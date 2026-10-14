@@ -16,7 +16,8 @@ import { AuthLayout } from './auth-layout'
 import { AuthTabs } from './auth-tabs'
 import { GoogleButton } from './google-button'
 import { signInSchema, type SignInValues } from './schemas'
-import { BRAND_LINE, SIGN_IN_SCRIPTURE, authImages } from './scripture'
+import { SignInBanner } from './auth-banners'
+import { SIGN_IN_SCRIPTURE, authImages } from './scripture'
 import { ScriptureCard } from './scripture-card'
 
 type FormError = 'credentials' | 'unknown' | null
@@ -43,11 +44,11 @@ export function SignInPage() {
     setFormError(null)
     try {
       await authClient.signInWithEmail(values)
-      navigate('/home')
+      navigate('/home', { viewTransition: true })
     } catch (error) {
       if (error instanceof AuthError && error.code === 'EMAIL_NOT_VERIFIED') {
         setPendingEmail(values.email)
-        navigate('/verify-email', { state: { reason: 'unverified' } })
+        navigate('/verify-email', { state: { reason: 'unverified' }, viewTransition: true })
         return
       }
       // Input is kept so the person can correct it.
@@ -57,7 +58,7 @@ export function SignInPage() {
 
   return (
     <AuthLayout
-      banner={<p className="text-label-md">{BRAND_LINE}</p>}
+      banner={<SignInBanner />}
       image={authImages.signIn}
       scripture={SIGN_IN_SCRIPTURE}
     >
@@ -131,7 +132,7 @@ export function SignInPage() {
 
       <p className="mt-6 text-center text-body-sm text-fg-secondary">
         New to FaithLink?{' '}
-        <Link to="/create-account" className="font-semibold text-fg-accent hover:underline">
+        <Link to="/create-account" viewTransition className="font-semibold text-fg-accent hover:underline">
           Create an account
         </Link>
       </p>

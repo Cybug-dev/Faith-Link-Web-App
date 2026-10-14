@@ -17,7 +17,8 @@ import { AuthLayout } from './auth-layout'
 import { AuthTabs } from './auth-tabs'
 import { GoogleButton } from './google-button'
 import { MIN_PASSWORD_LENGTH, createAccountSchema, type CreateAccountValues } from './schemas'
-import { CREATE_ACCOUNT_BANNER_SCRIPTURE, CREATE_ACCOUNT_SCRIPTURE, authImages } from './scripture'
+import { CreateAccountBanner } from './auth-banners'
+import { CREATE_ACCOUNT_SCRIPTURE, authImages } from './scripture'
 import { ScriptureCard } from './scripture-card'
 
 /**
@@ -55,7 +56,7 @@ export function CreateAccountPage() {
       await authClient.signUpWithEmail({ name, email, password })
       // Always the same next step, even if the email already has an account (anti-enumeration).
       setPendingEmail(email)
-      navigate('/verify-email')
+      navigate('/verify-email', { viewTransition: true })
     } catch {
       setFailed(true)
     }
@@ -73,16 +74,7 @@ export function CreateAccountPage() {
 
   return (
     <AuthLayout
-      banner={
-        <figure>
-          <blockquote className="text-body-sm">
-            <p>“{CREATE_ACCOUNT_BANNER_SCRIPTURE.text}”</p>
-          </blockquote>
-          <figcaption className="mt-1 text-label-sm">
-            {CREATE_ACCOUNT_BANNER_SCRIPTURE.reference} ({CREATE_ACCOUNT_BANNER_SCRIPTURE.translation})
-          </figcaption>
-        </figure>
-      }
+      banner={<CreateAccountBanner />}
       image={authImages.createAccount}
       scripture={CREATE_ACCOUNT_SCRIPTURE}
     >
@@ -158,8 +150,9 @@ export function CreateAccountPage() {
             {...register('acceptedTerms')}
             aria-invalid={errors.acceptedTerms ? true : undefined}
             aria-describedby={errors.acceptedTerms ? 'terms-error' : undefined}
+            labelClassName="text-caption text-fg-secondary"
             label={
-              <span className="text-caption text-fg-secondary">
+              <>
                 I agree to the{' '}
                 <Link to="/terms" className="font-semibold text-fg-accent underline">
                   Terms of Service
@@ -168,7 +161,7 @@ export function CreateAccountPage() {
                 <Link to="/privacy" className="font-semibold text-fg-accent underline">
                   Privacy Policy
                 </Link>
-              </span>
+              </>
             }
           />
           {errors.acceptedTerms?.message && <FieldError id="terms-error">{errors.acceptedTerms.message}</FieldError>}
@@ -188,7 +181,7 @@ export function CreateAccountPage() {
 
       <p className="mt-6 text-center text-body-sm text-fg-secondary">
         Already have an account?{' '}
-        <Link to="/sign-in" className="font-semibold text-fg-accent hover:underline">
+        <Link to="/sign-in" viewTransition className="font-semibold text-fg-accent hover:underline">
           Sign in
         </Link>
       </p>

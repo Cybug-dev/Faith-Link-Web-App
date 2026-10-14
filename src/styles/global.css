@@ -92,3 +92,45 @@
     font-size: var(--type-base);
   }
 }
+
+/* Screen changes (links and navigate() with viewTransition). The page cross-fades, the
+ * content rises slightly, the tabs stay put and the active tab pill slides across. */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: var(--motion-duration-base);
+  animation-timing-function: var(--motion-ease-standard);
+}
+
+::view-transition-old(auth-content) {
+  animation: var(--motion-duration-fast) var(--motion-ease-standard) both vt-fade-out;
+}
+
+::view-transition-new(auth-content) {
+  animation: var(--motion-duration-slow) var(--motion-ease-out) both vt-rise-in;
+}
+
+::view-transition-group(auth-tab-active) {
+  animation-duration: var(--motion-duration-slow);
+  animation-timing-function: var(--motion-ease-out);
+}
+
+@keyframes vt-fade-out {
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes vt-rise-in {
+  from {
+    opacity: 0;
+    transform: translateY(var(--space-2));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation: none !important;
+  }
+}

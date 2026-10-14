@@ -23,7 +23,7 @@ Stitch screens used as references are listed in [`docs/ui/stitch-sources.md`](do
 - Do only what was asked. Anything unknown or optional (a library, a design choice, extra screens) is raised as a question or a suggestion with the reason, not decided silently.
 - Use the Stitch designs as references, not gospel: drop inconsistent or unnecessary content and record each drop in the registry.
 - Backend is not wired yet; the UI talks to the stub in `src/features/auth/auth-client.ts`.
-- Commit messages are short and plain: `type: what changed` (types: feat, fix, refactor, style, docs, test, chore), imperative, under ~60 characters. Add a body only when the reason isn't obvious, in one or two lines. No file lists, no step-by-step narration, no restating the diff.
+- Commit messages are concise but clear to a non-developer: a subject `type: what changed` (types: feat, fix, refactor, style, docs, test, chore), imperative, under ~60 characters; then bullet points, one per core change, each a plain full sentence saying what changed and, where useful, why. Use everyday words; technical terms only when there is no plain alternative. Don't squeeze bullets into clipped fragments. No file lists, no step-by-step narration, no restating the diff. Never add a `Co-Authored-By` or any attribution line.
 
 ## ECC (Everything Claude Code)
 

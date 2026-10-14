@@ -51,7 +51,7 @@ function VerifyEmailForm({ email }: { email: string }) {
     try {
       await authClient.verifyEmail({ email, otp })
       clearPendingEmail()
-      navigate('/home')
+      navigate('/home', { viewTransition: true })
     } catch (error) {
       if (error instanceof AuthError && error.code === 'INVALID_CODE') {
         setError('otp', { message: 'That code isn’t right. Check the code in your email and try again.' })

@@ -1,3 +1,4 @@
+import { Quote } from 'lucide-react'
 import type { ReactNode } from 'react'
 import { Logo } from '@/components/brand/logo'
 import { cn } from '@/lib/cn'
@@ -30,7 +31,7 @@ export function AuthLayout({
         <header>
           <Logo />
         </header>
-        <main className="mx-auto flex w-full max-w-(--w-form) flex-1 flex-col justify-center py-8">
+        <main className="mx-auto flex w-full max-w-(--w-form) flex-1 flex-col justify-center py-8 [view-transition-name:auth-content]">
           {banner && (
             <div className="relative mb-4 h-44 overflow-hidden rounded-md shadow-raised tablet:h-52 desktop:hidden">
               <img src={image.src} alt="" className={cn('size-full object-cover', image.position)} />
@@ -47,9 +48,10 @@ export function AuthLayout({
         <img src={image.src} alt="" className={cn('absolute inset-0 size-full object-cover', image.position)} />
         <div className="absolute inset-0 bg-linear-to-t from-scrim-photo via-scrim-photo/40 to-transparent" />
         <figure className="absolute inset-x-16 bottom-16 text-fg-inverse">
+          <Quote aria-hidden className="mb-4 size-8 fill-accent text-accent" />
           <div className="scripture-rule max-w-(--measure-prose)">
-            <blockquote className="text-scripture-lg">
-              <p>{scripture.text}</p>
+            <blockquote className="text-scripture-lg italic">
+              <p>“{scripture.text}”</p>
             </blockquote>
             <figcaption className="mt-4 text-label-md">
               {scripture.reference} ({scripture.translation})

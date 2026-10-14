@@ -53,6 +53,7 @@
   --color-fg-disabled: var(--color-text-disabled);
   --color-fg-inverse: var(--color-text-inverse);
   --color-fg-accent: var(--color-text-accent);
+  --color-fg-accent-on-photo: var(--color-text-accent-on-photo);
   --color-fg-on-accent: var(--color-text-on-accent);
 
   /* Borders */
@@ -87,6 +88,7 @@
   --color-info-icon: var(--color-info-icon);
 
   /* Shape + elevation (three of each) */
+  --radius-xs: var(--round-xs);
   --radius-sm: var(--round-sm);
   --radius-md: var(--round-md);
   --radius-full: var(--round-full);
