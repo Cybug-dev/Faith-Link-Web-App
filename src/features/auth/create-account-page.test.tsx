@@ -1,11 +1,23 @@
 import { screen } from '@testing-library/react'
 import { renderRoute } from '@/test/render-route'
 
-async function fillValid(user: ReturnType<typeof renderRoute>['user'], email = 'alex@example.com') {
+type User = ReturnType<typeof renderRoute>['user']
+const PASSWORD = 'correct-horse7!'
+const submit = (user: User) => user.click(screen.getByRole('button', { name: 'Create account' }))
+
+async function fillValid(user: User, email = 'alex@example.com') {
   await user.type(screen.getByLabelText('Full name'), 'Alex Turner')
   await user.type(screen.getByLabelText('Email address'), email)
-  await user.type(screen.getByLabelText('Password'), 'correct-horse7!')
+  await user.type(screen.getByLabelText('Password'), PASSWORD)
   await user.click(screen.getByRole('checkbox'))
+}
+
+/** First submit reveals the confirmation field; second submit creates the account. */
+async function fillAndConfirm(user: User, email?: string) {
+  await fillValid(user, email)
+  await submit(user)
+  await user.type(await screen.findByLabelText('Confirm password'), PASSWORD)
+  await submit(user)
 }
 
 describe('Create account page', () => {
@@ -28,10 +40,12 @@ describe('Create account page', () => {
     expect(screen.getByRole('checkbox')).toHaveAttribute('aria-invalid', 'true')
   })
 
-  it('rejects a short password', async () => {
+  it('does not warn when leaving a field, only on submit', async () => {
     const { user } = renderRoute('/create-account')
     await user.type(screen.getByLabelText('Password'), 'short')
     await user.tab()
+    expect(screen.queryByText('Use at least 8 characters.')).not.toBeInTheDocument()
+    await submit(user)
     expect(await screen.findByText('Use at least 8 characters.', { selector: 'p[id$="-error"]' })).toBeInTheDocument()
   })
 
@@ -39,27 +53,50 @@ describe('Create account page', () => {
     const { user } = renderRoute('/create-account')
     const password = screen.getByLabelText('Password')
     await user.type(password, 'longenough')
-    await user.tab()
+    await submit(user)
     expect(await screen.findByText('Add at least one number.', { selector: 'p[id$="-error"]' })).toBeInTheDocument()
     await user.type(password, '7')
-    await user.tab()
     expect(
       await screen.findByText('Add at least one symbol, like ! or #.', { selector: 'p[id$="-error"]' }),
     ).toBeInTheDocument()
   })
 
-  it('goes to the code screen with the address masked', async () => {
+  it('shows the confirmation field, focused, only after the first submit', async () => {
+    const { user } = renderRoute('/create-account')
+    expect(screen.queryByLabelText('Confirm password')).not.toBeInTheDocument()
+    await fillValid(user)
+    await submit(user)
+    expect(await screen.findByLabelText('Confirm password')).toHaveFocus()
+    expect(screen.queryByRole('heading', { name: 'Check your email' })).not.toBeInTheDocument()
+  })
+
+  it('rejects a confirmation that does not match', async () => {
     const { user } = renderRoute('/create-account')
     await fillValid(user)
-    await user.click(screen.getByRole('button', { name: 'Create account' }))
+    await submit(user)
+    await user.type(await screen.findByLabelText('Confirm password'), 'something-else1!')
+    await submit(user)
+    expect(await screen.findByText('Passwords don’t match. Re-enter it.')).toBeInTheDocument()
+  })
+
+  it('shows the password as hidden with a slashed eye until toggled', async () => {
+    const { user } = renderRoute('/create-account')
+    const toggle = screen.getByRole('button', { name: 'Show password' })
+    expect(toggle.querySelector('svg')).toHaveClass('lucide-eye-off')
+    await user.click(toggle)
+    expect(screen.getByRole('button', { name: 'Hide password' }).querySelector('svg')).toHaveClass('lucide-eye')
+  })
+
+  it('goes to the code screen with the address masked', async () => {
+    const { user } = renderRoute('/create-account')
+    await fillAndConfirm(user)
     expect(await screen.findByRole('heading', { name: 'Check your email' })).toBeInTheDocument()
     expect(screen.getByText(/a\*\*\*@example\.com/)).toBeInTheDocument()
   })
 
   it('shows a generic error and stays put when sign-up fails', async () => {
     const { user } = renderRoute('/create-account')
-    await fillValid(user, 'error@example.com')
-    await user.click(screen.getByRole('button', { name: 'Create account' }))
+    await fillAndConfirm(user, 'error@example.com')
     expect(await screen.findByRole('alert')).toHaveTextContent('We couldn’t create your account')
     expect(screen.getByRole('heading', { name: 'Create your account' })).toBeInTheDocument()
   })

@@ -10,7 +10,7 @@ type InputProps = ComponentProps<'input'> & {
 }
 
 /**
- * 48px white pill with a soft shadow and no border (Stitch design).
+ * 52px white pill with a soft shadow and no border (Stitch design). 14px text (16px on iOS, see global.css).
  * Typing: amber ring in place of the global outline, and the leading icon turns dark amber.
  * Error (aria-invalid): red ring.
  */
@@ -19,7 +19,7 @@ export function Input({ className, startIcon: StartIcon, endAdornment, ...props 
     <div className="relative">
       <input
         className={cn(
-          'peer h-12 w-full rounded-full bg-surface px-4 shadow-raised text-body-md text-fg transition-shadow duration-(--motion-duration-fast) placeholder:text-fg-placeholder focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent aria-invalid:ring-2 aria-invalid:ring-danger-solid disabled:cursor-not-allowed disabled:bg-subtle disabled:text-fg-disabled',
+          'peer h-13 w-full rounded-full bg-surface px-4 shadow-raised text-body-sm text-fg transition-shadow duration-(--motion-duration-fast) placeholder:text-fg-placeholder focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent aria-invalid:ring-2 aria-invalid:ring-danger-solid disabled:cursor-not-allowed disabled:bg-subtle disabled:text-fg-disabled',
           StartIcon && 'ps-11',
           endAdornment && 'pe-12',
           className,

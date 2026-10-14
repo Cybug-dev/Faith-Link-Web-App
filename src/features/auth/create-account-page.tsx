@@ -1,6 +1,6 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Mail, User } from 'lucide-react'
-import { useState } from 'react'
+import { useEffect, useState, type FormEvent } from 'react'
 import { useForm } from 'react-hook-form'
 import { Link, useNavigate } from 'react-router'
 import { Alert } from '@/components/ui/alert'
@@ -29,19 +29,27 @@ export function CreateAccountPage() {
   useDocumentTitle('Create account')
   const navigate = useNavigate()
   const [failed, setFailed] = useState(false)
+  const [confirmShown, setConfirmShown] = useState(false)
 
   const {
     register,
     handleSubmit,
+    trigger,
+    setFocus,
     formState: { errors, isSubmitting },
   } = useForm<CreateAccountValues>({
     resolver: zodResolver(createAccountSchema),
     defaultValues: { name: '', email: '', password: '', acceptedTerms: false },
-    mode: 'onBlur',
+    // No warnings while filling the form; validate on submit, then keep errors fresh while fixing them.
+    mode: 'onSubmit',
     reValidateMode: 'onChange',
   })
 
-  const onSubmit = handleSubmit(async ({ name, email, password }) => {
+  useEffect(() => {
+    if (confirmShown) setFocus('confirmPassword')
+  }, [confirmShown, setFocus])
+
+  const createAccount = handleSubmit(async ({ name, email, password }) => {
     setFailed(false)
     try {
       await authClient.signUpWithEmail({ name, email, password })
@@ -52,6 +60,16 @@ export function CreateAccountPage() {
       setFailed(true)
     }
   })
+
+  const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault()
+    // The first submit with a valid password only reveals the confirmation field.
+    if (!confirmShown && (await trigger('password'))) {
+      setConfirmShown(true)
+      return
+    }
+    await createAccount(event)
+  }
 
   return (
     <AuthLayout
@@ -121,6 +139,19 @@ export function CreateAccountPage() {
             />
           )}
         </FormField>
+
+        {confirmShown && (
+          <FormField label="Confirm password" error={errors.confirmPassword?.message}>
+            {(control) => (
+              <PasswordInput
+                {...control}
+                {...register('confirmPassword')}
+                autoComplete="new-password"
+                placeholder="Re-enter your password"
+              />
+            )}
+          </FormField>
+        )}
 
         <div className="flex flex-col gap-2">
           <Checkbox

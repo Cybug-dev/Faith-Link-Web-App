@@ -17,6 +17,7 @@ UI inventory (tokens, components, screens, drops) lives in [`ui/ui-registry.md`]
 - Commit message convention added to `AGENTS.md`.
 - Auth refinements from Stitch "Mobile Auth UI Design" › Create Account: borderless inputs (amber focus ring), smaller labels/hints/terms/subtitle/footer, per-page banner (Sign in: brand line; Create account: verse), Stitch password hint, password now needs a number and symbol.
 - `/` opens sign in; temporary home moved to `/home`.
+- Forms validate on submit only; desktop photo panel pinned to screen height (no more zoom/over-crop); inputs 52px with 14px text; confirm-password step on create account; eye icon shows state.
 
 ## Next
 

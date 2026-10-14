@@ -1,11 +1,12 @@
 import type { ReactNode } from 'react'
 import { Logo } from '@/components/brand/logo'
-import { SIGN_IN_SCRIPTURE, authImages, type Scripture } from './scripture'
+import { cn } from '@/lib/cn'
+import { SIGN_IN_SCRIPTURE, authImages, type AuthImage, type Scripture } from './scripture'
 
 type AuthLayoutProps = {
   children: ReactNode
   /** Photo for the phone banner and the desktop panel. Decorative. */
-  image?: string
+  image?: AuthImage
   /** Scripture shown over the desktop photo panel. */
   scripture?: Scripture
   /** Text over the photo banner shown above the content on phone and tablet. No banner when omitted. */
@@ -32,7 +33,7 @@ export function AuthLayout({
         <main className="mx-auto flex w-full max-w-(--w-form) flex-1 flex-col justify-center py-8">
           {banner && (
             <div className="relative mb-4 h-44 overflow-hidden rounded-md shadow-raised tablet:h-52 desktop:hidden">
-              <img src={image} alt="" className="size-full object-cover object-right" />
+              <img src={image.src} alt="" className={cn('size-full object-cover', image.position)} />
               <div className="absolute inset-0 bg-linear-to-t from-scrim-photo via-scrim-photo/40 to-transparent" />
               <div className="absolute inset-x-4 bottom-4 text-fg-inverse">{banner}</div>
             </div>
@@ -41,8 +42,9 @@ export function AuthLayout({
         </main>
       </div>
 
-      <aside className="relative hidden overflow-hidden desktop:block">
-        <img src={image} alt="" className="absolute inset-0 size-full object-cover object-right" />
+      {/* Pinned to the viewport height so the photo doesn't grow (and zoom) as the form gets longer. */}
+      <aside className="relative hidden overflow-hidden desktop:sticky desktop:top-0 desktop:block desktop:h-dvh">
+        <img src={image.src} alt="" className={cn('absolute inset-0 size-full object-cover', image.position)} />
         <div className="absolute inset-0 bg-linear-to-t from-scrim-photo via-scrim-photo/40 to-transparent" />
         <figure className="absolute inset-x-16 bottom-16 text-fg-inverse">
           <div className="scripture-rule max-w-(--measure-prose)">

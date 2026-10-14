@@ -40,10 +40,12 @@ describe('Sign in page', () => {
     expect(screen.getByLabelText('Email address')).toHaveAttribute('aria-invalid', 'true')
   })
 
-  it('validates the email format when leaving the field', async () => {
+  it('validates the email format on submit, not when leaving the field', async () => {
     const { user } = renderRoute('/sign-in')
     await user.type(screen.getByLabelText('Email address'), 'not-an-email')
     await user.tab()
+    expect(screen.queryByText('Enter a valid email address, like name@example.com.')).not.toBeInTheDocument()
+    await user.click(screen.getByRole('button', { name: 'Sign in' }))
     expect(await screen.findByText('Enter a valid email address, like name@example.com.')).toBeInTheDocument()
   })
 

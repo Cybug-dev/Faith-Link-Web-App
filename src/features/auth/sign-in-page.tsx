@@ -34,8 +34,8 @@ export function SignInPage() {
   } = useForm<SignInValues>({
     resolver: zodResolver(signInSchema),
     defaultValues: { email: '', password: '' },
-    // Validate on blur and submit, not every keystroke; then keep errors fresh while fixing them.
-    mode: 'onBlur',
+    // No warnings while filling the form; validate on submit, then keep errors fresh while fixing them.
+    mode: 'onSubmit',
     reValidateMode: 'onChange',
   })
 

@@ -20,9 +20,12 @@ export const CREATE_ACCOUNT_SCRIPTURE: Scripture = {
 /** Verse on the create-account photo banner (phone and tablet), as in the Stitch design. */
 export const CREATE_ACCOUNT_BANNER_SCRIPTURE = SIGN_IN_SCRIPTURE
 
+/** `position` keeps the people in frame when the landscape photo is cropped to a tall panel. */
+export type AuthImage = { src: string; position: string }
+
 export const authImages = {
-  signIn: '/images/auth-sign-in.jpg',
-  createAccount: '/images/auth-create-account.jpg',
-} as const
+  signIn: { src: '/images/auth-sign-in.jpg', position: 'object-right' },
+  createAccount: { src: '/images/auth-create-account.jpg', position: 'object-center' },
+} as const satisfies Record<string, AuthImage>
 
 export const BRAND_LINE = 'A generation rooted in Christ'

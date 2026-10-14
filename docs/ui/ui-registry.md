@@ -14,7 +14,7 @@ Keep entries one line each. Paths are repo-relative. Intent and conventions: [`D
 | Run                | `npm run dev` **inside this folder** (Vite picks the next free port and prints it; other local projects often hold 5173/5174). Also `npm run build`, `lint` (oxlint), `typecheck`, `test`, `test:watch`. |
 | Framework          | Vite 8 + React 19 + TypeScript 7 (strict) |
 | Routing            | React Router 8, route table in `src/app/router.tsx` (shared with tests) |
-| Forms              | react-hook-form + zod (`@hookform/resolvers`); validate on blur and submit, then on change |
+| Forms              | react-hook-form + zod (`@hookform/resolvers`); validate on submit only (no warnings on leaving a field), then on change |
 | Styling system     | Tailwind CSS v4 via `@tailwindcss/vite`; tokens in CSS variables; `theme.css` wipes Tailwind's default scales |
 | Components         | shadcn-style (cva + clsx), hand-built on the tokens. The shadcn CLI is not initialised on purpose: it would overwrite the token theme. |
 | Icon set           | Lucide (`lucide-react`), 20px default |
@@ -64,15 +64,15 @@ Role classes and base rules are in Tailwind layers, so utilities (`text-fg-secon
 | Component | Path | Variants / notes |
 |-----------|------|------------------|
 | Button | `src/components/ui/button.tsx` | primary, secondary, outline, ghost, danger; sm/md/lg; `loading` (spinner, aria-busy, blocks repeat submits) |
-| Input | `src/components/ui/input.tsx` | white pill + soft shadow, **no border** (owner); focus = amber ring + icon turns dark amber; error = red ring via `aria-invalid`; `startIcon`, `endAdornment` |
-| PasswordInput | `src/components/ui/password-input.tsx` | show/hide toggle (44px hit area) |
+| Input | `src/components/ui/input.tsx` | 52px white pill + soft shadow, **no border** (owner); 14px text, 16px on iOS (stops Safari zoom, `global.css`); focus = amber ring + icon turns dark amber; error = red ring via `aria-invalid`; `startIcon`, `endAdornment` |
+| PasswordInput | `src/components/ui/password-input.tsx` | show/hide toggle (44px hit area); icon shows state: slashed eye = hidden, open eye = visible |
 | FormField, FieldError | `src/components/ui/form-field.tsx` | render-prop wiring label/hint/error/aria; `hideLabel`, `labelAction` |
 | Alert | `src/components/ui/alert.tsx` | danger (role=alert), warning, success, info (role=status) |
 | Checkbox | `src/components/ui/checkbox.tsx` | native input + drawn box; label may hold links |
 | OrDivider | `src/components/ui/or-divider.tsx` | lowercase labelled rule |
 | OtpInput | `src/components/ui/otp-input.tsx` | 6 digits, paste and autofill, invalid state |
 | Logo, GoogleIcon | `src/components/brand/` | Google fills are brand colours (allowed hex) |
-| AuthLayout | `src/features/auth/auth-layout.tsx` | `banner` slot (text over the phone/tablet photo) + desktop photo/verse panel. Sign in: brand line; Create account: verse |
+| AuthLayout | `src/features/auth/auth-layout.tsx` | `banner` slot (text over the phone/tablet photo) + desktop photo/verse panel, sticky at viewport height; per-photo crop in `authImages`. Sign in: brand line; Create account: verse |
 | AuthTabs | `src/features/auth/auth-tabs.tsx` | Sign in / Create account (NavLink) |
 | GoogleButton | `src/features/auth/google-button.tsx` | |
 | ScriptureCard | `src/features/auth/scripture-card.tsx` | phone/tablet verse under the form |
@@ -82,7 +82,7 @@ Role classes and base rules are in Tailwind layers, so utilities (`text-fg-secon
 | Screen | Route | Archetype | Based on | Notes |
 |--------|-------|-----------|----------|-------|
 | Sign in | `/sign-in` | auth | old Stitch `FaithLink Sign In` | built, responsive |
-| Create account | `/create-account` | auth | old Stitch `FaithLink Create Account` | built, responsive |
+| Create account | `/create-account` | auth | old Stitch `FaithLink Create Account` | built, responsive; "Confirm password" appears (focused) after the first valid-password submit |
 | Verify email | `/verify-email` | auth | Stitch `Auth - Verify email - Mobile` | built; needs a pending email (sessionStorage) else redirects to create account |
 | Not found | `*` | error/404 | n/a | also where unbuilt links land |
 | App entry | `/` | n/a | n/a | redirects to `/sign-in` (owner) |

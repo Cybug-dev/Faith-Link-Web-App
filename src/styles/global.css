@@ -84,3 +84,11 @@
     }
   }
 }
+
+/* iOS Safari zooms the page when a focused field's text is under 16px. Unlayered so it
+ * beats the 14px input utility on iOS only; other platforms keep the smaller size. */
+@supports (-webkit-touch-callout: none) {
+  input.text-body-sm {
+    font-size: var(--type-base);
+  }
+}

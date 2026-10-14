@@ -22,7 +22,8 @@ export function PasswordInput(props: PasswordInputProps) {
           aria-pressed={visible}
           className="flex size-11 items-center justify-center rounded-full text-fg-muted transition-colors hover:bg-subtle hover:text-fg"
         >
-          {visible ? <EyeOff aria-hidden className="size-5" /> : <Eye aria-hidden className="size-5" />}
+          {/* Icon shows the current state: open eye = visible, slashed eye = hidden. */}
+          {visible ? <Eye aria-hidden className="size-5" /> : <EyeOff aria-hidden className="size-5" />}
         </button>
       }
     />
