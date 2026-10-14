@@ -1,0 +1,127 @@
+/*
+ * Tailwind v4 theme bridge. Import AFTER `@import "tailwindcss"`:
+ *
+ *   @import "tailwindcss";
+ *   @import "./tokens.css";
+ *   @import "./typography.css";
+ *   @import "./theme.css";
+ *   @import "./global.css";
+ *
+ * This file defines NO values. It only gives the tokens in tokens.css /
+ * typography.css utility names, and wipes Tailwind's default scales so an
+ * off-system value (rounded-3xl, text-[13px], bg-blue-500, shadow-xl) has no
+ * utility to resolve to. `inline` makes utilities read the live CSS variable.
+ *
+ * Utility cheat-sheet (full list lives in docs/ui/ui-registry.md):
+ *   bg-canvas bg-surface bg-subtle bg-muted bg-inverse
+ *   text-fg text-fg-secondary text-fg-muted text-fg-accent text-fg-on-accent
+ *   border-line border-line-control   bg-accent bg-accent-hover bg-accent-subtle
+ *   rounded-sm rounded-md rounded-full   shadow-raised shadow-popover shadow-modal
+ *   text-display text-headline-lg … (role classes live in typography.css)
+ */
+
+@theme inline {
+  /* Wipe defaults so only FaithLink tokens exist. */
+  --color-*: initial;
+  --radius-*: initial;
+  --shadow-*: initial;
+  --text-*: initial;
+  --font-weight-*: initial;
+  --breakpoint-*: initial;
+  --ease-*: initial;
+
+  /* Base unit for p-*, m-*, gap-*, size-*  (4px). Matches --space-* in tokens.css. */
+  --spacing: 0.25rem;
+
+  --color-transparent: transparent;
+  --color-current: currentColor;
+
+  /* Surfaces */
+  --color-canvas: var(--color-bg-canvas);
+  --color-surface: var(--color-bg-surface);
+  --color-subtle: var(--color-bg-subtle);
+  --color-muted: var(--color-bg-muted);
+  --color-inverse: var(--color-bg-inverse);
+  --color-scrim: var(--color-bg-scrim);
+  --color-scrim-photo: var(--color-bg-scrim-photo);
+
+  /* Text */
+  --color-fg: var(--color-text-primary);
+  --color-fg-secondary: var(--color-text-secondary);
+  --color-fg-muted: var(--color-text-muted);
+  --color-fg-placeholder: var(--color-text-placeholder);
+  --color-fg-disabled: var(--color-text-disabled);
+  --color-fg-inverse: var(--color-text-inverse);
+  --color-fg-accent: var(--color-text-accent);
+  --color-fg-on-accent: var(--color-text-on-accent);
+
+  /* Borders */
+  --color-line: var(--color-border-subtle);
+  --color-line-control: var(--color-border-control);
+  --color-line-control-hover: var(--color-border-control-hover);
+
+  /* Accent */
+  --color-accent: var(--color-accent-bg);
+  --color-accent-hover: var(--color-accent-bg-hover);
+  --color-accent-active: var(--color-accent-bg-active);
+  --color-accent-subtle: var(--color-accent-subtle-bg);
+  --color-accent-subtle-fg: var(--color-accent-subtle-text);
+  --color-accent-line: var(--color-accent-border);
+  --color-focus: var(--color-focus-ring);
+
+  /* Status */
+  --color-success: var(--color-success-bg);
+  --color-success-line: var(--color-success-border);
+  --color-success-fg: var(--color-success-text);
+  --color-success-icon: var(--color-success-icon);
+  --color-danger: var(--color-danger-bg);
+  --color-danger-line: var(--color-danger-border);
+  --color-danger-fg: var(--color-danger-text);
+  --color-danger-solid: var(--color-danger-solid);
+  --color-warning: var(--color-warning-bg);
+  --color-warning-line: var(--color-warning-border);
+  --color-warning-fg: var(--color-warning-text);
+  --color-info: var(--color-info-bg);
+  --color-info-line: var(--color-info-border);
+  --color-info-fg: var(--color-info-text);
+  --color-info-icon: var(--color-info-icon);
+
+  /* Shape + elevation (three of each) */
+  --radius-sm: var(--round-sm);
+  --radius-md: var(--round-md);
+  --radius-full: var(--round-full);
+  --shadow-raised: var(--elevation-raised);
+  --shadow-popover: var(--elevation-popover);
+  --shadow-modal: var(--elevation-modal);
+
+  /* Type scale: 12 14 16 18 20 24 30 36 */
+  --text-xs: var(--type-xs);
+  --text-xs--line-height: var(--type-xs-lh);
+  --text-sm: var(--type-sm);
+  --text-sm--line-height: var(--type-sm-lh);
+  --text-base: var(--type-base);
+  --text-base--line-height: var(--type-base-lh);
+  --text-lg: var(--type-lg);
+  --text-lg--line-height: var(--type-lg-lh);
+  --text-xl: var(--type-xl);
+  --text-xl--line-height: var(--type-xl-lh);
+  --text-2xl: var(--type-2xl);
+  --text-2xl--line-height: var(--type-2xl-lh);
+  --text-3xl: var(--type-3xl);
+  --text-3xl--line-height: var(--type-3xl-lh);
+  --text-4xl: var(--type-4xl);
+  --text-4xl--line-height: var(--type-4xl-lh);
+
+  --font-sans: var(--font-family-sans);
+  --font-weight-regular: var(--weight-regular);
+  --font-weight-semibold: var(--weight-semibold);
+  --font-weight-bold: var(--weight-bold);
+
+  /* Breakpoints: keep in sync with the @media rules in tokens.css. */
+  --breakpoint-tablet: 37.5rem;
+  --breakpoint-desktop: 64rem;
+  --breakpoint-wide: 80rem;
+
+  --ease-standard: var(--motion-ease-standard);
+  --ease-out: var(--motion-ease-out);
+}

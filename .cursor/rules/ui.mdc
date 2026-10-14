@@ -4,6 +4,8 @@ globs: ["**/*.tsx", "**/*.jsx", "**/*.css", "**/*.scss", "**/*.vue", "**/*.svelt
 alwaysApply: false
 ---
 
-Before any UI/UX or frontend work, read and follow
-@frontend-ui-ux-engineering-rules.md, then use @docs/ui/ui-registry.md as the
-index of tokens, components, and screens (keep it updated).
+Before any UI/UX or frontend work, read and follow @AGENTS.md (reading order,
+ECC precedence), then @frontend-ui-ux-engineering-rules.md and
+@docs/ui/ui-registry.md (keep the registry updated). Values come only from
+@src/styles/tokens.css and @src/styles/typography.css; intent and vocabulary
+are in @docs/ui/DESIGN.md.

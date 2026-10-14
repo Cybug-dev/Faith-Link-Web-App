@@ -1,0 +1,25 @@
+/**
+ * Scripture and photography used on the auth screens. World English Bible
+ * (public domain); change a translation here and nowhere else.
+ * Photos live in public/images and come from the Stitch auth designs.
+ */
+export type Scripture = { text: string; reference: string; translation: string }
+
+export const SIGN_IN_SCRIPTURE: Scripture = {
+  text: 'Let no man despise your youth; but be an example to those who believe, in word, in your way of life, in love, in faith, and in purity.',
+  reference: '1 Timothy 4:12',
+  translation: 'WEB',
+}
+
+export const CREATE_ACCOUNT_SCRIPTURE: Scripture = {
+  text: 'Being confident of this very thing, that he who began a good work in you will complete it until the day of Jesus Christ.',
+  reference: 'Philippians 1:6',
+  translation: 'WEB',
+}
+
+export const authImages = {
+  signIn: '/images/auth-sign-in.jpg',
+  createAccount: '/images/auth-create-account.jpg',
+} as const
+
+export const BRAND_LINE = 'A generation rooted in Christ'

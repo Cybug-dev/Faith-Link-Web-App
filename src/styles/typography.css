@@ -1,0 +1,173 @@
+/*
+ * FaithLink typography — one family, three weights, one scale.
+ *
+ * Family: Plus Jakarta Sans for everything, scripture included. Scripture gets
+ * its character from size, leading and the accent rule (see .text-scripture),
+ * not from a second typeface.
+ * Weights: 400 / 600 / 700 only.
+ * Sizes: 12 14 16 18 20 24 30 36 — nothing off this list.
+ * Case: sentence case everywhere. No text-transform: uppercase, no tracked
+ * all-caps labels (verse references included: "1 Timothy 4:12").
+ *
+ * Font loading is decided at scaffold time (self-host @fontsource-variable/
+ * plus-jakarta-sans — needs dependency approval). Until then the fallback
+ * stack applies, which is why metrics below are set explicitly.
+ */
+
+:root {
+  --font-family-sans: "Plus Jakarta Sans Variable", "Plus Jakarta Sans", ui-sans-serif, system-ui, -apple-system,
+    "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+
+  --weight-regular: 400;
+  --weight-semibold: 600;
+  --weight-bold: 700;
+
+  /* Size + line-height pairs. */
+  --type-xs: 0.75rem; /* 12 */
+  --type-xs-lh: 1rem;
+  --type-sm: 0.875rem; /* 14 */
+  --type-sm-lh: 1.25rem;
+  --type-base: 1rem; /* 16 */
+  --type-base-lh: 1.5rem;
+  --type-lg: 1.125rem; /* 18 */
+  --type-lg-lh: 1.75rem;
+  --type-xl: 1.25rem; /* 20 */
+  --type-xl-lh: 1.75rem;
+  --type-2xl: 1.5rem; /* 24 */
+  --type-2xl-lh: 2rem;
+  --type-3xl: 1.875rem; /* 30 */
+  --type-3xl-lh: 2.375rem;
+  --type-4xl: 2.25rem; /* 36 */
+  --type-4xl-lh: 2.75rem;
+
+  --ls-display: -0.02em;
+  --ls-headline: -0.015em;
+  --ls-normal: 0;
+
+  /* Reading measure. Lesson text never exceeds this. */
+  --measure-prose: 65ch;
+
+  /* Role tokens below step up at the tablet breakpoint (≥ 600px). */
+  --role-display-size: var(--type-3xl);
+  --role-display-lh: var(--type-3xl-lh);
+  --role-headline-lg-size: var(--type-2xl);
+  --role-headline-lg-lh: var(--type-2xl-lh);
+  --role-headline-md-size: var(--type-xl);
+  --role-headline-md-lh: var(--type-xl-lh);
+}
+
+@media (min-width: 37.5rem) {
+  :root {
+    --role-display-size: var(--type-4xl);
+    --role-display-lh: var(--type-4xl-lh);
+    --role-headline-lg-size: var(--type-3xl);
+    --role-headline-lg-lh: var(--type-3xl-lh);
+    --role-headline-md-size: var(--type-2xl);
+    --role-headline-md-lh: var(--type-2xl-lh);
+  }
+}
+
+/* ── Roles ───────────────────────────────────────────────────────────
+ * Components use these classes (or the matching Tailwind `text-*` utilities
+ * from theme.css), never raw font-size / font-weight.
+ */
+
+/* Layered so Tailwind utilities (e.g. text-fg-secondary) can always override a role
+ * class's colour. Unlayered CSS would beat them regardless of specificity. */
+@layer components {
+  .text-display {
+    font-size: var(--role-display-size);
+    line-height: var(--role-display-lh);
+    font-weight: var(--weight-bold);
+    letter-spacing: var(--ls-display);
+  }
+  .text-headline-lg {
+    font-size: var(--role-headline-lg-size);
+    line-height: var(--role-headline-lg-lh);
+    font-weight: var(--weight-bold);
+    letter-spacing: var(--ls-headline);
+  }
+  .text-headline-md {
+    font-size: var(--role-headline-md-size);
+    line-height: var(--role-headline-md-lh);
+    font-weight: var(--weight-bold);
+    letter-spacing: var(--ls-headline);
+  }
+  .text-title-lg {
+    font-size: var(--type-xl);
+    line-height: var(--type-xl-lh);
+    font-weight: var(--weight-semibold);
+  }
+  .text-title-md {
+    font-size: var(--type-base);
+    line-height: var(--type-base-lh);
+    font-weight: var(--weight-semibold);
+  }
+  .text-body-lg {
+    font-size: var(--type-lg);
+    line-height: var(--type-lg-lh);
+    font-weight: var(--weight-regular);
+  }
+  .text-body-md {
+    font-size: var(--type-base);
+    line-height: var(--type-base-lh);
+    font-weight: var(--weight-regular);
+  }
+  .text-body-sm {
+    font-size: var(--type-sm);
+    line-height: var(--type-sm-lh);
+    font-weight: var(--weight-regular);
+  }
+  .text-label-lg {
+    font-size: var(--type-base);
+    line-height: var(--type-base-lh);
+    font-weight: var(--weight-semibold);
+  }
+  .text-label-md {
+    font-size: var(--type-sm);
+    line-height: var(--type-sm-lh);
+    font-weight: var(--weight-semibold);
+  }
+  .text-label-sm {
+    font-size: var(--type-xs);
+    line-height: var(--type-xs-lh);
+    font-weight: var(--weight-semibold);
+  }
+  .text-caption {
+    font-size: var(--type-xs);
+    line-height: var(--type-xs-lh);
+    font-weight: var(--weight-regular);
+    color: var(--color-text-muted);
+  }
+
+  /* Scripture: the one typographic moment in the product. Upright, regular
+   * weight (italic hurts long-form legibility for many readers), generous
+   * leading, set off by a 4px accent rule on the start edge. Pair with a
+   * ScriptureReference in sentence case, e.g. "1 Timothy 4:12". */
+  .text-scripture {
+    font-size: var(--type-lg);
+    line-height: var(--type-lg-lh);
+    font-weight: var(--weight-regular);
+    max-inline-size: var(--measure-prose);
+  }
+  .text-scripture-lg {
+    font-size: var(--type-xl);
+    line-height: 2rem;
+    font-weight: var(--weight-regular);
+    max-inline-size: var(--measure-prose);
+  }
+  .scripture-rule {
+    border-inline-start: var(--accent-rule-width) solid var(--color-accent-bg);
+    padding-inline-start: var(--space-4);
+  }
+
+  /* Lesson body rendered from markdown. */
+  .prose-lesson {
+    max-inline-size: var(--measure-prose);
+    font-size: var(--type-lg);
+    line-height: var(--type-lg-lh);
+  }
+  .prose-lesson > * + * {
+    margin-block-start: var(--space-4);
+  }
+}

@@ -1,0 +1,218 @@
+/*
+ * FaithLink design tokens — single source of truth for the web app.
+ *
+ * Two layers:
+ *   1. --palette-*  raw ramps. NEVER used in feature or component code.
+ *   2. --color-* / --space-* / --round-* / ...  semantic tokens. The only
+ *      values components may reference.
+ *
+ * Naming: --{category}-{role}[-{variant|state}]  (see docs/ui/DESIGN.md §Naming).
+ * Light theme only for the MVP; dark mode is deferred (see ui-registry.md).
+ * Contrast pairs were checked against WCAG 2.2 AA; ratios are in the comments.
+ */
+
+:root {
+  /* ── 1. Palette (primitives) ─────────────────────────────────────── */
+
+  /* Amber — the brand colour. 400 is the one brand amber; do not add others. */
+  --palette-amber-50: #fff8ea;
+  --palette-amber-100: #ffeed0;
+  --palette-amber-200: #fcdda3;
+  --palette-amber-300: #f8c56a;
+  --palette-amber-400: #f3a83b; /* brand */
+  --palette-amber-500: #e89a26;
+  --palette-amber-600: #c97f10;
+  --palette-amber-700: #845400; /* text/link/focus on light: 6.2:1 on canvas */
+  --palette-amber-800: #5e3a00;
+  --palette-amber-900: #3a2400;
+
+  /* Warm neutrals — canvas, surfaces, borders. */
+  --palette-neutral-0: #ffffff;
+  --palette-neutral-25: #fbf9f5;
+  --palette-neutral-50: #f5f2ec;
+  --palette-neutral-100: #ede9e1;
+  --palette-neutral-200: #e2ded5;
+  --palette-neutral-300: #cfc9bd;
+  --palette-neutral-400: #a8a296;
+  --palette-neutral-500: #857f75; /* control borders: 3.8:1 on canvas */
+  --palette-neutral-600: #6f6a62; /* placeholder: 5.4:1 on white */
+  --palette-neutral-700: #504b44;
+  --palette-neutral-800: #34312c;
+
+  /* Slate — ink, secondary text, icons, inverse surfaces. */
+  --palette-slate-50: #f1f3f6;
+  --palette-slate-100: #e3e7ec;
+  --palette-slate-200: #c9d0d9;
+  --palette-slate-300: #a3aebb;
+  --palette-slate-400: #768696; /* icons/disabled only: 3.7:1, never body text */
+  --palette-slate-500: #5f6b78; /* muted text + icons: 5.4:1 on white */
+  --palette-slate-600: #4f5864; /* secondary text: 7.2:1 on white */
+  --palette-slate-700: #3b4450;
+  --palette-slate-800: #2c3440; /* brand slate */
+  --palette-slate-900: #1a1e24; /* ink */
+
+  /* Status */
+  --palette-green-50: #e7f4ec;
+  --palette-green-300: #a8d5ba;
+  --palette-green-700: #1b6b45;
+  --palette-green-900: #14532d;
+  --palette-red-50: #fdecea;
+  --palette-red-300: #f2b8b5;
+  --palette-red-700: #ba1a1a;
+  --palette-red-900: #93000a;
+  --palette-blue-50: #e6eef7;
+  --palette-blue-300: #b3c9e0;
+  --palette-blue-700: #2f5d8a;
+  --palette-blue-900: #1e3f63;
+  --palette-gold-50: #fff4d6;
+  --palette-gold-300: #e8c46a;
+  --palette-gold-900: #6b4400;
+
+  /* ── 2. Semantic colour ──────────────────────────────────────────── */
+
+  /* Backgrounds */
+  --color-bg-canvas: var(--palette-neutral-25); /* page background */
+  --color-bg-surface: var(--palette-neutral-0); /* cards, inputs, sheets */
+  --color-bg-subtle: var(--palette-neutral-50); /* quiet panels, table stripes */
+  --color-bg-muted: var(--palette-neutral-100); /* tracks, skeletons, chips at rest */
+  --color-bg-inverse: var(--palette-slate-800); /* hero panels, secondary buttons */
+  --color-bg-scrim: rgb(26 30 36 / 0.56); /* modal backdrop */
+  --color-bg-scrim-photo: rgb(26 30 36 / 0.78); /* behind text on photos: white text stays >= 4.5:1 */
+
+  /* Text */
+  --color-text-primary: var(--palette-slate-900); /* 15.9:1 on canvas */
+  --color-text-secondary: var(--palette-slate-600);
+  --color-text-muted: var(--palette-slate-500); /* 4.8:1 on canvas — captions, metadata */
+  --color-text-placeholder: var(--palette-neutral-600);
+  --color-text-disabled: var(--palette-slate-400);
+  --color-text-inverse: var(--palette-neutral-25);
+  --color-text-accent: var(--palette-amber-700); /* links, inline emphasis */
+  --color-text-on-accent: var(--palette-slate-900); /* on amber fills: 8.4:1 */
+
+  /* Borders. Decorative dividers use subtle; anything that defines a control
+     (input, checkbox, outlined button) MUST use control (WCAG 1.4.11, 3:1). */
+  --color-border-subtle: var(--palette-neutral-200);
+  --color-border-control: var(--palette-neutral-500);
+  --color-border-control-hover: var(--palette-neutral-700);
+
+  /* Accent (brand amber). Amber alone never signals focus or selection
+     (1.9:1 on canvas): pair it with text, an icon, or a dark outline. */
+  --color-accent-bg: var(--palette-amber-400);
+  --color-accent-bg-hover: var(--palette-amber-500);
+  --color-accent-bg-active: var(--palette-amber-600);
+  --color-accent-subtle-bg: var(--palette-amber-100); /* selected nav pill, active chip */
+  --color-accent-subtle-text: var(--palette-amber-800);
+  --color-accent-border: var(--palette-amber-300);
+
+  --color-focus-ring: var(--palette-amber-700);
+
+  /* Status — each has bg / border / text so banners and badges stay legible. */
+  --color-success-bg: var(--palette-green-50);
+  --color-success-border: var(--palette-green-300);
+  --color-success-text: var(--palette-green-900);
+  --color-success-icon: var(--palette-green-700);
+  --color-danger-bg: var(--palette-red-50);
+  --color-danger-border: var(--palette-red-300);
+  --color-danger-text: var(--palette-red-900);
+  --color-danger-solid: var(--palette-red-700); /* destructive button fill, input error border */
+  --color-warning-bg: var(--palette-gold-50);
+  --color-warning-border: var(--palette-gold-300);
+  --color-warning-text: var(--palette-gold-900);
+  --color-info-bg: var(--palette-blue-50);
+  --color-info-border: var(--palette-blue-300);
+  --color-info-text: var(--palette-blue-900);
+  --color-info-icon: var(--palette-blue-700);
+
+  /* ── 3. Spacing (4px base) ───────────────────────────────────────── */
+
+  --space-0: 0;
+  --space-1: 0.25rem; /* 4  — icon↔label gap */
+  --space-2: 0.5rem; /* 8  — inside chips, tight stacks */
+  --space-3: 0.75rem; /* 12 */
+  --space-4: 1rem; /* 16 — card padding, field stack gap */
+  --space-5: 1.25rem; /* 20 — page margin on phones */
+  --space-6: 1.5rem; /* 24 — between cards/modules */
+  --space-8: 2rem; /* 32 */
+  --space-10: 2.5rem; /* 40 — between page sections */
+  --space-12: 3rem; /* 48 */
+  --space-16: 4rem; /* 64 */
+  --space-20: 5rem; /* 80 */
+
+  --page-margin: var(--space-5); /* phones; steps up at the breakpoints below */
+  --gutter: var(--space-4);
+
+  /* ── 4. Shape ────────────────────────────────────────────────────── */
+  /* Three radii only. Buttons, chips, tabs, avatars = full. Inputs, cards,
+     banners, sheets, hero media = md. Checkboxes, small tags = sm. */
+
+  --round-sm: 0.5rem; /* 8 */
+  --round-md: 1rem; /* 16 */
+  --round-full: 9999px;
+
+  --border-width: 1px;
+  --accent-rule-width: 0.25rem; /* 4 — the amber rule beside scripture */
+  --focus-ring-width: 2px;
+  --focus-ring-offset: 2px;
+
+  /* ── 5. Elevation ────────────────────────────────────────────────── */
+  /* Cards at rest have NO shadow — a 1px subtle border carries them. Shadow
+     is reserved for things that float. */
+
+  --elevation-raised: 0 1px 2px rgb(26 30 36 / 0.06), 0 4px 12px rgb(26 30 36 / 0.06); /* sticky bars, selected cards */
+  --elevation-popover: 0 8px 24px rgb(26 30 36 / 0.12), 0 2px 6px rgb(26 30 36 / 0.06); /* menus, popovers, toasts */
+  --elevation-modal: 0 16px 40px rgb(26 30 36 / 0.18); /* dialogs, bottom sheets */
+
+  /* ── 6. Control sizing ───────────────────────────────────────────── */
+
+  --control-h-sm: 2.25rem; /* 36 — chips, dense desktop actions; keep a 44px hit area */
+  --control-h-md: 3rem; /* 48 — default button / input / select */
+  --control-h-lg: 3.5rem; /* 56 — primary mobile CTA */
+  --hit-min: 2.75rem; /* 44 — minimum touch target */
+  --icon-sm: 1rem;
+  --icon-md: 1.25rem; /* default */
+  --icon-lg: 1.5rem;
+
+  /* ── 7. Layout ───────────────────────────────────────────────────── */
+  /* Breakpoints (media queries can't read custom properties; keep in sync
+     with theme.css): tablet 600px · desktop 1024px · wide 1280px. */
+
+  --w-form: 26.25rem; /* 420 — auth + single-column forms */
+  --w-reading: 40rem; /* 640 — lesson body; also ≈65ch cap */
+  --w-content: 70rem; /* 1120 — app content column */
+  --w-shell: 80rem; /* 1280 — shell max width */
+  --sidebar-w: 16rem; /* 256 — desktop navigation */
+  --bottom-nav-h: 4rem; /* 64 + safe-area inset */
+  --topbar-h: 3.5rem; /* 56 */
+
+  /* ── 8. Motion ───────────────────────────────────────────────────── */
+  /* Motion only explains a state change. Animate transform/opacity, never
+     layout properties. Everything collapses under prefers-reduced-motion. */
+
+  --motion-duration-fast: 150ms;
+  --motion-duration-base: 200ms;
+  --motion-duration-slow: 300ms;
+  --motion-ease-standard: cubic-bezier(0.4, 0, 0.2, 1);
+  --motion-ease-out: cubic-bezier(0.2, 0, 0, 1);
+
+  /* ── 9. Stacking ─────────────────────────────────────────────────── */
+
+  --z-base: 0;
+  --z-dropdown: 1000;
+  --z-sticky: 1100;
+  --z-overlay: 1200;
+  --z-modal: 1300;
+  --z-toast: 1400;
+}
+
+@media (min-width: 37.5rem) {
+  :root {
+    --page-margin: var(--space-6);
+    --gutter: var(--space-6);
+  }
+}
+
+@media (min-width: 64rem) {
+  :root {
+    --page-margin: var(--space-8);
+  }
+}
