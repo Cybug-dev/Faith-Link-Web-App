@@ -17,6 +17,9 @@ export const CREATE_ACCOUNT_SCRIPTURE: Scripture = {
   translation: 'WEB',
 }
 
+/** Verse on the create-account photo banner (phone and tablet), as in the Stitch design. */
+export const CREATE_ACCOUNT_BANNER_SCRIPTURE = SIGN_IN_SCRIPTURE
+
 export const authImages = {
   signIn: '/images/auth-sign-in.jpg',
   createAccount: '/images/auth-create-account.jpg',

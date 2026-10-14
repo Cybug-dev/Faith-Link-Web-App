@@ -18,7 +18,11 @@ export const MIN_PASSWORD_LENGTH = 8
 export const createAccountSchema = z.object({
   name: z.string().trim().min(1, 'Enter your name.').max(100, 'Use 100 characters or fewer.'),
   email,
-  password: z.string().min(MIN_PASSWORD_LENGTH, `Use at least ${MIN_PASSWORD_LENGTH} characters.`),
+  password: z
+    .string()
+    .min(MIN_PASSWORD_LENGTH, `Use at least ${MIN_PASSWORD_LENGTH} characters.`)
+    .regex(/\d/, 'Add at least one number.')
+    .regex(/[^A-Za-z0-9]/, 'Add at least one symbol, like ! or #.'),
   acceptedTerms: z.boolean().refine((v) => v, {
     message: 'Agree to the Terms of Service and Privacy Policy to continue.',
   }),

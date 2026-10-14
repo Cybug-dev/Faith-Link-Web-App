@@ -17,12 +17,13 @@ import { AuthLayout } from './auth-layout'
 import { AuthTabs } from './auth-tabs'
 import { GoogleButton } from './google-button'
 import { MIN_PASSWORD_LENGTH, createAccountSchema, type CreateAccountValues } from './schemas'
-import { CREATE_ACCOUNT_SCRIPTURE, authImages } from './scripture'
+import { CREATE_ACCOUNT_BANNER_SCRIPTURE, CREATE_ACCOUNT_SCRIPTURE, authImages } from './scripture'
 import { ScriptureCard } from './scripture-card'
 
 /**
- * Layout and copy follow the Stitch "FaithLink Create Account" screen, with the
- * tabs placed under the photo as on Sign in so they don't jump between pages.
+ * Layout and copy follow the Stitch "FaithLink Create Account" screen: the banner
+ * carries a verse (Sign in carries the brand line), but the tabs stay under the
+ * photo as on Sign in so they don't jump between pages.
  */
 export function CreateAccountPage() {
   useDocumentTitle('Create account')
@@ -53,10 +54,23 @@ export function CreateAccountPage() {
   })
 
   return (
-    <AuthLayout banner image={authImages.createAccount} scripture={CREATE_ACCOUNT_SCRIPTURE}>
+    <AuthLayout
+      banner={
+        <figure>
+          <blockquote className="text-body-sm">
+            <p>“{CREATE_ACCOUNT_BANNER_SCRIPTURE.text}”</p>
+          </blockquote>
+          <figcaption className="mt-1 text-label-sm">
+            {CREATE_ACCOUNT_BANNER_SCRIPTURE.reference} ({CREATE_ACCOUNT_BANNER_SCRIPTURE.translation})
+          </figcaption>
+        </figure>
+      }
+      image={authImages.createAccount}
+      scripture={CREATE_ACCOUNT_SCRIPTURE}
+    >
       <AuthTabs />
       <h1 className="mt-6 text-headline-lg">Create your account</h1>
-      <p className="mt-1 text-body-md text-fg-secondary">
+      <p className="mt-1 text-body-sm text-fg-secondary">
         Join a community built to help you grow in faith and fellowship.
       </p>
 
@@ -95,7 +109,7 @@ export function CreateAccountPage() {
 
         <FormField
           label="Password"
-          hint={`At least ${MIN_PASSWORD_LENGTH} characters.`}
+          hint={`At least ${MIN_PASSWORD_LENGTH} characters with a number and symbol`}
           error={errors.password?.message}
         >
           {(control) => (
@@ -114,7 +128,7 @@ export function CreateAccountPage() {
             aria-invalid={errors.acceptedTerms ? true : undefined}
             aria-describedby={errors.acceptedTerms ? 'terms-error' : undefined}
             label={
-              <>
+              <span className="text-caption text-fg-secondary">
                 I agree to the{' '}
                 <Link to="/terms" className="font-semibold text-fg-accent underline">
                   Terms of Service
@@ -123,7 +137,7 @@ export function CreateAccountPage() {
                 <Link to="/privacy" className="font-semibold text-fg-accent underline">
                   Privacy Policy
                 </Link>
-              </>
+              </span>
             }
           />
           {errors.acceptedTerms?.message && <FieldError id="terms-error">{errors.acceptedTerms.message}</FieldError>}
@@ -141,7 +155,7 @@ export function CreateAccountPage() {
 
       <ScriptureCard scripture={CREATE_ACCOUNT_SCRIPTURE} />
 
-      <p className="mt-6 text-center text-body-md text-fg-secondary">
+      <p className="mt-6 text-center text-body-sm text-fg-secondary">
         Already have an account?{' '}
         <Link to="/sign-in" className="font-semibold text-fg-accent hover:underline">
           Sign in

@@ -1,4 +1,4 @@
-import { CircleAlert } from 'lucide-react'
+import { CircleAlert, Info } from 'lucide-react'
 import { useId, type ReactNode } from 'react'
 import { cn } from '@/lib/cn'
 
@@ -42,7 +42,7 @@ export function FormField({ label, hideLabel = false, hint, error, labelAction, 
   return (
     <div className="flex flex-col gap-2">
       <div className={cn('flex items-baseline justify-between gap-3', hideLabel && 'sr-only')}>
-        <label htmlFor={id} className="text-label-lg text-fg">
+        <label htmlFor={id} className="text-label-md text-fg">
           {label}
         </label>
         {labelAction}
@@ -51,7 +51,8 @@ export function FormField({ label, hideLabel = false, hint, error, labelAction, 
       {error ? (
         <FieldError id={errorId}>{error}</FieldError>
       ) : hint ? (
-        <p id={hintId} className="text-body-sm text-fg-secondary">
+        <p id={hintId} className="flex items-center gap-1 ps-1 text-caption text-fg-secondary">
+          <Info aria-hidden className="size-3.5 shrink-0 text-fg-accent" />
           {hint}
         </p>
       ) : null}

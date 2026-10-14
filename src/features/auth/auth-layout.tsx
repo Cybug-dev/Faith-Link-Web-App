@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react'
 import { Logo } from '@/components/brand/logo'
-import { BRAND_LINE, SIGN_IN_SCRIPTURE, authImages, type Scripture } from './scripture'
+import { SIGN_IN_SCRIPTURE, authImages, type Scripture } from './scripture'
 
 type AuthLayoutProps = {
   children: ReactNode
@@ -8,8 +8,8 @@ type AuthLayoutProps = {
   image?: string
   /** Scripture shown over the desktop photo panel. */
   scripture?: Scripture
-  /** Photo banner above the content on phone and tablet (sign in and create account only). */
-  banner?: boolean
+  /** Text over the photo banner shown above the content on phone and tablet. No banner when omitted. */
+  banner?: ReactNode
 }
 
 /**
@@ -21,7 +21,7 @@ export function AuthLayout({
   children,
   image = authImages.signIn,
   scripture = SIGN_IN_SCRIPTURE,
-  banner = false,
+  banner,
 }: AuthLayoutProps) {
   return (
     <div className="min-h-dvh desktop:grid desktop:grid-cols-2">
@@ -33,8 +33,8 @@ export function AuthLayout({
           {banner && (
             <div className="relative mb-4 h-44 overflow-hidden rounded-md shadow-raised tablet:h-52 desktop:hidden">
               <img src={image} alt="" className="size-full object-cover object-right" />
-              <div className="absolute inset-0 bg-linear-to-t from-scrim-photo via-transparent to-transparent" />
-              <p className="absolute inset-x-4 bottom-4 text-title-md text-fg-inverse">{BRAND_LINE}</p>
+              <div className="absolute inset-0 bg-linear-to-t from-scrim-photo via-scrim-photo/40 to-transparent" />
+              <div className="absolute inset-x-4 bottom-4 text-fg-inverse">{banner}</div>
             </div>
           )}
           {children}

@@ -16,7 +16,7 @@ import { AuthLayout } from './auth-layout'
 import { AuthTabs } from './auth-tabs'
 import { GoogleButton } from './google-button'
 import { signInSchema, type SignInValues } from './schemas'
-import { SIGN_IN_SCRIPTURE, authImages } from './scripture'
+import { BRAND_LINE, SIGN_IN_SCRIPTURE, authImages } from './scripture'
 import { ScriptureCard } from './scripture-card'
 
 type FormError = 'credentials' | 'unknown' | null
@@ -43,7 +43,7 @@ export function SignInPage() {
     setFormError(null)
     try {
       await authClient.signInWithEmail(values)
-      navigate('/')
+      navigate('/home')
     } catch (error) {
       if (error instanceof AuthError && error.code === 'EMAIL_NOT_VERIFIED') {
         setPendingEmail(values.email)
@@ -56,10 +56,14 @@ export function SignInPage() {
   })
 
   return (
-    <AuthLayout banner image={authImages.signIn} scripture={SIGN_IN_SCRIPTURE}>
+    <AuthLayout
+      banner={<p className="text-label-md">{BRAND_LINE}</p>}
+      image={authImages.signIn}
+      scripture={SIGN_IN_SCRIPTURE}
+    >
       <AuthTabs />
       <h1 className="mt-6 text-headline-lg">Welcome back</h1>
-      <p className="mt-1 text-body-md text-fg-secondary">
+      <p className="mt-1 text-body-sm text-fg-secondary">
         Sign in to continue your journey and connect with your community.
       </p>
 
@@ -125,7 +129,7 @@ export function SignInPage() {
 
       <ScriptureCard scripture={SIGN_IN_SCRIPTURE} />
 
-      <p className="mt-6 text-center text-body-md text-fg-secondary">
+      <p className="mt-6 text-center text-body-sm text-fg-secondary">
         New to FaithLink?{' '}
         <Link to="/create-account" className="font-semibold text-fg-accent hover:underline">
           Create an account

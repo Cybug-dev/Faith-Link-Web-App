@@ -12,6 +12,11 @@ async function fillAndSubmit(
 }
 
 describe('Sign in page', () => {
+  it('is the first screen the app opens on', async () => {
+    renderRoute('/')
+    expect(await screen.findByRole('heading', { name: 'Welcome back' })).toBeInTheDocument()
+  })
+
   it('renders the form with no errors before the person has interacted', () => {
     renderRoute('/sign-in')
     expect(screen.getByRole('heading', { name: 'Welcome back' })).toBeInTheDocument()

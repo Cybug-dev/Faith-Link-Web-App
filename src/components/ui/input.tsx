@@ -9,25 +9,29 @@ type InputProps = ComponentProps<'input'> & {
   endAdornment?: ReactNode
 }
 
-/** 48px pill with a soft shadow (Stitch design) plus a thin 3:1 control border. Error state comes from aria-invalid. */
+/**
+ * 48px white pill with a soft shadow and no border (Stitch design).
+ * Typing: amber ring in place of the global outline, and the leading icon turns dark amber.
+ * Error (aria-invalid): red ring.
+ */
 export function Input({ className, startIcon: StartIcon, endAdornment, ...props }: InputProps) {
   return (
     <div className="relative">
-      {StartIcon && (
-        <StartIcon
-          aria-hidden
-          className="pointer-events-none absolute start-5 top-1/2 size-5 -translate-y-1/2 text-fg-muted"
-        />
-      )}
       <input
         className={cn(
-          'h-12 w-full rounded-full border border-line-control bg-surface px-5 shadow-raised text-body-md text-fg transition-colors duration-(--motion-duration-fast) placeholder:text-fg-placeholder hover:border-line-control-hover aria-invalid:border-danger-solid disabled:cursor-not-allowed disabled:bg-subtle disabled:text-fg-disabled',
-          StartIcon && 'ps-12',
+          'peer h-12 w-full rounded-full bg-surface px-4 shadow-raised text-body-md text-fg transition-shadow duration-(--motion-duration-fast) placeholder:text-fg-placeholder focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent aria-invalid:ring-2 aria-invalid:ring-danger-solid disabled:cursor-not-allowed disabled:bg-subtle disabled:text-fg-disabled',
+          StartIcon && 'ps-11',
           endAdornment && 'pe-12',
           className,
         )}
         {...props}
       />
+      {StartIcon && (
+        <StartIcon
+          aria-hidden
+          className="pointer-events-none absolute start-3.5 top-1/2 size-5 -translate-y-1/2 text-fg-muted transition-colors duration-(--motion-duration-fast) peer-focus-visible:text-fg-accent"
+        />
+      )}
       {endAdornment && <div className="absolute end-1 top-1/2 -translate-y-1/2">{endAdornment}</div>}
     </div>
   )

@@ -15,10 +15,13 @@ UI inventory (tokens, components, screens, drops) lives in [`ui/ui-registry.md`]
 - Owner decision: keep the soft `shadow-raised` on inputs, white buttons, tabs and cards (`AGENTS.md` now matches `DESIGN.md`).
 - Root `AGENTS.md` / `CLAUDE.md` added so agents opened on the parent folder are routed to the right project.
 - Commit message convention added to `AGENTS.md`.
+- Auth refinements from Stitch "Mobile Auth UI Design" › Create Account: borderless inputs (amber focus ring), smaller labels/hints/terms/subtitle/footer, per-page banner (Sign in: brand line; Create account: verse), Stitch password hint, password now needs a number and symbol.
+- `/` opens sign in; temporary home moved to `/home`.
 
 ## Next
 
-- UI refinements (owner to specify).
+- More UI refinements (owner to specify).
+- Backend: enforce the same password rule (number + symbol).
 - Unbuilt linked pages: `/forgot-password`, `/terms`, `/privacy`.
 - Replace the auth stub with the real Neon Auth client; add session handling and route guards.
 - First browser-level check (screenshot + axe); so far only jsdom tests, build and typecheck.
@@ -27,5 +30,6 @@ UI inventory (tokens, components, screens, drops) lives in [`ui/ui-registry.md`]
 
 - **Google button position:** below the form (Stitch, as built) or above it (backend auth notes)?
 - **ECC design-quality deviation:** proposed by an agent, awaiting your confirmation (registry, Approved Deviations).
+- **Input focus contrast:** the amber focus ring is ~2:1 (WCAG wants 3:1). Keep it, or use a darker amber ring?
 - **Resend cooldown:** 30s is assumed, not in the backend contract.
 - **Content:** hero photos are AI placeholders; Scripture translation and licence to confirm.

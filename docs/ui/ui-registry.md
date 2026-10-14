@@ -64,7 +64,7 @@ Role classes and base rules are in Tailwind layers, so utilities (`text-fg-secon
 | Component | Path | Variants / notes |
 |-----------|------|------------------|
 | Button | `src/components/ui/button.tsx` | primary, secondary, outline, ghost, danger; sm/md/lg; `loading` (spinner, aria-busy, blocks repeat submits) |
-| Input | `src/components/ui/input.tsx` | `startIcon`, `endAdornment`; error via `aria-invalid` |
+| Input | `src/components/ui/input.tsx` | white pill + soft shadow, **no border** (owner); focus = amber ring + icon turns dark amber; error = red ring via `aria-invalid`; `startIcon`, `endAdornment` |
 | PasswordInput | `src/components/ui/password-input.tsx` | show/hide toggle (44px hit area) |
 | FormField, FieldError | `src/components/ui/form-field.tsx` | render-prop wiring label/hint/error/aria; `hideLabel`, `labelAction` |
 | Alert | `src/components/ui/alert.tsx` | danger (role=alert), warning, success, info (role=status) |
@@ -72,7 +72,7 @@ Role classes and base rules are in Tailwind layers, so utilities (`text-fg-secon
 | OrDivider | `src/components/ui/or-divider.tsx` | lowercase labelled rule |
 | OtpInput | `src/components/ui/otp-input.tsx` | 6 digits, paste and autofill, invalid state |
 | Logo, GoogleIcon | `src/components/brand/` | Google fills are brand colours (allowed hex) |
-| AuthLayout | `src/features/auth/auth-layout.tsx` | phone banner + desktop photo/verse panel |
+| AuthLayout | `src/features/auth/auth-layout.tsx` | `banner` slot (text over the phone/tablet photo) + desktop photo/verse panel. Sign in: brand line; Create account: verse |
 | AuthTabs | `src/features/auth/auth-tabs.tsx` | Sign in / Create account (NavLink) |
 | GoogleButton | `src/features/auth/google-button.tsx` | |
 | ScriptureCard | `src/features/auth/scripture-card.tsx` | phone/tablet verse under the form |
@@ -85,7 +85,8 @@ Role classes and base rules are in Tailwind layers, so utilities (`text-fg-secon
 | Create account | `/create-account` | auth | old Stitch `FaithLink Create Account` | built, responsive |
 | Verify email | `/verify-email` | auth | Stitch `Auth - Verify email - Mobile` | built; needs a pending email (sessionStorage) else redirects to create account |
 | Not found | `*` | error/404 | n/a | also where unbuilt links land |
-| Home placeholder | `/` | n/a | n/a | **temporary** (see below) |
+| App entry | `/` | n/a | n/a | redirects to `/sign-in` (owner) |
+| Home placeholder | `/home` | n/a | n/a | **temporary** landing after sign in (see below) |
 
 ## Dropped from the Stitch sources, and why
 
@@ -100,14 +101,19 @@ Per the owner's instruction to drop inconsistent and unnecessary content.
 | Per-field red errors plus a banner, "Invalid syntax" tag, "256-bit secure", "Join hundreds of young believers" | Contradicted the single contract error, reveal account state, or were invented claims |
 | Garbled "Sign-in" text baked into the sign-in photo | AI artifact; cropped out of the image |
 | "Daily Verse" label and the "Together in faith, stronger in purpose" quote (Philippians 1:6) | Verse isn't daily and the quote was not Scripture; real WEB text used |
+| "FaithLink Fellowship" chip on the create-account banner | Decorative, and "Fellowship" is off-vocabulary |
+| Create-account tabs above the banner | Kept below the banner as on Sign in, so the tabs don't jump when switching |
+| Italic, paraphrased banner verse | Scripture is upright (DESIGN.md); WEB text of 1 Timothy 4:12 used |
+| 14px text inside inputs | Kept 16px so iOS Safari doesn't zoom on focus |
 
 ## Temporary and open items
 
-- `src/pages/home-placeholder-page.tsx` and the `/` route: delete when the real church home exists.
+- `src/pages/home-placeholder-page.tsx` and the `/home` route: replace when the real church home exists. With real sessions, `/` should send signed-in people to home, not sign in.
 - `src/features/auth/auth-client.ts` is a stub: replace with the real client. Also unbuilt from the contract: "Last used" tag, session handling, route guards.
 - Linked pages not built (land on Not found): `/forgot-password`, `/terms`, `/privacy`.
 - **Decision for the owner:** Stitch puts "Continue with Google" below the form (built that way); the backend auth notes recommend above it. Swap the `<GoogleButton />` block if you want the notes' order.
-- Inputs keep a thin 3:1 border the Stitch design didn't have, so white fields stay visible on the off-white page (WCAG 1.4.11).
+- Inputs have no border (owner decision); the shadow alone separates white fields from the off-white page. The amber focus ring is ~2:1 on the canvas, below the 3:1 of WCAG 1.4.11; the dark-amber icon change backs it up. Check in a real browser.
+- Password rule (8+ characters, a number, a symbol) is enforced client-side only; the backend should enforce the same.
 - Resend cooldown (30s) is an assumption, not in the backend contract.
 - Hero photos are AI-generated placeholders; Scripture translation and licence to be confirmed.
 - No browser-level (screenshot / axe) check has been run yet; layout was verified through jsdom tests, build and type checks only.
