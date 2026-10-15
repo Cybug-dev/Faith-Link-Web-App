@@ -49,9 +49,9 @@
   --palette-slate-900: #1a1e24; /* ink */
 
   /* Navy — ink and dark surfaces from the onboarding reference (temporary trial, owner). */
-  --palette-navy-700: #2b3a5c;
-  --palette-navy-800: #1b2847;
-  --palette-navy-900: #14213d;
+  --palette-navy-700: #2e3f6b;
+  --palette-navy-800: #1f2d55;
+  --palette-navy-900: #1b2b5a; /* visibly blue, not black */
 
   /* Status */
   --palette-green-50: #e7f4ec;
@@ -93,7 +93,7 @@
   --color-deco-confetti-alt: #8b6fd6; /* the one purple fleck in the quiz confetti */
 
   /* Text */
-  --color-text-primary: var(--palette-navy-900); /* navy ink, as the reference headings: 15:1 on canvas */
+  --color-text-primary: var(--palette-navy-900); /* navy ink, as the reference headings: ~13:1 on canvas */
   --color-text-secondary: var(--palette-slate-600);
   --color-text-muted: var(--palette-slate-500); /* 4.8:1 on canvas — captions, metadata */
   --color-text-placeholder: var(--palette-neutral-600);

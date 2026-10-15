@@ -126,9 +126,23 @@ $visual-max-h-desktop: 36rem;
     min-height: $visual-min-h;
     container-type: size;
 
+    // Step 1 photo: edge to edge, and its faded top slides up under the text.
     &--bleed {
       margin-inline: calc(var(--page-margin) * -1);
+      margin-block-start: calc(var(--space-12) * -1);
     }
+  }
+
+  // Step 1 on phones: a big two-line heading over the photo's faded top (reference).
+
+  &__step--bleed &__title {
+    font-size: var(--type-2xl);
+    line-height: var(--type-4xl-lh);
+    letter-spacing: var(--ls-display);
+  }
+
+  &__step--bleed &__body {
+    max-inline-size: none;
   }
 
   &__footer {
@@ -186,6 +200,10 @@ $visual-max-h-desktop: 36rem;
 
     &__text {
       text-align: start;
+    }
+
+    &__step--bleed &__body {
+      max-inline-size: $body-measure;
     }
 
     &__eyebrow {
@@ -260,6 +278,7 @@ $visual-max-h-desktop: 36rem;
 
       &--bleed {
         margin-inline: 0;
+        margin-block-start: 0;
       }
     }
 

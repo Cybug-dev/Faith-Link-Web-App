@@ -26,6 +26,8 @@ UI inventory (tokens, components, screens, drops) lives in [`ui/ui-registry.md`]
 - Onboarding (`/onboarding`), from the owner's 4-step design: shown once per device before home (every sign-in path goes through it), Skip and Get started go to home, Back/Next buttons, arrow keys and Enter, swipe on phones, smooth slide-and-fade with Motion (lazy-loaded). Built in plain SCSS (owner's new styling choice for new screens). Photos generated in Stitch. App canvas changed to light amber everywhere. Logo has a bare-cross option, used on onboarding for comparison.
 - `AGENTS.md`: owner's preferred way of asking questions, SCSS and motion conventions.
 - Onboarding pass 2 (owner feedback): colour trial from the reference app-wide (navy ink, amber gradient buttons with white text, almost-white canvas, brown removed), layered amber panels and confetti behind every illustration, full-bleed step 1 photo with warm frosted verse card, 3D staggered photo grid on step 4 for every size, bigger progress bar under the header, longer step text, every step fits one screen (Next always visible, no desktop scrollbar).
+- Owner kept the colour trial. Navy made visibly blue (#1B2B5A); step 4 outline icons, padded chips, slanted tagline. vercel.json rewrite fixes 404 on refresh/deep links.
+- TEMPORARY: onboarding shows after every sign-in (SHOW_ONBOARDING_EVERY_SIGN_IN in onboarding-storage.ts); set to false to restore once per device.
 
 ## Next
 

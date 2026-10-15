@@ -1,7 +1,7 @@
 import { fireEvent, screen } from '@testing-library/react'
 import { LAZY_ROUTE } from '@/test/lazy-route'
 import { renderRoute } from '@/test/render-route'
-import { hasSeenOnboarding, markOnboardingSeen } from './onboarding-storage'
+import { SHOW_ONBOARDING_EVERY_SIGN_IN, hasSeenOnboarding, markOnboardingSeen } from './onboarding-storage'
 
 const heading = (name: string) => screen.findByRole('heading', { level: 1, name }, LAZY_ROUTE)
 // Step 1 has two Next controls (the phone arrow on the verse card and the desktop footer button); the footer one is last.
@@ -36,7 +36,7 @@ describe('Onboarding', () => {
     await user.click(screen.getByRole('button', { name: 'Get started' }))
     expect(await screen.findByRole('heading', { name: 'You’re signed in' })).toBeInTheDocument()
     expect(router.state.location.pathname).toBe('/home')
-    expect(hasSeenOnboarding()).toBe(true)
+    expect(hasSeenOnboarding()).toBe(!SHOW_ONBOARDING_EVERY_SIGN_IN)
   })
 
   it('follows the arrow keys and Enter', async () => {
@@ -56,11 +56,13 @@ describe('Onboarding', () => {
     await user.click(screen.getByRole('button', { name: 'Skip' }))
     expect(await screen.findByRole('heading', { name: 'You’re signed in' })).toBeInTheDocument()
     expect(router.state.location.pathname).toBe('/home')
-    expect(hasSeenOnboarding()).toBe(true)
+    expect(hasSeenOnboarding()).toBe(!SHOW_ONBOARDING_EVERY_SIGN_IN)
   })
 
   // Last: marking as seen also sets an in-memory flag that lasts for the rest of this file.
+  // Off while onboarding temporarily shows after every sign-in.
   it('goes straight to home once it has been seen', async () => {
+    if (SHOW_ONBOARDING_EVERY_SIGN_IN) return
     markOnboardingSeen()
     renderRoute('/home')
     expect(await screen.findByRole('heading', { name: 'You’re signed in' })).toBeInTheDocument()
