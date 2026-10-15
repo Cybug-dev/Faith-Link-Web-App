@@ -3,6 +3,7 @@ import { createMemoryRouter, RouterProvider } from 'react-router'
 import { routes } from '@/app/router'
 import { setPendingEmail } from '@/lib/pending-email'
 import { renderRoute } from '@/test/render-route'
+import { LAZY_ROUTE } from '@/test/lazy-route'
 
 const codeBox = () => screen.getByLabelText('Verification code')
 
@@ -49,7 +50,8 @@ describe('Verify email page', () => {
     const { user } = renderRoute('/verify-email')
     await user.type(codeBox(), '123456')
     await user.click(screen.getByRole('button', { name: 'Verify email' }))
-    expect(await screen.findByRole('heading', { name: 'You’re signed in' })).toBeInTheDocument()
+    // First sign-in on this device goes through onboarding on the way to home.
+    expect(await screen.findByRole('heading', { name: 'You’re in the right place' }, LAZY_ROUTE)).toBeInTheDocument()
     expect(sessionStorage.getItem('faithlink.pendingEmail')).toBeNull()
   })
 

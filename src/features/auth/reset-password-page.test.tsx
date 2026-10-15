@@ -1,6 +1,7 @@
 import { screen } from '@testing-library/react'
 import { getPendingEmail, setPendingEmail } from '@/lib/pending-email'
 import { renderRoute } from '@/test/render-route'
+import { LAZY_ROUTE } from '@/test/lazy-route'
 
 const codeBox = () => screen.getByLabelText('Reset code')
 
@@ -47,7 +48,8 @@ describe('Reset password page', () => {
     setPendingEmail('alex@gmail.com')
     const { user } = renderRoute('/reset-password')
     await fill(user, '123456', 'Passw0rd!')
-    expect(await screen.findByRole('heading', { name: 'You’re signed in' })).toBeInTheDocument()
+    // First sign-in on this device goes through onboarding on the way to home.
+    expect(await screen.findByRole('heading', { name: 'You’re in the right place' }, LAZY_ROUTE)).toBeInTheDocument()
     expect(getPendingEmail()).toBeNull()
   })
 })

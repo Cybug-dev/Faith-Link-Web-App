@@ -1,0 +1,130 @@
+@use '@/styles/mixins' as *;
+
+// Step 4 illustration (phone design, every screen size). Two staggered columns
+// turned slightly toward each other in 3D, so the outer edges come forward and
+// the grid reads as one gently curved panel. The grid sizes itself to the room
+// left in the illustration area (100cqh) so Next stays on screen.
+$tagline-room: 3.75rem; // tagline height plus the gap above it
+$grid-max-w: 28rem;
+$tilt: 12deg;
+$grid-size: min(100%, #{$grid-max-w}, calc(100cqh - #{$tagline-room})); // square, never taller than the room left
+
+.onboarding-community {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-3);
+  height: 100%;
+
+  &__grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-3);
+    grid-template-rows: minmax(0, 1fr);
+    // Explicit square size: aspect-ratio alone lets the photos' natural height stretch the grid.
+    width: $grid-size;
+    height: min(#{$grid-max-w}, calc(100cqh - #{$tagline-room}));
+    max-height: 100cqw;
+    perspective: 60rem;
+  }
+
+  &__column {
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+    gap: var(--space-3);
+
+    &:first-child {
+      transform: rotateY($tilt);
+      transform-origin: right center;
+    }
+
+    &:last-child {
+      transform: rotateY(-$tilt);
+      transform-origin: left center;
+    }
+  }
+
+  &__tile {
+    position: relative;
+    flex: 3;
+    min-height: 0;
+    border-radius: var(--round-md);
+    overflow: hidden;
+    box-shadow: var(--elevation-popover);
+
+    // Stagger: tall then short on the left, short then tall on the right.
+    .onboarding-community__column:first-child &:last-child,
+    .onboarding-community__column:last-child &:first-child {
+      flex: 2;
+    }
+  }
+
+  &__photo {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  &__chip {
+    position: absolute;
+    inset-block-end: var(--space-3);
+    inset-inline-start: var(--space-3);
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    padding: var(--space-1) var(--space-3);
+    border-radius: var(--round-sm);
+    background: var(--color-bg-surface);
+    box-shadow: var(--elevation-raised);
+    font-size: var(--type-xs);
+    line-height: var(--type-xs-lh);
+    font-weight: var(--weight-semibold);
+    color: var(--color-text-primary);
+  }
+
+  &__chip-icon {
+    width: var(--icon-sm);
+    height: var(--icon-sm);
+    color: var(--color-accent-bg-active);
+    fill: var(--color-accent-bg);
+  }
+
+  &__tagline {
+    display: flex;
+    flex: none;
+    align-items: center;
+    gap: var(--space-3);
+    margin: 0;
+    font-family: var(--font-family-script);
+    font-size: var(--type-2xl);
+    line-height: var(--type-2xl-lh);
+    font-weight: var(--weight-semibold);
+    color: var(--color-text-primary);
+  }
+
+  &__tagline-icon {
+    width: var(--icon-lg);
+    height: var(--icon-lg);
+    color: var(--color-accent-bg);
+  }
+
+  &__tagline-text {
+    position: relative;
+  }
+
+  // Amber brush stroke under the words, as in the reference.
+  &__swoosh {
+    position: absolute;
+    inset-inline: 25% 0;
+    inset-block-end: calc(var(--space-2) * -1);
+    width: 75%;
+    height: var(--space-3);
+    fill: none;
+    stroke: var(--color-accent-bg);
+    stroke-width: 2.5;
+    stroke-linecap: round;
+  }
+}

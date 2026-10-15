@@ -23,6 +23,9 @@ UI inventory (tokens, components, screens, drops) lives in [`ui/ui-registry.md`]
 - Sign in matches Stitch "Error State": "Authentication failed" box with Reset password link, Remember me (session kept ~7 days, else ends when the browser closes), "Encrypted sign-in" note, 12px helper text. Full name now needs a first and last name (each 2+ letters), letters only, with single spaces, hyphens or apostrophes. Email format errors also show Stitch's "Invalid syntax" tag once the field is in error.
 - Real auth: `auth-client.ts` uses Neon Auth (`@neondatabase/auth`) for sign up, email code, sign in, Google and password reset; tests use an offline fake. New screens: Forgot password, Reset password (code + new password).
 - Owner change: forms now check each field live as it is typed. Messages are neutral guidance while typing, and turn red only after leaving the field or submitting. Verify email still checks on submit (a code is typed digit by digit). Desktop photo panel pinned to screen height (no more zoom/over-crop); inputs 52px with 14px text; confirm-password step on create account; eye icon shows state.
+- Onboarding (`/onboarding`), from the owner's 4-step design: shown once per device before home (every sign-in path goes through it), Skip and Get started go to home, Back/Next buttons, arrow keys and Enter, swipe on phones, smooth slide-and-fade with Motion (lazy-loaded). Built in plain SCSS (owner's new styling choice for new screens). Photos generated in Stitch. App canvas changed to light amber everywhere. Logo has a bare-cross option, used on onboarding for comparison.
+- `AGENTS.md`: owner's preferred way of asking questions, SCSS and motion conventions.
+- Onboarding pass 2 (owner feedback): colour trial from the reference app-wide (navy ink, amber gradient buttons with white text, almost-white canvas, brown removed), layered amber panels and confetti behind every illustration, full-bleed step 1 photo with warm frosted verse card, 3D staggered photo grid on step 4 for every size, bigger progress bar under the header, longer step text, every step fits one screen (Next always visible, no desktop scrollbar).
 
 ## Next
 
@@ -34,6 +37,10 @@ UI inventory (tokens, components, screens, drops) lives in [`ui/ui-registry.md`]
 - First browser-level check (screenshot + axe); so far only jsdom tests, build and typecheck.
 
 ## Open questions (owner to decide)
+
+- **Logo:** keep the slate tile mark (auth screens) or switch everywhere to the bare amber cross (onboarding)?
+- **Onboarding copy vs product rules:** step 3 says "earn points" and "Leaderboards and friendly competition", but the API has no points system and DESIGN.md says nothing should rank people (many users are teens). Keep, or reword?
+- **Onboarding photos:** AI placeholders from Stitch (one has a "Kindness in action" sign in the scene); replace with licensed photos before launch.
 
 - **Google button position:** below the form (Stitch, as built) or above it (backend auth notes)?
 - **ECC design-quality deviation:** proposed by an agent, awaiting your confirmation (registry, Approved Deviations).

@@ -1,5 +1,6 @@
 import { screen } from '@testing-library/react'
 import { renderRoute } from '@/test/render-route'
+import { LAZY_ROUTE } from '@/test/lazy-route'
 
 async function fillAndSubmit(
   user: ReturnType<typeof renderRoute>['user'],
@@ -88,7 +89,8 @@ describe('Sign in page', () => {
   it('continues on success', async () => {
     const { user } = renderRoute('/sign-in')
     await fillAndSubmit(user, 'alex@example.com', 'correct-horse')
-    expect(await screen.findByRole('heading', { name: 'You’re signed in' })).toBeInTheDocument()
+    // First sign-in on this device goes through onboarding on the way to home.
+    expect(await screen.findByRole('heading', { name: 'You’re in the right place' }, LAZY_ROUTE)).toBeInTheDocument()
   })
 
   it('toggles password visibility with an accessible button', async () => {

@@ -17,6 +17,9 @@
 :root {
   --font-family-sans: "Plus Jakarta Sans Variable", "Plus Jakarta Sans", ui-sans-serif, system-ui, -apple-system,
     "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  /* Handwritten accent for one short brand line ("People. Growth. Purpose."). Never for UI text.
+     Loaded only on the screens that use it (@fontsource-variable/caveat). */
+  --font-family-script: "Caveat Variable", "Caveat", cursive;
 
   --weight-regular: 400;
   --weight-semibold: 600;

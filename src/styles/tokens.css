@@ -19,12 +19,9 @@
   --palette-amber-100: #ffeed0;
   --palette-amber-200: #fcdda3;
   --palette-amber-300: #f8c56a;
-  --palette-amber-400: #f3a83b; /* brand */
-  --palette-amber-500: #e89a26;
-  --palette-amber-600: #c97f10;
-  --palette-amber-700: #845400; /* text/link/focus on light: 6.2:1 on canvas */
-  --palette-amber-800: #5e3a00;
-  --palette-amber-900: #3a2400;
+  --palette-amber-400: #f39c2b; /* brand (sampled from the onboarding reference) */
+  --palette-amber-500: #da8826; /* deep end of the button gradient */
+  --palette-amber-600: #c27419;
 
   /* Warm neutrals — canvas, surfaces, borders. */
   --palette-neutral-0: #ffffff;
@@ -51,9 +48,15 @@
   --palette-slate-800: #2c3440; /* brand slate */
   --palette-slate-900: #1a1e24; /* ink */
 
+  /* Navy — ink and dark surfaces from the onboarding reference (temporary trial, owner). */
+  --palette-navy-700: #2b3a5c;
+  --palette-navy-800: #1b2847;
+  --palette-navy-900: #14213d;
+
   /* Status */
   --palette-green-50: #e7f4ec;
   --palette-green-300: #a8d5ba;
+  --palette-green-500: #1f9d55;
   --palette-green-700: #1b6b45;
   --palette-green-900: #14532d;
   --palette-red-50: #fdecea;
@@ -72,24 +75,33 @@
   /* ── 2. Semantic colour ──────────────────────────────────────────── */
 
   /* Backgrounds */
-  --color-bg-canvas: var(--palette-neutral-25); /* page background */
+  --color-bg-canvas: #fdf9f3; /* page background: barely warm, almost white (onboarding reference, app-wide) */
   --color-bg-surface: var(--palette-neutral-0); /* cards, inputs, sheets */
   --color-bg-subtle: var(--palette-neutral-50); /* quiet panels, table stripes */
   --color-bg-muted: var(--palette-neutral-100); /* tracks, skeletons, chips at rest */
-  --color-bg-inverse: var(--palette-slate-800); /* hero panels, secondary buttons */
+  --color-bg-inverse: var(--palette-navy-800); /* hero panels, secondary buttons, quiz card */
+  --color-bg-inverse-raised: var(--palette-navy-700); /* rows and chips on an inverse surface (quiz card) */
   --color-bg-scrim: rgb(26 30 36 / 0.56); /* modal backdrop */
   --color-bg-scrim-photo: rgb(26 30 36 / 0.78); /* behind text on photos: white text stays >= 4.5:1 */
+  --color-bg-glass: rgb(255 255 255 / 0.72); /* light frosted card (desktop verse, lesson card); dark text stays >= 4.5:1 */
+  --color-bg-glass-warm: rgb(84 50 20 / 0.5); /* warm dark frosted card over a photo (phone verse); white text on it */
+  /* Decorative backdrop only (soft glow, layered panels, confetti behind illustrations). Never behind text. */
+  --color-deco-glow: rgb(243 156 43 / 0.16);
+  --gradient-deco-panel: linear-gradient(160deg, rgb(252 213 158 / 0.35), rgb(247 182 102 / 0.7));
+  --gradient-deco-panel-soft: linear-gradient(160deg, rgb(255 238 208 / 0.5), rgb(252 213 158 / 0.6));
+  --color-deco-confetti: var(--palette-amber-400);
+  --color-deco-confetti-alt: #8b6fd6; /* the one purple fleck in the quiz confetti */
 
   /* Text */
-  --color-text-primary: var(--palette-slate-900); /* 15.9:1 on canvas */
+  --color-text-primary: var(--palette-navy-900); /* navy ink, as the reference headings: 15:1 on canvas */
   --color-text-secondary: var(--palette-slate-600);
   --color-text-muted: var(--palette-slate-500); /* 4.8:1 on canvas — captions, metadata */
   --color-text-placeholder: var(--palette-neutral-600);
   --color-text-disabled: var(--palette-slate-400);
   --color-text-inverse: var(--palette-neutral-25);
-  --color-text-accent: var(--palette-amber-700); /* links, inline emphasis */
+  --color-text-accent: var(--palette-amber-600); /* links, inline emphasis. Owner removed the brown: orange is ~3.3:1 on canvas, fine for bold/large text, weak for small text */
   --color-text-accent-on-photo: var(--palette-amber-200); /* light amber on a dark photo scrim */
-  --color-text-on-accent: var(--palette-slate-900); /* on amber fills: 8.4:1 */
+  --color-text-on-accent: var(--palette-neutral-0); /* white on amber, as the reference. Only ~2.2:1: owner's trial, below WCAG AA */
 
   /* Borders. Decorative dividers use subtle; anything that defines a control
      (input, checkbox, outlined button) MUST use control (WCAG 1.4.11, 3:1). */
@@ -100,19 +112,21 @@
   /* Accent (brand amber). Amber alone never signals focus or selection
      (1.9:1 on canvas): pair it with text, an icon, or a dark outline. */
   --color-accent-bg: var(--palette-amber-400);
+  --gradient-accent: linear-gradient(90deg, var(--palette-amber-500), var(--palette-amber-400)); /* primary buttons */
   --color-accent-bg-hover: var(--palette-amber-500);
   --color-accent-bg-active: var(--palette-amber-600);
   --color-accent-subtle-bg: var(--palette-amber-100); /* selected nav pill, active chip */
-  --color-accent-subtle-text: var(--palette-amber-800);
+  --color-accent-subtle-text: var(--palette-amber-600);
   --color-accent-border: var(--palette-amber-300);
 
-  --color-focus-ring: var(--palette-amber-700);
+  --color-focus-ring: var(--palette-amber-600);
 
   /* Status — each has bg / border / text so banners and badges stay legible. */
   --color-success-bg: var(--palette-green-50);
   --color-success-border: var(--palette-green-300);
   --color-success-text: var(--palette-green-900);
   --color-success-icon: var(--palette-green-700);
+  --color-success-solid: var(--palette-green-500); /* chosen answer fill (quiz), white text */
   --color-danger-bg: var(--palette-red-50);
   --color-danger-border: var(--palette-red-300);
   --color-danger-text: var(--palette-red-900);
@@ -151,6 +165,7 @@
   --round-xs: 0.25rem; /* 4 — small checkbox */
   --round-sm: 0.5rem; /* 8 */
   --round-md: 1rem; /* 16 */
+  --round-lg: 1.5rem; /* 24 — large illustration cards and photos (onboarding design) */
   --round-full: 9999px;
 
   --border-width: 1px;
@@ -165,6 +180,7 @@
   --elevation-raised: 0 1px 2px rgb(26 30 36 / 0.06), 0 4px 12px rgb(26 30 36 / 0.06); /* sticky bars, selected cards */
   --elevation-popover: 0 8px 24px rgb(26 30 36 / 0.12), 0 2px 6px rgb(26 30 36 / 0.06); /* menus, popovers, toasts */
   --elevation-modal: 0 16px 40px rgb(26 30 36 / 0.18); /* dialogs, bottom sheets */
+  --blur-glass: 12px; /* backdrop blur behind frosted cards (--color-bg-glass) */
 
   /* ── 6. Control sizing ───────────────────────────────────────────── */
 

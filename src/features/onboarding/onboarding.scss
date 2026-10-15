@@ -1,0 +1,274 @@
+@use '@/styles/mixins' as *;
+
+// Onboarding shell. Mobile first: header, progress, centred text, illustration
+// filling the rest, then Back / Next. Desktop: text and feature list on the left,
+// illustration on the right.
+//
+// The page is exactly one screen tall so Next is always visible (owner). The
+// illustration area is a size container: each illustration fits itself to the
+// height left over (see the @container rules in visuals/*.scss). If a screen is
+// too short even so, only the middle scrolls; header and footer stay put.
+$progress-w: 13rem;
+$progress-w-desktop: 16rem;
+$segment-h: 0.375rem; // 6px
+$body-measure: 36ch;
+$visual-min-h: 15rem;
+$visual-max-h-desktop: 36rem;
+
+.onboarding {
+  display: flex;
+  flex-direction: column;
+  height: 100dvh;
+  overflow: hidden;
+  // Soft warm glow behind the content, as in the reference. Decorative only.
+  background:
+    radial-gradient(circle at 90% 70%, var(--color-deco-glow), transparent 45%),
+    radial-gradient(circle at 5% 95%, var(--color-deco-glow), transparent 40%),
+    var(--color-bg-canvas);
+
+  &__header,
+  &__main,
+  &__footer {
+    width: 100%;
+    max-inline-size: var(--w-content);
+    margin-inline: auto;
+    padding-inline: var(--page-margin);
+  }
+
+  &__header {
+    display: flex;
+    flex: none;
+    align-items: center;
+    justify-content: space-between;
+    padding-block-start: var(--space-3);
+  }
+
+  &__progress {
+    display: grid;
+    flex: none;
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--space-2);
+    width: $progress-w;
+    margin: var(--space-2) auto 0;
+  }
+
+  &__segment {
+    height: $segment-h;
+    border-radius: var(--round-full);
+    background: var(--color-bg-muted);
+    transition: background-color var(--motion-duration-slow) var(--motion-ease-standard);
+
+    &--current {
+      background: var(--gradient-accent);
+    }
+  }
+
+  &__announcer {
+    @include visually-hidden;
+  }
+
+  &__main {
+    display: flex;
+    flex: 1;
+    min-height: 0;
+    overflow-x: hidden;
+    overflow-y: auto;
+    // Lets the swipe handler see horizontal moves while vertical scrolling still works.
+    touch-action: pan-y;
+  }
+
+  &__step {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    gap: var(--space-5);
+    padding-block: var(--space-5) var(--space-3);
+
+    // Step 1 photo runs to the bottom of the screen on phones.
+    &--bleed {
+      padding-block-end: 0;
+    }
+  }
+
+  &__text {
+    flex: none;
+    text-align: center;
+  }
+
+  &__eyebrow {
+    display: none;
+  }
+
+  &__title {
+    margin: 0;
+    font-size: var(--role-headline-lg-size);
+    line-height: var(--role-headline-lg-lh);
+    font-weight: var(--weight-bold);
+    letter-spacing: var(--ls-headline);
+    color: var(--color-text-primary);
+  }
+
+  &__body {
+    max-inline-size: $body-measure;
+    margin: var(--space-2) auto 0;
+    font-size: var(--type-sm);
+    line-height: var(--type-sm-lh);
+    color: var(--color-text-secondary);
+  }
+
+  // Desktop only (owner: phones keep just the title, body and illustration).
+  &__features {
+    display: none;
+  }
+
+  &__visual {
+    flex: 1;
+    min-height: $visual-min-h;
+    container-type: size;
+
+    &--bleed {
+      margin-inline: calc(var(--page-margin) * -1);
+    }
+  }
+
+  &__footer {
+    display: flex;
+    flex: none;
+    align-items: center;
+    justify-content: space-between;
+    padding-block: var(--space-3) calc(var(--space-5) + env(safe-area-inset-bottom));
+
+    // Step 1 on phones uses the arrow on the verse card instead.
+    &--first {
+      display: none;
+    }
+  }
+
+  &__back {
+    border: var(--border-width) solid var(--color-border-subtle);
+  }
+
+  &__next {
+    min-inline-size: 9rem;
+    margin-inline-start: auto;
+  }
+
+  @include tablet {
+    &__body {
+      font-size: var(--type-base);
+      line-height: var(--type-base-lh);
+    }
+  }
+
+  @include desktop {
+    &__header {
+      padding-block-start: var(--space-6);
+    }
+
+    // Beneath the logo and Skip, centred (owner).
+    &__progress {
+      width: $progress-w-desktop;
+      margin-block-start: var(--space-4);
+    }
+
+    &__step {
+      display: grid;
+      grid-template-columns: 1fr 1.1fr;
+      grid-template-rows: minmax(0, 1fr);
+      align-items: center;
+      gap: var(--space-16);
+      padding-block: var(--space-6);
+
+      &--bleed {
+        padding-block-end: var(--space-6);
+      }
+    }
+
+    &__text {
+      text-align: start;
+    }
+
+    &__eyebrow {
+      display: block;
+      margin: 0 0 var(--space-3);
+      font-size: var(--type-sm);
+      line-height: var(--type-sm-lh);
+      font-weight: var(--weight-semibold);
+      color: var(--color-text-secondary);
+    }
+
+    &__title {
+      font-size: var(--role-display-size);
+      line-height: var(--role-display-lh);
+      letter-spacing: var(--ls-display);
+    }
+
+    &__body {
+      margin-inline: 0;
+    }
+
+    &__features {
+      display: grid;
+      gap: var(--space-4);
+      margin: var(--space-6) 0 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    &__feature {
+      display: flex;
+      align-items: center;
+      gap: var(--space-3);
+    }
+
+    &__feature-icon {
+      display: grid;
+      place-items: center;
+      flex: none;
+      width: var(--hit-min);
+      height: var(--hit-min);
+      border-radius: var(--round-full);
+      background: var(--color-accent-subtle-bg);
+      color: var(--color-accent-bg);
+
+      svg {
+        width: var(--icon-md);
+        height: var(--icon-md);
+      }
+    }
+
+    &__feature-title {
+      display: block;
+      font-size: var(--type-sm);
+      line-height: var(--type-sm-lh);
+      font-weight: var(--weight-semibold);
+    }
+
+    &__feature-detail {
+      display: block;
+      font-size: var(--type-xs);
+      line-height: var(--type-xs-lh);
+      color: var(--color-text-muted);
+    }
+
+    // Inner room so the panels and the overhanging verse card stay inside the
+    // area; anything poking out would make the middle scroll.
+    &__visual {
+      height: 100%;
+      max-height: $visual-max-h-desktop;
+      padding: var(--space-8) var(--space-8) var(--space-8) var(--space-10);
+
+      &--bleed {
+        margin-inline: 0;
+      }
+    }
+
+    &__footer {
+      padding-block: var(--space-3) var(--space-8);
+    }
+
+    &__footer--first {
+      display: flex;
+    }
+  }
+}

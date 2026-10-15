@@ -16,11 +16,26 @@ function LogoMark({ className }: { className?: string }) {
   )
 }
 
-export function Logo({ className }: { className?: string }) {
+/** Bare amber cross, as in the onboarding design. Also used inside illustrations. */
+export function CrossMark({ className }: { className?: string }) {
   return (
-    <div className={cn('flex items-center gap-3', className)}>
-      <LogoMark />
-      <span className="text-title-lg text-fg">FaithLink</span>
+    <svg aria-hidden viewBox="0 0 24 24" className={cn('size-6', className)} fill="none">
+      <path d="M12 3v18M6 9h12" stroke="var(--color-accent-bg)" strokeWidth="3" strokeLinecap="round" />
+    </svg>
+  )
+}
+
+type LogoProps = {
+  className?: string
+  /** `tile` (default) is the favicon mark; `cross` is the bare cross from the onboarding design (owner is comparing the two). */
+  mark?: 'tile' | 'cross'
+}
+
+export function Logo({ className, mark = 'tile' }: LogoProps) {
+  return (
+    <div className={cn('flex items-center', mark === 'tile' ? 'gap-3' : 'gap-1', className)}>
+      {mark === 'tile' ? <LogoMark /> : <CrossMark className="size-7" />}
+      <span className={cn('text-title-lg text-fg', mark === 'cross' && 'font-bold')}>FaithLink</span>
     </div>
   )
 }

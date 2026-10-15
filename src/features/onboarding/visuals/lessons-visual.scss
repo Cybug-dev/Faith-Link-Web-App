@@ -1,0 +1,175 @@
+@use '@/styles/mixins' as *;
+
+// Step 2 illustration: a frosted "Bible learning" card on two layered amber panels.
+$thumb-size: 3.5rem; // 56px lesson thumbnails
+$thumb-size-compact: 2.75rem;
+$card-max-w: 22rem; // the card reads as a phone screen, not a full-width panel
+
+.onboarding-lessons {
+  position: relative;
+  display: grid;
+  place-items: center;
+  height: 100%;
+  padding: var(--space-4) var(--space-2);
+
+  &__panel {
+    position: absolute;
+    border-radius: var(--round-lg);
+
+    &--back {
+      inset: 4% 14% 10% 0;
+      background: var(--gradient-deco-panel-soft);
+      transform: rotate(-5deg);
+    }
+
+    &--front {
+      inset: 22% 0 2% 30%;
+      background: var(--gradient-deco-panel);
+      transform: rotate(6deg);
+    }
+  }
+
+  &__card {
+    position: relative;
+    width: 100%;
+    max-inline-size: $card-max-w;
+    padding: var(--space-4);
+    border: var(--border-width) solid rgb(255 255 255 / 0.7);
+    border-radius: var(--round-lg);
+    background: var(--color-bg-glass);
+    backdrop-filter: blur(var(--blur-glass));
+    box-shadow: var(--elevation-popover);
+  }
+
+  &__heading {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    margin: 0;
+    font-size: var(--type-sm);
+    line-height: var(--type-sm-lh);
+    font-weight: var(--weight-semibold);
+  }
+
+  &__heading-icon {
+    width: var(--icon-sm);
+    height: var(--icon-sm);
+    color: var(--color-accent-bg);
+  }
+
+  &__tabs {
+    display: flex;
+    gap: var(--space-1);
+    margin-block: var(--space-3);
+    padding: var(--space-1);
+    border-radius: var(--round-full);
+    background: var(--color-bg-subtle);
+  }
+
+  &__tab {
+    flex: 1;
+    padding-block: var(--space-1);
+    border-radius: var(--round-full);
+    text-align: center;
+    font-size: var(--type-xs);
+    line-height: var(--type-xs-lh);
+    color: var(--color-text-secondary);
+
+    &--active {
+      background: var(--color-accent-subtle-bg);
+      font-weight: var(--weight-semibold);
+      color: var(--color-text-primary);
+    }
+  }
+
+  &__list {
+    display: grid;
+    gap: var(--space-2);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  &__row {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    padding: var(--space-2);
+    border-radius: var(--round-md);
+    background: var(--color-bg-surface);
+    box-shadow: var(--elevation-raised);
+
+    // Phones show three lessons, as in the mobile design.
+    &:nth-child(4) {
+      display: none;
+
+      @include desktop {
+        display: flex;
+      }
+    }
+  }
+
+  &__thumb {
+    flex: none;
+    width: $thumb-size;
+    height: $thumb-size;
+    border-radius: var(--round-sm);
+    object-fit: cover;
+  }
+
+  &__title {
+    display: block;
+    font-size: var(--type-sm);
+    line-height: var(--type-sm-lh);
+    font-weight: var(--weight-semibold);
+  }
+
+  &__count {
+    display: block;
+    font-size: var(--type-xs);
+    line-height: var(--type-xs-lh);
+    color: var(--color-text-muted);
+  }
+
+  // Floating amber tile with a filled book at the card's top corner (phone design).
+  &__badge {
+    position: absolute;
+    inset-block-start: 0;
+    inset-inline-end: var(--space-3);
+    display: grid;
+    place-items: center;
+    width: var(--control-h-lg);
+    height: var(--control-h-lg);
+    border-radius: var(--round-md);
+    background: var(--color-accent-subtle-bg);
+    box-shadow: var(--elevation-popover);
+    color: var(--color-accent-bg-active);
+
+    svg {
+      width: var(--icon-lg);
+      height: var(--icon-lg);
+      fill: var(--color-accent-bg);
+    }
+
+    @include desktop {
+      display: none;
+    }
+  }
+}
+
+// Short screens: smaller thumbnails, then fewer rows, so the card always fits.
+@container (max-height: 22rem) {
+  .onboarding-lessons__thumb {
+    width: $thumb-size-compact;
+    height: $thumb-size-compact;
+  }
+  .onboarding-lessons__tabs {
+    margin-block: var(--space-2);
+  }
+}
+
+@container (max-height: 18rem) {
+  .onboarding-lessons__row:nth-child(n + 3) {
+    display: none;
+  }
+}

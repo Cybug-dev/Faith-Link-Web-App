@@ -1,0 +1,127 @@
+@use '@/styles/mixins' as *;
+
+// Step 1 illustration.
+$photo-fade: 22%; // phones: how far down the photo fades in from the page background
+$verse-max-w: 26rem;
+
+.onboarding-hero {
+  position: relative;
+  height: 100%;
+
+  // Layered amber panels behind the photo (reference). On phones only the
+  // back one shows, peeking through the photo's faded top on the right.
+  &__panel {
+    position: absolute;
+    border-radius: var(--round-lg);
+
+    &--back {
+      inset: 0 calc(var(--space-3) * -1) 45% 62%;
+      background: var(--gradient-deco-panel);
+      transform: rotate(8deg);
+    }
+
+    &--front {
+      display: none;
+    }
+  }
+
+  &__photo {
+    position: relative;
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 35%;
+    mask-image: linear-gradient(to bottom, transparent 0, #000 $photo-fade);
+  }
+
+  // Phones: warm frosted glass with white text, across the bottom of the photo.
+  &__verse {
+    position: absolute;
+    inset-inline: var(--space-4);
+    inset-block-end: var(--space-5);
+    margin: 0;
+    padding: var(--space-4);
+    padding-inline-end: calc(var(--control-h-md) + var(--space-6));
+    border: var(--border-width) solid rgb(255 255 255 / 0.18);
+    border-radius: var(--round-lg);
+    background: var(--color-bg-glass-warm);
+    backdrop-filter: blur(var(--blur-glass));
+    color: var(--color-text-inverse);
+  }
+
+  &__quote-icon {
+    display: block;
+    width: var(--icon-lg);
+    height: var(--icon-lg);
+    fill: var(--color-accent-bg);
+  }
+
+  &__verse-text {
+    margin: var(--space-2) 0 0;
+    font-size: var(--type-sm);
+    line-height: var(--type-sm-lh);
+    font-weight: var(--weight-semibold);
+  }
+
+  &__verse-ref {
+    margin-block-start: var(--space-1);
+    font-size: var(--type-xs);
+    line-height: var(--type-xs-lh);
+    opacity: 0.85;
+  }
+
+  &__next {
+    position: absolute;
+    inset-inline-end: var(--space-4);
+    inset-block-end: var(--space-4);
+  }
+
+  @include desktop {
+    &__panel {
+      &--back {
+        inset: calc(var(--space-8) * -1) calc(var(--space-6) * -1) 30% 22%;
+        transform: rotate(4deg);
+      }
+
+      &--front {
+        display: block;
+        inset: 35% 55% calc(var(--space-8) * -1) calc(var(--space-6) * -1);
+        background: var(--gradient-deco-panel-soft);
+        transform: rotate(-4deg);
+      }
+    }
+
+    &__photo {
+      border-radius: var(--round-lg);
+      mask-image: none;
+      box-shadow: var(--elevation-popover);
+    }
+
+    // Light frosted card overhanging the photo's lower-left edge, dark text.
+    &__verse {
+      inset-inline: calc(var(--space-8) * -1) auto;
+      inset-block-end: calc(var(--space-6) * -1);
+      max-inline-size: $verse-max-w;
+      padding-inline-end: var(--space-4);
+      border-color: rgb(255 255 255 / 0.6);
+      background: var(--color-bg-glass);
+      box-shadow: var(--elevation-popover);
+      color: var(--color-text-primary);
+    }
+
+    &__verse-text {
+      font-weight: var(--weight-regular);
+    }
+
+    &__verse-ref {
+      color: var(--color-text-secondary);
+      opacity: 1;
+    }
+
+    // Desktop uses the "Next" text button in the footer instead.
+    &__next {
+      display: none;
+    }
+  }
+}

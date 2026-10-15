@@ -15,10 +15,11 @@ Keep entries one line each. Paths are repo-relative. Intent and conventions: [`D
 | Framework          | Vite 8 + React 19 + TypeScript 7 (strict) |
 | Routing            | React Router 8, route table in `src/app/router.tsx` (shared with tests) |
 | Forms              | react-hook-form + zod (`@hookform/resolvers`); validate on submit only (no warnings on leaving a field), then on change |
-| Styling system     | Tailwind CSS v4 via `@tailwindcss/vite`; tokens in CSS variables; `theme.css` wipes Tailwind's default scales |
+| Styling system     | Tailwind CSS v4 via `@tailwindcss/vite` for the auth screens and the `ui` kit; **plain SCSS** (`sass-embedded`, BEM, one file per component) for new screens from onboarding on (owner). Both read the CSS variables in `tokens.css`; `theme.css` wipes Tailwind's default scales; SCSS helpers in `src/styles/_mixins.scss` |
+| Motion             | `motion` (`motion/react`, LazyMotion + domAnimation) on lazy-loaded routes only (onboarding); reduced motion respected |
 | Components         | shadcn-style (cva + clsx), hand-built on the tokens. The shadcn CLI is not initialised on purpose: it would overwrite the token theme. |
 | Icon set           | Lucide (`lucide-react`), 20px default |
-| Fonts              | Plus Jakarta Sans variable, self-hosted via `@fontsource-variable/plus-jakarta-sans` |
+| Fonts              | Plus Jakarta Sans variable, self-hosted via `@fontsource-variable/plus-jakarta-sans`; Caveat variable (`@fontsource-variable/caveat`) for one onboarding line, loaded only there |
 | OTP input          | `input-otp` (one real input drawn as boxes) |
 | Tests              | Vitest + Testing Library (jsdom), coverage via `@vitest/coverage-v8`; tests sit beside the code |
 | Auth client        | **Stub** in `src/features/auth/auth-client.ts` behind an `AuthClient` interface. Replace with `@neondatabase/auth`; contract in backend `docs/AI/FEATURES/auth-and-profile.md`. Demo triggers are in that file's header. |
@@ -28,13 +29,13 @@ Keep entries one line each. Paths are repo-relative. Intent and conventions: [`D
 
 | Decision          | Value |
 |-------------------|-------|
-| Accent            | Amber `#F3A83B` fill only; dark amber `#845400` for links and focus |
-| Ink / canvas      | `#1A1E24` text, slate `#2C3440` for secondary buttons and the logo tile, canvas `#FBF9F5` |
-| Radius            | 4 (checkbox) / 8 (small tags) / 16 (cards, banners, photos, code boxes) / full (buttons, inputs, tabs, chips), per the Stitch auth screens |
+| Accent            | Amber `#F39C2B`; primary buttons use `--gradient-accent` with white text; orange `#C27419` for links and focus (no brown anywhere, owner) |
+| Ink / canvas      | Navy `#14213D` text, navy `#1B2847` inverse (logo tile, quiz card), canvas `#FDF9F3` (almost white, app-wide). Owner's colour trial from the onboarding reference |
+| Radius            | 4 (checkbox) / 8 (small tags) / 16 (cards, banners, photos, code boxes) / 24 (large illustration cards and photos) / full (buttons, inputs, tabs, chips) |
 | Elevation         | Soft `shadow-raised` on inputs, white buttons, tabs and cards (Stitch design); popover and modal for floating things |
 | Dark mode         | Not in MVP |
 | Breakpoints       | tablet 600, desktop 1024 (`tablet:` / `desktop:`) |
-| Imagery           | Two AI-generated Stitch photos in `public/images` as placeholders; replace with licensed photos |
+| Imagery           | AI-generated Stitch photos as placeholders: two auth photos in `public/images`, 13 onboarding WebPs in `public/images/onboarding` (sized per use); replace with licensed photos |
 | Scripture         | King James Version (owner's choice; public domain outside the UK) in `src/features/auth/scripture.ts`; verses italic with quotation marks |
 
 ## Token Index
@@ -43,19 +44,19 @@ Use the semantic names; never `--palette-*` in components. Full values in `token
 
 | Group | Tokens |
 |-------|--------|
-| Background | `--color-bg-canvas` `-surface` `-subtle` `-muted` `-inverse` `-scrim` `-scrim-photo` |
+| Background | `--color-bg-canvas` `-surface` `-subtle` `-muted` `-inverse` `-inverse-raised` `-scrim` `-scrim-photo` `-glass`; decorative only: `--color-deco-glow` `--color-deco-shape` |
 | Text | `--color-text-primary` `-secondary` `-muted` `-placeholder` `-disabled` `-inverse` `-accent` `-on-accent` |
 | Border | `--color-border-subtle` `-control` `-control-hover` |
 | Accent | `--color-accent-bg` `-bg-hover` `-bg-active` `-subtle-bg` `-subtle-text` `-border`; `--color-focus-ring` |
 | Status | `--color-{success,danger,warning,info}-{bg,border,text}`; `--color-success-icon`, `--color-info-icon`, `--color-danger-solid`, `--color-danger-strong-bg` (Stitch error-container, danger Alert) |
 | Space | `--space-{0,1,2,3,4,5,6,8,10,12,16,20}`; `--page-margin`, `--gutter` |
-| Shape | `--round-xs` `-sm` `-md` `-full`; `--border-width`; `--accent-rule-width`; `--focus-ring-width` `-offset` |
-| Elevation | `--elevation-raised` `-popover` `-modal` |
+| Shape | `--round-xs` `-sm` `-md` `-lg` `-full`; `--border-width`; `--accent-rule-width`; `--focus-ring-width` `-offset` |
+| Elevation | `--elevation-raised` `-popover` `-modal`; `--blur-glass` |
 | Control | `--control-h-sm` `-md` `-lg`; `--hit-min`; `--icon-sm` `-md` `-lg` |
 | Layout | `--w-form` `--w-reading` `--w-content` `--w-shell`; `--sidebar-w` `--bottom-nav-h` `--topbar-h` |
 | Motion | `--motion-duration-{fast,base,slow}`; `--motion-ease-{standard,out}` |
 | Z | `--z-{base,dropdown,sticky,overlay,modal,toast}` |
-| Type | `--font-family-sans`; `--weight-*`; `--type-{xs..4xl}`; role classes `.text-display` `.text-headline-lg` `.text-headline-md` `.text-title-lg` `.text-title-md` `.text-body-lg` `.text-body-md` `.text-body-sm` `.text-label-lg` `.text-label-md` `.text-label-sm` `.text-caption` `.text-scripture` `.text-scripture-lg` `.scripture-rule` `.prose-lesson` |
+| Type | `--font-family-sans` `--font-family-script`; `--weight-*`; `--type-{xs..4xl}`; role classes `.text-display` `.text-headline-lg` `.text-headline-md` `.text-title-lg` `.text-title-md` `.text-body-lg` `.text-body-md` `.text-body-sm` `.text-label-lg` `.text-label-md` `.text-label-sm` `.text-caption` `.text-scripture` `.text-scripture-lg` `.scripture-rule` `.prose-lesson` |
 
 Role classes and base rules are in Tailwind layers, so utilities (`text-fg-secondary`) always override them.
 
@@ -63,7 +64,7 @@ Role classes and base rules are in Tailwind layers, so utilities (`text-fg-secon
 
 | Component | Path | Variants / notes |
 |-----------|------|------------------|
-| Button | `src/components/ui/button.tsx` | primary, secondary, outline, ghost, danger; sm/md/lg; `loading` (spinner, aria-busy, blocks repeat submits) |
+| Button | `src/components/ui/button.tsx` | primary (amber gradient, white text), secondary, outline, surface, ghost, text (plain ink, e.g. Skip), danger; sm/md/lg/icon (round 48px, needs aria-label); `loading` (spinner, aria-busy, blocks repeat submits) |
 | Input | `src/components/ui/input.tsx` | 52px white pill + soft shadow, **no border** (owner); 14px text, 16px on iOS (stops Safari zoom, `global.css`); focus = amber ring + icon turns dark amber; error = red ring via `aria-invalid`; `startIcon`, `endAdornment` |
 | PasswordInput | `src/components/ui/password-input.tsx` | show/hide toggle (44px hit area); icon shows state: slashed eye = hidden, open eye = visible |
 | FormField, FieldError | `src/components/ui/form-field.tsx` | render-prop wiring label/hint/error/aria; `hideLabel`, `labelAction` |
@@ -71,7 +72,10 @@ Role classes and base rules are in Tailwind layers, so utilities (`text-fg-secon
 | Checkbox | `src/components/ui/checkbox.tsx` | native input + drawn 16px box (`rounded-xs`, 4px) sized for small label text; label may hold links |
 | OrDivider | `src/components/ui/or-divider.tsx` | lowercase labelled rule |
 | OtpInput | `src/components/ui/otp-input.tsx` | 6 digits, paste and autofill, invalid state |
-| Logo, GoogleIcon | `src/components/brand/` | Google fills are brand colours (allowed hex) |
+| Logo, CrossMark, GoogleIcon | `src/components/brand/` | Logo `mark="tile"` (default, favicon) or `"cross"` (bare amber cross from the onboarding design; owner comparing the two, onboarding uses cross). Google fills are brand colours (allowed hex) |
+| OnboardingPage | `src/features/onboarding/onboarding-page.tsx` + `onboarding.scss` | steps from `onboarding-steps.ts`; keyboard (arrows, Enter), swipe (`src/lib/use-swipe.ts`), slide/fade with Motion |
+| OnboardingGate | `src/features/onboarding/onboarding-gate.tsx` | wraps `/home`; sends a device that hasn't seen onboarding to `/onboarding` (`onboarding-storage.ts`, localStorage) |
+| Step visuals | `src/features/onboarding/visuals/` | HeroVisual (photo + verse card), LessonsVisual, QuizVisual, CommunityVisual; each with its own `.scss`; photos in `onboarding-images.ts` |
 | AuthLayout | `src/features/auth/auth-layout.tsx` | `banner` slot (text over the phone/tablet photo) + desktop photo/verse panel, sticky at viewport height; per-photo crop in `authImages`. Sign in: brand line; Create account: verse |
 | AuthTabs | `src/features/auth/auth-tabs.tsx` | Sign in / Create account (NavLink); active pill slides on switch (view transition) |
 | SignInBanner, CreateAccountBanner | `src/features/auth/auth-banners.tsx` | text over the photo banner, per Stitch |
@@ -89,7 +93,8 @@ Role classes and base rules are in Tailwind layers, so utilities (`text-fg-secon
 | Reset password | `/reset-password` | auth | Verify email skeleton + Create account password fields (no Stitch design) | built; code + new password + confirm (always shown), resend cooldown; signs in on success, else goes to sign in |
 | Not found | `*` | error/404 | n/a | also where unbuilt links land |
 | App entry | `/` | n/a | n/a | redirects to `/sign-in` (owner) |
-| Home placeholder | `/home` | n/a | n/a | **temporary** landing after sign in (see below) |
+| Home placeholder | `/home` | n/a | n/a | **temporary** landing after sign in (see below); behind OnboardingGate |
+| Onboarding | `/onboarding` | onboarding | owner's 4-step image (mobile + desktop boards) | built, responsive, lazy-loaded; once per device; Skip / Get started go to home |
 
 ## Dropped from the Stitch sources, and why
 
@@ -112,6 +117,14 @@ Per the owner's instruction to drop inconsistent and unnecessary content.
 | Create-account tabs above the banner | Kept below the banner as on Sign in, so the tabs don't jump when switching |
 | Paraphrased (NIV-style) banner verse | KJV text of 1 Timothy 4:12 used, shortened with an ellipsis as Stitch does |
 | 14px text inside inputs | Kept 16px so iOS Safari doesn't zoom on focus |
+| Onboarding: Title Case headings and full stops ("Learn and Grow in Your Faith.") | Sentence case, no full stop, same on phone and desktop |
+| Onboarding: different progress styles and the desktop-only "Step X of 4" | Phone's 4-segment bar everywhere; "Step X of 4" kept as the desktop eyebrow (owner) |
+| Onboarding: phone step 3 leaderboard and badge row | Owner chose the desktop quiz-question card for every size |
+| Onboarding: "1.2k players" | Invented user count; the player faces stay (owner) |
+| Onboarding: two wordings of the step 2 text; dark verse card on the phone photo | One text (the phone's) and one light frosted verse card on every size, for consistency |
+| Onboarding: NIV Matthew 18:20 | KJV text, as everywhere else |
+| Onboarding: phone home-indicator bar | Device chrome, not app UI |
+| Onboarding: "Mateo (26)" caption baked into a Stitch portrait | AI artifact; cropped out |
 
 ## Temporary and open items
 
@@ -132,3 +145,7 @@ Per the owner's instruction to drop inconsistent and unnecessary content.
 | 2026-10-14 | Auth photo banners (`auth-banners.tsx`) | Rendered as Stitch: uppercase eyebrow and verse reference (white on create account), italic verse, "FaithLink Fellowship" tag; one size smaller on phone. Desktop panel verse also italic, in quotation marks, with an amber quote icon | Owner asked for the banners exactly as Stitch | Owner |
 | 2026-10-14 | Motion | Screen changes use view transitions (content fade/rise, sliding tab pill); off under reduced motion | Owner asked for smooth, not static, switching | Owner |
 | 2026-10-14 | ECC `web/design-quality.md` | No depth, motion or texture added to satisfy its checklist | Flat, token-disciplined direction; see AGENTS.md precedence | Proposed by agent; awaiting owner confirmation |
+| 2026-10-15 | Whole app | Colour trial from the onboarding reference: canvas `#FDF9F3`, navy ink, amber gradient buttons with white text, orange links/focus (brown removed) | Owner: "adapt to the whole coloring of the image" to see how it looks. White on amber and orange links are below WCAG AA | Owner |
+| 2026-10-15 | Onboarding | Step 4 photo grid: staggered columns tilted in 3D (concave panel) on every size; phone step 1 photo full-bleed with a warm frosted verse card, verse upright | Owner: match the reference exactly | Owner |
+| 2026-10-15 | Onboarding | Soft amber glow, tilted shapes, frosted verse card, 24px radius, Caveat script line, illustrative "+100 pts" | Owner's onboarding design (UI rules §6 bans glassmorphism/blobs and DESIGN.md bans invented points) | Owner |
+| 2026-10-15 | New screens | Plain SCSS instead of Tailwind; Motion library for step transitions | Owner finds Tailwind hard to read; wants smooth but light transitions | Owner |

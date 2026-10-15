@@ -7,6 +7,9 @@ Which Stitch screens each built page came from. Stitch is a reference, not the s
 | Sign in | `Mobile Auth UI Design` (`703264712868894387`) | FaithLink Sign In | `0e5e5470549b451d891cb3194486ec47` |
 | Create account | same | FaithLink Create Account | `1b5ca199c2f04f16a5ab3bed854d07c4` |
 | Verify email | `FaithLink Web App` (`7724872456057735780`) | Auth - Verify email - Mobile | `fa0c2b3be21b4d97bb9f99e06a16e9bd` |
+| Onboarding photos (13 WebPs in `public/images/onboarding`) | `FaithLink Web App` (`7724872456057735780`) | Onboarding photos - Mobile (asset library, not a layout) | `c81893bec3664923bc948716314acd5a` |
+
+Onboarding layout follows the owner's image (4 steps, mobile + desktop boards), not a Stitch screen.
 
 Not used: `FaithLink Sign In - Error State` (`6f9fcbd0…`, per-field errors contradict the banner; the banner pattern was taken instead) and `FaithLink Mobile Login` (`6d451510…`, serif type and wrapped text: inconsistent with the rest).
 

@@ -1,3 +1,4 @@
+/// <reference types="vitest/jsdom" />
 import '@testing-library/jest-dom/vitest'
 import { afterEach, vi } from 'vitest'
 
@@ -11,6 +12,13 @@ vi.mock('@/features/auth/auth-client', async (importOriginal) => {
 // jsdom doesn't implement elementFromPoint; input-otp calls it to place the caret.
 document.elementFromPoint ??= () => null
 
+// Node 25+ has its own localStorage global (disabled without --localstorage-file) that
+// hides jsdom's. Point the global back at jsdom's working storage.
+if (typeof globalThis.localStorage?.clear !== 'function') {
+  Object.defineProperty(globalThis, 'localStorage', { value: jsdom.window.localStorage, configurable: true })
+}
+
 afterEach(() => {
   sessionStorage.clear()
+  localStorage.clear()
 })

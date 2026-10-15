@@ -1,5 +1,5 @@
 /**
- * Scripture and photography used on the auth screens. King James Version (public domain
+ * Scripture and photography used on the auth and onboarding screens. King James Version (public domain
  * outside the UK, where it is under Crown patent); change a translation here and nowhere else.
  * Photos live in public/images and come from the Stitch auth designs.
  */
@@ -34,3 +34,10 @@ export const authImages = {
 export const BRAND_LINE = 'A generation rooted in Christ'
 export const BRAND_EYEBROW = 'Faith • Fellowship • Purpose'
 export const BANNER_TAG = 'FaithLink Fellowship'
+
+/** Verse on the first onboarding screen. */
+export const ONBOARDING_SCRIPTURE: Scripture = {
+  text: 'For where two or three are gathered together in my name, there am I in the midst of them.',
+  reference: 'Matthew 18:20',
+  translation: 'KJV',
+}
