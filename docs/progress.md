@@ -20,13 +20,14 @@ UI inventory (tokens, components, screens, drops) lives in [`ui/ui-registry.md`]
 - Photo banners rendered as Stitch (smaller on phone); smooth screen switches with a sliding tab pill.
 - Scripture switched to KJV; verses italic with quotation marks everywhere (desktop panel adds a quote icon).
 - Local backend link: Vite pinned to port 5173 (backend CORS allows only that origin); `.env.example` / `.env.local` hold `VITE_API_BASE_URL` (local API `http://localhost:8787`, run `npm run dev` in the backend) and `VITE_NEON_AUTH_URL`. Not yet used by code.
+- Sign in matches Stitch "Error State": "Authentication failed" box with Reset password link, Remember me (session kept ~7 days, else ends when the browser closes), "Encrypted sign-in" note, 12px helper text. Full name now needs a first and last name (each 2+ letters), letters only, with single spaces, hyphens or apostrophes. Email format errors also show Stitch's "Invalid syntax" tag once the field is in error.
 - Real auth: `auth-client.ts` uses Neon Auth (`@neondatabase/auth`) for sign up, email code, sign in, Google and password reset; tests use an offline fake. New screens: Forgot password, Reset password (code + new password).
-- Forms validate on submit only; desktop photo panel pinned to screen height (no more zoom/over-crop); inputs 52px with 14px text; confirm-password step on create account; eye icon shows state.
+- Owner change: forms now check each field live as it is typed. Messages are neutral guidance while typing, and turn red only after leaving the field or submitting. Verify email still checks on submit (a code is typed digit by digit). Desktop photo panel pinned to screen height (no more zoom/over-crop); inputs 52px with 14px text; confirm-password step on create account; eye icon shows state.
 
 ## Next
 
 - More UI refinements (owner to specify).
-- Backend: enforce the same password rule (number + symbol).
+- Backend: enforce the same password and name rules (client-side only today; Neon Auth accepts any name).
 - Unbuilt linked pages: `/terms`, `/privacy`.
 - Session handling and route guards (`/home` does not check sign-in yet); show an error when Google sign-in cannot start.
 - Set `VITE_NEON_AUTH_URL` and `VITE_API_BASE_URL` in Vercel, then redeploy.

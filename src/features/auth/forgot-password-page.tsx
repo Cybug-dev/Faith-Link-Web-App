@@ -8,10 +8,11 @@ import { Button } from '@/components/ui/button'
 import { FormField } from '@/components/ui/form-field'
 import { Input } from '@/components/ui/input'
 import { setPendingEmail } from '@/lib/pending-email'
+import { fieldTone } from '@/lib/field-tone'
 import { useDocumentTitle } from '@/lib/use-document-title'
 import { AuthError, authClient } from './auth-client'
 import { AuthLayout } from './auth-layout'
-import { OTP_LENGTH, forgotPasswordSchema, type ForgotPasswordValues } from './schemas'
+import { emailErrorLabel, OTP_LENGTH, forgotPasswordSchema, type ForgotPasswordValues } from './schemas'
 
 type FormError = 'rate-limited' | 'unknown' | null
 
@@ -24,12 +25,12 @@ export function ForgotPasswordPage() {
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitting },
+    formState: { errors, isSubmitting, isSubmitted, touchedFields },
   } = useForm<ForgotPasswordValues>({
     resolver: zodResolver(forgotPasswordSchema),
     defaultValues: { email: '' },
-    mode: 'onSubmit',
-    reValidateMode: 'onChange',
+    // Live feedback: each field is checked as it is typed, and its message clears once the value is valid.
+    mode: 'onChange',
   })
 
   const onSubmit = handleSubmit(async ({ email }) => {
@@ -48,8 +49,8 @@ export function ForgotPasswordPage() {
     <AuthLayout>
       <h1 className="text-headline-lg">Forgot your password?</h1>
       <p className="mt-2 text-body-md text-fg-secondary">
-        Enter the email you use for FaithLink. If it has an account, we’ll send a {OTP_LENGTH}-digit code to reset
-        your password.
+        Enter the email you use for FaithLink. If it has an account, we’ll send a {OTP_LENGTH}-digit code to reset your
+        password.
       </p>
 
       {formError === 'rate-limited' && (
@@ -64,7 +65,12 @@ export function ForgotPasswordPage() {
       )}
 
       <form noValidate onSubmit={onSubmit} className="mt-6 flex flex-col gap-6">
-        <FormField label="Email address" error={errors.email?.message}>
+        <FormField
+          label="Email address"
+          error={errors.email?.message}
+          errorTone={fieldTone(touchedFields.email, isSubmitted)}
+          errorLabel={emailErrorLabel(errors.email?.type)}
+        >
           {(control) => (
             <Input
               {...control}

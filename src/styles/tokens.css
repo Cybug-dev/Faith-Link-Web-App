@@ -57,6 +57,7 @@
   --palette-green-700: #1b6b45;
   --palette-green-900: #14532d;
   --palette-red-50: #fdecea;
+  --palette-red-100: #ffdad6;
   --palette-red-300: #f2b8b5;
   --palette-red-700: #ba1a1a;
   --palette-red-900: #93000a;
@@ -116,6 +117,7 @@
   --color-danger-border: var(--palette-red-300);
   --color-danger-text: var(--palette-red-900);
   --color-danger-solid: var(--palette-red-700); /* destructive button fill, input error border */
+  --color-danger-strong-bg: var(--palette-red-100); /* Stitch error-container: form-level error banner */
   --color-warning-bg: var(--palette-gold-50);
   --color-warning-border: var(--palette-gold-300);
   --color-warning-text: var(--palette-gold-900);

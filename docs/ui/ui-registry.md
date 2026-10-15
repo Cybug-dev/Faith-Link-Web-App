@@ -47,7 +47,7 @@ Use the semantic names; never `--palette-*` in components. Full values in `token
 | Text | `--color-text-primary` `-secondary` `-muted` `-placeholder` `-disabled` `-inverse` `-accent` `-on-accent` |
 | Border | `--color-border-subtle` `-control` `-control-hover` |
 | Accent | `--color-accent-bg` `-bg-hover` `-bg-active` `-subtle-bg` `-subtle-text` `-border`; `--color-focus-ring` |
-| Status | `--color-{success,danger,warning,info}-{bg,border,text}`; `--color-success-icon`, `--color-info-icon`, `--color-danger-solid` |
+| Status | `--color-{success,danger,warning,info}-{bg,border,text}`; `--color-success-icon`, `--color-info-icon`, `--color-danger-solid`, `--color-danger-strong-bg` (Stitch error-container, danger Alert) |
 | Space | `--space-{0,1,2,3,4,5,6,8,10,12,16,20}`; `--page-margin`, `--gutter` |
 | Shape | `--round-xs` `-sm` `-md` `-full`; `--border-width`; `--accent-rule-width`; `--focus-ring-width` `-offset` |
 | Elevation | `--elevation-raised` `-popover` `-modal` |
@@ -67,7 +67,7 @@ Role classes and base rules are in Tailwind layers, so utilities (`text-fg-secon
 | Input | `src/components/ui/input.tsx` | 52px white pill + soft shadow, **no border** (owner); 14px text, 16px on iOS (stops Safari zoom, `global.css`); focus = amber ring + icon turns dark amber; error = red ring via `aria-invalid`; `startIcon`, `endAdornment` |
 | PasswordInput | `src/components/ui/password-input.tsx` | show/hide toggle (44px hit area); icon shows state: slashed eye = hidden, open eye = visible |
 | FormField, FieldError | `src/components/ui/form-field.tsx` | render-prop wiring label/hint/error/aria; `hideLabel`, `labelAction` |
-| Alert | `src/components/ui/alert.tsx` | danger (role=alert), warning, success, info (role=status) |
+| Alert | `src/components/ui/alert.tsx` | danger (role=alert; Stitch error banner: borderless pink, filled icon, red title, 14px text), warning, success, info (role=status) |
 | Checkbox | `src/components/ui/checkbox.tsx` | native input + drawn 16px box (`rounded-xs`, 4px) sized for small label text; label may hold links |
 | OrDivider | `src/components/ui/or-divider.tsx` | lowercase labelled rule |
 | OtpInput | `src/components/ui/otp-input.tsx` | 6 digits, paste and autofill, invalid state |
@@ -82,7 +82,7 @@ Role classes and base rules are in Tailwind layers, so utilities (`text-fg-secon
 
 | Screen | Route | Archetype | Based on | Notes |
 |--------|-------|-----------|----------|-------|
-| Sign in | `/sign-in` | auth | old Stitch `FaithLink Sign In` | built, responsive |
+| Sign in | `/sign-in` | auth | old Stitch `FaithLink Sign In`; error box, field messages and Remember me row from Stitch `FaithLink Sign In - Error State` | built, responsive; Remember me on by default |
 | Create account | `/create-account` | auth | old Stitch `FaithLink Create Account` | built, responsive; "Confirm password" appears (focused) after the first valid-password submit |
 | Verify email | `/verify-email` | auth | Stitch `Auth - Verify email - Mobile` | built; needs a pending email (sessionStorage) else redirects to create account |
 | Forgot password | `/forgot-password` | auth | Verify email skeleton (no Stitch design) | built; email field, sends a reset code, never reveals whether the email has an account |
@@ -98,6 +98,11 @@ Per the owner's instruction to drop inconsistent and unnecessary content.
 | Dropped | Reason |
 |---------|--------|
 | Header with back arrow, title and profile avatar | A signed-out screen has no profile; replaced by the wordmark |
+| Error State: red bar beside the field, ⊗ icon inside it | Owner: only the message below the field, plus the "Invalid syntax" tag (email format errors only, once the field is in error) |
+| Error State banner shadow | DESIGN.md keeps shadows to inputs, white buttons, tabs and cards |
+| Error State: "Password does not match our records for this account" | Confirms the email has an account; replaced by "Check your email and password, then try again." |
+| Error State: "256-bit secure" | Not a claim we can verify; replaced by "Encrypted sign-in" (HTTPS) |
+| Old sign-in error line "Signed up with Google? Use Continue with Google" | Owner: sign-in error must match Stitch exactly |
 | "Remember me" | Not in the auth contract (sessions are managed by the provider) |
 | Uppercase "OR CONTINUE WITH" | Sentence case outside the photo banner |
 | Arrow icon on the submit button | Decorative |

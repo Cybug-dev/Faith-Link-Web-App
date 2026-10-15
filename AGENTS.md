@@ -3,8 +3,19 @@
 ## Start here
 
 1. Read [`docs/progress.md`](docs/progress.md) for current state, next work and open questions. Update it when you finish a task.
-2. Locate, don't explore. Use the indexes ([`docs/ui/ui-registry.md`](docs/ui/ui-registry.md) lists every component and screen with its path), then search for the exact symbol or file. Do not scan whole directories or read files the task doesn't touch.
-3. Read only the parts of a file you need, and edit only what the task asks for. No drive-by refactors or "while I'm here" changes; suggest them instead.
+2. Follow **Token discipline** below on every task. Edit only what the task asks for. No drive-by refactors or "while I'm here" changes; suggest them instead.
+
+## Token discipline (mandatory)
+
+Every file read costs tokens. Spend them only on what the current change needs.
+
+1. **Locate before you read.** Start from an index ([`docs/ui/ui-registry.md`](docs/ui/ui-registry.md) maps every component and screen to its path), then run a targeted search for the exact symbol, prop, class, route or message text you need to change. Never scan directories or open files "to get a feel".
+2. **Read the smallest slice that answers the question.** Use search with a few lines of context, or a line range around the match. Open a whole file only when it is small or the change genuinely touches most of it.
+3. **Read once.** Don't re-read a file you already have unless it changed. Don't re-read to "check" an edit that succeeded.
+4. **Ask the code a precise question.** "Which class sets the input text size?" means one search for `text-` in `input.tsx`, not reading the component and its parents.
+5. **Large or generated files are search-only:** `package-lock.json`, `node_modules/`, build output, coverage, and third-party type definitions.
+6. **Quiet commands.** Pipe test, build and lint output through filters that keep failures and summary lines only.
+7. **Before reading, name the target:** the file, the symbol and why the task needs it. If you can't, search first.
 
 ## UI / UX work
 
@@ -22,7 +33,7 @@ Stitch screens used as references are listed in [`docs/ui/stitch-sources.md`](do
 - Run commands from this folder (the parent folder has no `package.json`): `npm run dev`, `npm run build`, `npm run lint`, `npm run typecheck`, `npm test`.
 - Do only what was asked. Anything unknown or optional (a library, a design choice, extra screens) is raised as a question or a suggestion with the reason, not decided silently.
 - Use the Stitch designs as references, not gospel: drop inconsistent or unnecessary content and record each drop in the registry.
-- Backend is not wired yet; the UI talks to the stub in `src/features/auth/auth-client.ts`.
+- Auth runs on Neon Auth through `src/features/auth/auth-client.ts` (pages never import the SDK); tests swap in `src/test/fake-auth-client.ts`.
 - Commit messages are concise but clear to a non-developer: a subject `type: what changed` (types: feat, fix, refactor, style, docs, test, chore), imperative, under ~60 characters; then bullet points, one per core change, each a plain full sentence saying what changed and, where useful, why. Use everyday words; technical terms only when there is no plain alternative. Don't squeeze bullets into clipped fragments. No file lists, no step-by-step narration, no restating the diff. Never add a `Co-Authored-By` or any attribution line.
 
 ## ECC (Everything Claude Code)

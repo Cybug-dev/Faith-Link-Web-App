@@ -11,12 +11,13 @@ import { Input } from '@/components/ui/input'
 import { OrDivider } from '@/components/ui/or-divider'
 import { PasswordInput } from '@/components/ui/password-input'
 import { setPendingEmail } from '@/lib/pending-email'
+import { fieldTone } from '@/lib/field-tone'
 import { useDocumentTitle } from '@/lib/use-document-title'
 import { authClient } from './auth-client'
 import { AuthLayout } from './auth-layout'
 import { AuthTabs } from './auth-tabs'
 import { GoogleButton } from './google-button'
-import { MIN_PASSWORD_LENGTH, createAccountSchema, type CreateAccountValues } from './schemas'
+import { emailErrorLabel, MIN_PASSWORD_LENGTH, createAccountSchema, type CreateAccountValues } from './schemas'
 import { CreateAccountBanner } from './auth-banners'
 import { CREATE_ACCOUNT_SCRIPTURE, authImages } from './scripture'
 import { ScriptureCard } from './scripture-card'
@@ -37,13 +38,12 @@ export function CreateAccountPage() {
     handleSubmit,
     trigger,
     setFocus,
-    formState: { errors, isSubmitting },
+    formState: { errors, isSubmitting, isSubmitted, touchedFields },
   } = useForm<CreateAccountValues>({
     resolver: zodResolver(createAccountSchema),
     defaultValues: { name: '', email: '', password: '', acceptedTerms: false },
-    // No warnings while filling the form; validate on submit, then keep errors fresh while fixing them.
-    mode: 'onSubmit',
-    reValidateMode: 'onChange',
+    // Live feedback: each field is checked as it is typed, and its message clears once the value is valid.
+    mode: 'onChange',
   })
 
   useEffect(() => {
@@ -91,7 +91,7 @@ export function CreateAccountPage() {
       )}
 
       <form noValidate onSubmit={onSubmit} className="mt-4 flex flex-col gap-4">
-        <FormField label="Full name" error={errors.name?.message}>
+        <FormField label="Full name" error={errors.name?.message} errorTone={fieldTone(touchedFields.name, isSubmitted)}>
           {(control) => (
             <Input
               {...control}
@@ -103,7 +103,8 @@ export function CreateAccountPage() {
           )}
         </FormField>
 
-        <FormField label="Email address" error={errors.email?.message}>
+        <FormField label="Email address" error={errors.email?.message} errorTone={fieldTone(touchedFields.email, isSubmitted)}
+          errorLabel={emailErrorLabel(errors.email?.type)}>
           {(control) => (
             <Input
               {...control}
@@ -120,7 +121,7 @@ export function CreateAccountPage() {
         <FormField
           label="Password"
           hint={`At least ${MIN_PASSWORD_LENGTH} characters with a number and symbol`}
-          error={errors.password?.message}
+          error={errors.password?.message} errorTone={fieldTone(touchedFields.password, isSubmitted)}
         >
           {(control) => (
             <PasswordInput
@@ -133,7 +134,7 @@ export function CreateAccountPage() {
         </FormField>
 
         {confirmShown && (
-          <FormField label="Confirm password" error={errors.confirmPassword?.message}>
+          <FormField label="Confirm password" error={errors.confirmPassword?.message} errorTone={fieldTone(touchedFields.confirmPassword, isSubmitted)}>
             {(control) => (
               <PasswordInput
                 {...control}
@@ -148,7 +149,7 @@ export function CreateAccountPage() {
         <div className="flex flex-col gap-2">
           <Checkbox
             {...register('acceptedTerms')}
-            aria-invalid={errors.acceptedTerms ? true : undefined}
+            aria-invalid={errors.acceptedTerms && fieldTone(touchedFields.acceptedTerms, isSubmitted) === 'error' ? true : undefined}
             aria-describedby={errors.acceptedTerms ? 'terms-error' : undefined}
             labelClassName="text-caption text-fg-secondary"
             label={
@@ -164,7 +165,7 @@ export function CreateAccountPage() {
               </>
             }
           />
-          {errors.acceptedTerms?.message && <FieldError id="terms-error">{errors.acceptedTerms.message}</FieldError>}
+          {errors.acceptedTerms?.message && <FieldError id="terms-error" tone={fieldTone(touchedFields.acceptedTerms, isSubmitted)}>{errors.acceptedTerms.message}</FieldError>}
         </div>
 
         <Button type="submit" loading={isSubmitting} className="mt-1 w-full">

@@ -7,13 +7,53 @@ const email = z
   .min(1, 'Enter your email.')
   .email('Enter a valid email address, like name@example.com.')
 
+/** Stitch's "Invalid syntax" tag: only for a malformed email, not an empty one (Zod code 'invalid_string'). */
+export function emailErrorLabel(errorType: string | undefined): string | undefined {
+  return errorType === 'invalid_string' ? 'Invalid syntax' : undefined
+}
+
 export const signInSchema = z.object({
   email,
   password: z.string().min(1, 'Enter your password.'),
+  rememberMe: z.boolean(),
 })
 export type SignInValues = z.infer<typeof signInSchema>
 
 export const MIN_PASSWORD_LENGTH = 8
+/** Letters required in the first and in the last name ("Li Na" passes; "A Smith" doesn't). */
+export const MIN_NAME_PART_LETTERS = 2
+const MAX_NAME_LENGTH = 100
+
+/**
+ * A real person's name: letters from any language (incl. accents), with single
+ * spaces, hyphens or apostrophes between parts and an optional period after a
+ * letter ("Mary-Jane O'Neil", "John R. Smith"). Rejects digits, symbols, emoji,
+ * handles like "xX_gamer99", and doubled separators.
+ */
+const NAME_PATTERN = /^\p{L}[\p{L}\p{M}]*(?:\.?[ '’-]?\p{L}[\p{L}\p{M}]*)*\.?$/u
+
+const letterCount = (part: string) => part.match(/\p{L}/gu)?.length ?? 0
+
+/** "Full name" means first and last: at least two words, the first and last each with 2+ letters. */
+function hasFirstAndLastName(name: string): boolean {
+  const parts = name.split(' ')
+  return (
+    parts.length >= 2 &&
+    letterCount(parts.at(0) ?? '') >= MIN_NAME_PART_LETTERS &&
+    letterCount(parts.at(-1) ?? '') >= MIN_NAME_PART_LETTERS
+  )
+}
+
+const fullName = z
+  .string()
+  .trim()
+  .min(1, 'Enter your full name.')
+  .max(MAX_NAME_LENGTH, `Use ${MAX_NAME_LENGTH} characters or fewer.`)
+  .regex(NAME_PATTERN, 'Use letters only, with a single space, hyphen or apostrophe between names.')
+  .refine(
+    hasFirstAndLastName,
+    `Enter your first and last name, each at least ${MIN_NAME_PART_LETTERS} letters.`,
+  )
 
 /** One password rule for create account and reset password. */
 const newPassword = z
@@ -24,7 +64,7 @@ const newPassword = z
 
 export const createAccountSchema = z
   .object({
-    name: z.string().trim().min(1, 'Enter your name.').max(100, 'Use 100 characters or fewer.'),
+    name: fullName,
     email,
     password: newPassword,
     // Undefined until the confirmation field is shown (after the first submit).

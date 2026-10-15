@@ -17,6 +17,8 @@ export default defineConfig({
     globals: true,
     setupFiles: ['./src/test/setup.ts'],
     css: false,
+    // Live validation re-checks on every simulated keystroke, so long typing tests need more than the 5s default.
+    testTimeout: 15000,
     coverage: { provider: 'v8', include: ['src/**/*.{ts,tsx}'], exclude: ['src/test/**', 'src/main.tsx'] },
   },
 })

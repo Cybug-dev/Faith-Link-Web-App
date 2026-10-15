@@ -24,12 +24,12 @@ describe('Sign in page', () => {
     expect(screen.queryByText('Enter your email.')).not.toBeInTheDocument()
   })
 
-  it('offers Google after the email form, as designed, and has no remember-me', () => {
+  it('offers Google after the email form and remembers the person by default', () => {
     renderRoute('/sign-in')
     const google = screen.getByRole('button', { name: 'Continue with Google' })
     const email = screen.getByLabelText('Email address')
     expect(email.compareDocumentPosition(google) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy()
-    expect(screen.queryByLabelText(/remember me/i)).not.toBeInTheDocument()
+    expect(screen.getByRole('checkbox', { name: 'Remember me' })).toBeChecked()
   })
 
   it('shows required errors on submit', async () => {
@@ -40,22 +40,34 @@ describe('Sign in page', () => {
     expect(screen.getByLabelText('Email address')).toHaveAttribute('aria-invalid', 'true')
   })
 
-  it('validates the email format on submit, not when leaving the field', async () => {
+  it('shows typing guidance in a neutral tone, and an error only after leaving the field', async () => {
     const { user } = renderRoute('/sign-in')
-    await user.type(screen.getByLabelText('Email address'), 'not-an-email')
-    await user.tab()
-    expect(screen.queryByText('Enter a valid email address, like name@example.com.')).not.toBeInTheDocument()
-    await user.click(screen.getByRole('button', { name: 'Sign in' }))
+    const email = screen.getByLabelText('Email address')
+    await user.type(email, 'alex@exa')
     expect(await screen.findByText('Enter a valid email address, like name@example.com.')).toBeInTheDocument()
+    expect(email).not.toHaveAttribute('aria-invalid', 'true')
+    await user.tab()
+    expect(email).toHaveAttribute('aria-invalid', 'true')
   })
 
-  it('uses the contract wording for a failed sign-in and keeps what was typed', async () => {
+  it('flags an invalid email while typing and clears it once valid', async () => {
+    const { user } = renderRoute('/sign-in')
+    const email = screen.getByLabelText('Email address')
+    await user.type(email, 'alex@exa')
+    expect(await screen.findByText('Enter a valid email address, like name@example.com.')).toBeInTheDocument()
+    await user.type(email, 'mple.com')
+    expect(screen.queryByText('Enter a valid email address, like name@example.com.')).not.toBeInTheDocument()
+    expect(email).not.toHaveAttribute('aria-invalid', 'true')
+  })
+
+  it('shows the Stitch error for a failed sign-in, without saying which detail was wrong', async () => {
     const { user } = renderRoute('/sign-in')
     await fillAndSubmit(user, 'alex@example.com', 'wrong-password')
     const alert = await screen.findByRole('alert')
-    expect(alert).toHaveTextContent(
-      'Wrong email or password. Signed up with Google? Use Continue with Google, or reset your password.',
-    )
+    expect(alert).toHaveTextContent('Authentication failed')
+    expect(alert).toHaveTextContent('Incorrect email or password. Please verify your details or reset your access below.')
+    expect(screen.getByRole('link', { name: 'Reset password' })).toHaveAttribute('href', '/forgot-password')
+    expect(screen.getByText('Check your email and password, then try again.')).toBeInTheDocument()
     expect(screen.getByLabelText('Email address')).toHaveValue('alex@example.com')
     expect(screen.getByLabelText('Password')).toHaveValue('wrong-password')
   })

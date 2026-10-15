@@ -79,6 +79,7 @@
   --color-danger-line: var(--color-danger-border);
   --color-danger-fg: var(--color-danger-text);
   --color-danger-solid: var(--color-danger-solid);
+  --color-danger-strong: var(--color-danger-strong-bg);
   --color-warning: var(--color-warning-bg);
   --color-warning-line: var(--color-warning-border);
   --color-warning-fg: var(--color-warning-text);

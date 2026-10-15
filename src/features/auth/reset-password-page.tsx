@@ -9,6 +9,7 @@ import { OtpInput } from '@/components/ui/otp-input'
 import { PasswordInput } from '@/components/ui/password-input'
 import { clearPendingEmail, getPendingEmail, maskEmail } from '@/lib/pending-email'
 import { formatClock, useCountdown } from '@/lib/use-countdown'
+import { fieldTone } from '@/lib/field-tone'
 import { useDocumentTitle } from '@/lib/use-document-title'
 import { AuthError, authClient } from './auth-client'
 import { AuthLayout } from './auth-layout'
@@ -39,12 +40,12 @@ function ResetPasswordForm({ email }: { email: string }) {
     register,
     handleSubmit,
     setError,
-    formState: { errors, isSubmitting },
+    formState: { errors, isSubmitting, isSubmitted, touchedFields },
   } = useForm<ResetPasswordValues>({
     resolver: zodResolver(resetPasswordSchema),
     defaultValues: { otp: '', password: '', confirmPassword: '' },
-    mode: 'onSubmit',
-    reValidateMode: 'onChange',
+    // Live feedback: each field is checked as it is typed, and its message clears once the value is valid.
+    mode: 'onChange',
   })
 
   const onSubmit = handleSubmit(async ({ otp, password }) => {
@@ -53,9 +54,13 @@ function ResetPasswordForm({ email }: { email: string }) {
       await authClient.resetPassword({ email, otp, password })
     } catch (error) {
       if (error instanceof AuthError && error.code === 'INVALID_CODE') {
-        setError('otp', { message: 'That code isn’t right. Check the code in your email and try again.' })
+        setError('otp', {
+          message: 'That code isn’t right. Check the code in your email and try again.',
+        })
       } else if (error instanceof AuthError && error.code === 'CODE_EXPIRED') {
-        setError('otp', { message: 'That code has expired. Request a new one below.' })
+        setError('otp', {
+          message: 'That code has expired. Request a new one below.',
+        })
       } else {
         setFailed(true)
       }
@@ -88,8 +93,8 @@ function ResetPasswordForm({ email }: { email: string }) {
     <AuthLayout>
       <h1 className="text-headline-lg">Set a new password</h1>
       <p className="mt-2 text-body-md text-fg-secondary">
-        Enter the {OTP_LENGTH}-digit code we emailed to {maskEmail(email)}, then choose a new password. The code
-        expires in {CODE_LIFETIME_MINUTES} minutes.
+        Enter the {OTP_LENGTH}-digit code we emailed to {maskEmail(email)}, then choose a new password. The code expires
+        in {CODE_LIFETIME_MINUTES} minutes.
       </p>
 
       {failed && (
@@ -99,7 +104,12 @@ function ResetPasswordForm({ email }: { email: string }) {
       )}
 
       <form noValidate onSubmit={onSubmit} className="mt-6 flex flex-col gap-6">
-        <FormField label="Reset code" hideLabel error={errors.otp?.message}>
+        <FormField
+          label="Reset code"
+          hideLabel
+          error={errors.otp?.message}
+          errorTone={fieldTone(touchedFields.otp, isSubmitted)}
+        >
           {(control_) => (
             <Controller
               control={control}
@@ -110,7 +120,7 @@ function ResetPasswordForm({ email }: { email: string }) {
                   aria-label="Reset code"
                   value={field.value}
                   onChange={field.onChange}
-                  invalid={Boolean(errors.otp)}
+                  invalid={Boolean(errors.otp) && fieldTone(touchedFields.otp, isSubmitted) === 'error'}
                   disabled={isSubmitting}
                   // The code is the first task on this screen and the person just navigated here.
                   // oxlint-disable-next-line jsx-a11y/no-autofocus
@@ -125,6 +135,7 @@ function ResetPasswordForm({ email }: { email: string }) {
           label="New password"
           hint={`At least ${MIN_PASSWORD_LENGTH} characters with a number and symbol`}
           error={errors.password?.message}
+          errorTone={fieldTone(touchedFields.password, isSubmitted)}
         >
           {(control_) => (
             <PasswordInput
@@ -136,7 +147,11 @@ function ResetPasswordForm({ email }: { email: string }) {
           )}
         </FormField>
 
-        <FormField label="Confirm new password" error={errors.confirmPassword?.message}>
+        <FormField
+          label="Confirm new password"
+          error={errors.confirmPassword?.message}
+          errorTone={fieldTone(touchedFields.confirmPassword, isSubmitted)}
+        >
           {(control_) => (
             <PasswordInput
               {...control_}

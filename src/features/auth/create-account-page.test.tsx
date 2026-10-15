@@ -31,7 +31,7 @@ describe('Create account page', () => {
   it('requires every field and the terms on submit', async () => {
     const { user } = renderRoute('/create-account')
     await user.click(screen.getByRole('button', { name: 'Create account' }))
-    expect(await screen.findByText('Enter your name.')).toBeInTheDocument()
+    expect(await screen.findByText('Enter your full name.')).toBeInTheDocument()
     expect(screen.getByText('Enter your email.')).toBeInTheDocument()
     expect(screen.getByText('Use at least 8 characters.', { selector: 'p[id$="-error"]' })).toBeInTheDocument()
     expect(
@@ -40,13 +40,13 @@ describe('Create account page', () => {
     expect(screen.getByRole('checkbox')).toHaveAttribute('aria-invalid', 'true')
   })
 
-  it('does not warn when leaving a field, only on submit', async () => {
+  it('flags a weak password while typing and clears it once it meets the rule', async () => {
     const { user } = renderRoute('/create-account')
-    await user.type(screen.getByLabelText('Password'), 'short')
-    await user.tab()
-    expect(screen.queryByText('Use at least 8 characters.')).not.toBeInTheDocument()
-    await submit(user)
+    const password = screen.getByLabelText('Password')
+    await user.type(password, 'short')
     expect(await screen.findByText('Use at least 8 characters.', { selector: 'p[id$="-error"]' })).toBeInTheDocument()
+    await user.type(password, 'er7!')
+    expect(screen.queryByText(/Use at least 8 characters|Add at least one/, { selector: 'p[id$="-error"]' })).not.toBeInTheDocument()
   })
 
   it('asks for a number and a symbol', async () => {
