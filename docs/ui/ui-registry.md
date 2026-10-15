@@ -85,6 +85,8 @@ Role classes and base rules are in Tailwind layers, so utilities (`text-fg-secon
 | Sign in | `/sign-in` | auth | old Stitch `FaithLink Sign In` | built, responsive |
 | Create account | `/create-account` | auth | old Stitch `FaithLink Create Account` | built, responsive; "Confirm password" appears (focused) after the first valid-password submit |
 | Verify email | `/verify-email` | auth | Stitch `Auth - Verify email - Mobile` | built; needs a pending email (sessionStorage) else redirects to create account |
+| Forgot password | `/forgot-password` | auth | Verify email skeleton (no Stitch design) | built; email field, sends a reset code, never reveals whether the email has an account |
+| Reset password | `/reset-password` | auth | Verify email skeleton + Create account password fields (no Stitch design) | built; code + new password + confirm (always shown), resend cooldown; signs in on success, else goes to sign in |
 | Not found | `*` | error/404 | n/a | also where unbuilt links land |
 | App entry | `/` | n/a | n/a | redirects to `/sign-in` (owner) |
 | Home placeholder | `/home` | n/a | n/a | **temporary** landing after sign in (see below) |
@@ -109,8 +111,8 @@ Per the owner's instruction to drop inconsistent and unnecessary content.
 ## Temporary and open items
 
 - `src/pages/home-placeholder-page.tsx` and the `/home` route: replace when the real church home exists. With real sessions, `/` should send signed-in people to home, not sign in.
-- `src/features/auth/auth-client.ts` is a stub: replace with the real client. Also unbuilt from the contract: "Last used" tag, session handling, route guards.
-- Linked pages not built (land on Not found): `/forgot-password`, `/terms`, `/privacy`.
+- `src/features/auth/auth-client.ts` now calls Neon Auth; tests use `src/test/fake-auth-client.ts`. Still unbuilt from the contract: "Last used" tag, session handling, route guards.
+- Linked pages not built (land on Not found): `/terms`, `/privacy`.
 - **Decision for the owner:** Stitch puts "Continue with Google" below the form (built that way); the backend auth notes recommend above it. Swap the `<GoogleButton />` block if you want the notes' order.
 - Inputs have no border (owner decision); the shadow alone separates white fields from the off-white page. The amber focus ring is ~2:1 on the canvas, below the 3:1 of WCAG 1.4.11; the dark-amber icon change backs it up. Check in a real browser.
 - Password rule (8+ characters, a number, a symbol) is enforced client-side only; the backend should enforce the same.

@@ -1,5 +1,7 @@
 import { Navigate, createBrowserRouter, type RouteObject } from 'react-router'
 import { CreateAccountPage } from '@/features/auth/create-account-page'
+import { ForgotPasswordPage } from '@/features/auth/forgot-password-page'
+import { ResetPasswordPage } from '@/features/auth/reset-password-page'
 import { SignInPage } from '@/features/auth/sign-in-page'
 import { VerifyEmailPage } from '@/features/auth/verify-email-page'
 import { HomePlaceholderPage } from '@/pages/home-placeholder-page'
@@ -13,6 +15,8 @@ export const routes: RouteObject[] = [
   { path: '/sign-in', element: <SignInPage /> },
   { path: '/create-account', element: <CreateAccountPage /> },
   { path: '/verify-email', element: <VerifyEmailPage /> },
+  { path: '/forgot-password', element: <ForgotPasswordPage /> },
+  { path: '/reset-password', element: <ResetPasswordPage /> },
   { path: '*', element: <NotFoundPage /> },
 ]
 

@@ -9,6 +9,9 @@ export default defineConfig({
   resolve: {
     alias: { '@': fileURLToPath(new URL('./src', import.meta.url)) },
   },
+  // Fixed origin: the backend CORS allowlist and Neon Auth trusted domains expect
+  // http://localhost:5173, so fail loudly instead of drifting to another port.
+  server: { port: 5173, strictPort: true },
   test: {
     environment: 'jsdom',
     globals: true,

@@ -101,10 +101,9 @@ describe('Sign in page', () => {
     expect(await screen.findByRole('button', { name: 'Continue with Google' })).toBeEnabled()
   })
 
-  it('lands on a not-found page for links whose pages are not built yet', async () => {
+  it('opens the forgot password page', async () => {
     const { user } = renderRoute('/sign-in')
     await user.click(screen.getByRole('link', { name: 'Forgot password?' }))
-    expect(await screen.findByRole('heading', { name: 'Page not found' })).toBeInTheDocument()
-    expect(screen.getByRole('link', { name: 'Go to sign in' })).toHaveAttribute('href', '/sign-in')
+    expect(await screen.findByRole('heading', { name: 'Forgot your password?' })).toBeInTheDocument()
   })
 })
