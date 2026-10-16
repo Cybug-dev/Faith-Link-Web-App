@@ -8,7 +8,8 @@ import { onboardingImages } from './onboarding-images'
  */
 export function preloadOnboarding(): void {
   const run = () => {
-    void import('./onboarding-page')
+    // A failed warm-up is harmless: the real navigation retries (and reloads if the tab is stale).
+    import('./onboarding-page').catch(() => {})
     new Image().src = onboardingImages.hero
   }
   if ('requestIdleCallback' in window) window.requestIdleCallback(run, { timeout: 4000 })

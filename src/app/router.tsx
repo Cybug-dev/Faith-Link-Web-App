@@ -6,6 +6,7 @@ import { SignInPage } from '@/features/auth/sign-in-page'
 import { VerifyEmailPage } from '@/features/auth/verify-email-page'
 import { OnboardingGate } from '@/features/onboarding/onboarding-gate'
 import { ONBOARDING_PATH } from '@/features/onboarding/onboarding-routes'
+import { loadOrReload } from '@/lib/load-or-reload'
 import { HomePlaceholderPage } from '@/pages/home-placeholder-page'
 import { NotFoundPage } from '@/pages/not-found-page'
 
@@ -24,7 +25,8 @@ export const routes: RouteObject[] = [
   // Loaded on demand: keeps the animation library and onboarding photos out of the sign-in download.
   {
     path: ONBOARDING_PATH,
-    lazy: async () => ({ Component: (await import('@/features/onboarding/onboarding-page')).OnboardingPage }),
+    lazy: async () => ({ Component: (await loadOrReload(() => import('@/features/onboarding/onboarding-page'))).OnboardingPage,
+    }),
   },
   { path: '/sign-in', element: <SignInPage /> },
   { path: '/create-account', element: <CreateAccountPage /> },
