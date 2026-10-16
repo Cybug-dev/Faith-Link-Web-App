@@ -2,7 +2,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { ArrowRight, Mail, ShieldCheck } from 'lucide-react'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
-import { Link, useNavigate } from 'react-router'
+import { Link, useLocation, useNavigate } from 'react-router'
 import { Alert } from '@/components/ui/alert'
 import { Button } from '@/components/ui/button'
 import { Checkbox } from '@/components/ui/checkbox'
@@ -17,6 +17,7 @@ import { AuthError, authClient } from './auth-client'
 import { AuthLayout } from './auth-layout'
 import { AuthTabs } from './auth-tabs'
 import { GoogleButton } from './google-button'
+import { cameFromPasswordReset } from './navigation-state'
 import { emailErrorLabel, signInSchema, type SignInValues } from './schemas'
 import { SignInBanner } from './auth-banners'
 import { SIGN_IN_SCRIPTURE, authImages } from './scripture'
@@ -28,6 +29,7 @@ type FormError = 'credentials' | 'unknown' | null
 export function SignInPage() {
   useDocumentTitle('Sign in')
   const navigate = useNavigate()
+  const passwordReset = cameFromPasswordReset(useLocation().state)
   const [formError, setFormError] = useState<FormError>(null)
 
   const {
@@ -76,6 +78,11 @@ export function SignInPage() {
         Sign in to continue your journey and connect with your community.
       </p>
 
+      {passwordReset && !formError && (
+        <Alert variant="success" className="mt-4">
+          Password updated. Sign in with your new password.
+        </Alert>
+      )}
       {formError === 'credentials' && (
         // Stitch "FaithLink Sign In - Error State". Same wording whether the email exists or not.
         <Alert variant="danger" title="Authentication failed" className="mt-4">

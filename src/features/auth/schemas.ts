@@ -1,11 +1,27 @@
 import { z } from 'zod'
+import { isStrictEmail, suggestEmail } from '@/lib/email-check'
 
-/** Mirrors the backend's Zod-at-the-boundary rule; messages say what to do next. */
+const INVALID_EMAIL = 'Enter a valid email address, like name@example.com.'
+
+/**
+ * Mirrors the backend's Zod-at-the-boundary rule; messages say what to do next.
+ * Stricter than Zod's .email(): no doubled dots or stray symbols, a real-looking
+ * TLD, and typos of big providers are caught ("gmai.com" → "Did you mean …gmail.com?").
+ */
 const email = z
   .string()
   .trim()
   .min(1, 'Enter your email.')
-  .email('Enter a valid email address, like name@example.com.')
+  .email(INVALID_EMAIL)
+  .superRefine((value, ctx) => {
+    if (!isStrictEmail(value)) {
+      // Same code as .email() so the field still shows Stitch's "Invalid syntax" tag.
+      ctx.addIssue({ code: z.ZodIssueCode.invalid_string, validation: 'email', message: INVALID_EMAIL })
+      return
+    }
+    const suggestion = suggestEmail(value)
+    if (suggestion) ctx.addIssue({ code: z.ZodIssueCode.custom, message: `Check the spelling. Did you mean ${suggestion}?` })
+  })
 
 /** Stitch's "Invalid syntax" tag: only for a malformed email, not an empty one (Zod code 'invalid_string'). */
 export function emailErrorLabel(errorType: string | undefined): string | undefined {
@@ -93,9 +109,13 @@ export type VerifyEmailValues = z.infer<typeof verifyEmailSchema>
 export const forgotPasswordSchema = z.object({ email })
 export type ForgotPasswordValues = z.infer<typeof forgotPasswordSchema>
 
+/** Reset password, step 1: the emailed code. */
+export const resetCodeSchema = z.object({ otp })
+export type ResetCodeValues = z.infer<typeof resetCodeSchema>
+
+/** Reset password, step 2 (only after the code is confirmed): the new password. */
 export const resetPasswordSchema = z
   .object({
-    otp,
     password: newPassword,
     confirmPassword: z.string().min(1, 'Re-enter your new password.'),
   })

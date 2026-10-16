@@ -7,6 +7,7 @@
  *   email "error@example.com"      -> UNKNOWN (any call taking an email)
  *   code "000000"                  -> INVALID_CODE
  *   code "999999"                  -> CODE_EXPIRED
+ *   code "111111"                  -> TOO_MANY_ATTEMPTS
  * Anything else succeeds.
  */
 import type { AuthClient } from '@/features/auth/auth-client'
@@ -19,6 +20,7 @@ function failOnErrorEmail(email: string): void {
 function checkCode(otp: string): void {
   if (otp === '000000') throw new AuthError('INVALID_CODE')
   if (otp === '999999') throw new AuthError('CODE_EXPIRED')
+  if (otp === '111111') throw new AuthError('TOO_MANY_ATTEMPTS')
 }
 
 export const fakeAuthClient: AuthClient = {
@@ -37,6 +39,10 @@ export const fakeAuthClient: AuthClient = {
   async signInWithGoogle() {},
   async requestPasswordReset({ email }) {
     failOnErrorEmail(email)
+  },
+  async checkResetCode({ email, otp }) {
+    failOnErrorEmail(email)
+    checkCode(otp)
   },
   async resetPassword({ email, otp }) {
     failOnErrorEmail(email)

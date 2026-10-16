@@ -4,6 +4,8 @@ export type AuthErrorCode =
   | 'EMAIL_NOT_VERIFIED'
   | 'INVALID_CODE'
   | 'CODE_EXPIRED'
+  /** Neon refused more guesses for this code; a new code is needed. */
+  | 'TOO_MANY_ATTEMPTS'
   | 'RATE_LIMITED'
   | 'UNKNOWN'
 

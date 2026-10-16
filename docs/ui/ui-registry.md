@@ -69,9 +69,9 @@ Role classes and base rules are in Tailwind layers, so utilities (`text-fg-secon
 | PasswordInput | `src/components/ui/password-input.tsx` | show/hide toggle (44px hit area); icon shows state: slashed eye = hidden, open eye = visible |
 | FormField, FieldError | `src/components/ui/form-field.tsx` | render-prop wiring label/hint/error/aria; `hideLabel`, `labelAction` |
 | Alert | `src/components/ui/alert.tsx` | danger (role=alert; Stitch error banner: borderless pink, filled icon, red title, 14px text), warning, success, info (role=status) |
-| Checkbox | `src/components/ui/checkbox.tsx` | native input + drawn 16px box (`rounded-xs`, 4px) sized for small label text; label may hold links |
+| Checkbox | `src/components/ui/checkbox.tsx` | native input + drawn 20px soft filled box, no border (Stitch "Mobile Auth UI Design" sign-in); checked = amber + check; label may hold links |
 | OrDivider | `src/components/ui/or-divider.tsx` | lowercase labelled rule |
-| OtpInput | `src/components/ui/otp-input.tsx` | 6 digits, paste and autofill, invalid state |
+| OtpInput | `src/components/ui/otp-input.tsx` | 6 digits, paste and autofill; soft filled boxes, no border (matches Checkbox); active box light amber, invalid boxes red tint |
 | Logo, CrossMark, GoogleIcon | `src/components/brand/` | Logo `mark="tile"` (default, favicon) or `"cross"` (bare amber cross from the onboarding design; owner comparing the two, onboarding uses cross). Google fills are brand colours (allowed hex) |
 | OnboardingPage | `src/features/onboarding/onboarding-page.tsx` + `onboarding.scss` | steps from `onboarding-steps.ts`; keyboard (arrows, Enter), swipe (`src/lib/use-swipe.ts`), slide/fade with Motion |
 | OnboardingGate | `src/features/onboarding/onboarding-gate.tsx` | wraps `/home`; sends a device that hasn't seen onboarding to `/onboarding` (`onboarding-storage.ts`, localStorage) |
@@ -90,7 +90,7 @@ Role classes and base rules are in Tailwind layers, so utilities (`text-fg-secon
 | Create account | `/create-account` | auth | old Stitch `FaithLink Create Account` | built, responsive; "Confirm password" appears (focused) after the first valid-password submit |
 | Verify email | `/verify-email` | auth | Stitch `Auth - Verify email - Mobile` | built; needs a pending email (sessionStorage) else redirects to create account |
 | Forgot password | `/forgot-password` | auth | Verify email skeleton (no Stitch design) | built; email field, sends a reset code, never reveals whether the email has an account |
-| Reset password | `/reset-password` | auth | Verify email skeleton + Create account password fields (no Stitch design) | built; code + new password + confirm (always shown), resend cooldown; signs in on success, else goes to sign in |
+| Reset password | `/reset-password` | auth | Verify email skeleton + Create account password fields (no Stitch design) | built; two steps: code first (checked with the server), then new password + confirm, then back to sign in; a code rejected at the end sends the person back to the code step |
 | Not found | `*` | error/404 | n/a | also where unbuilt links land |
 | App entry | `/` | n/a | n/a | redirects to `/sign-in` (owner) |
 | Home placeholder | `/home` | n/a | n/a | **temporary** landing after sign in (see below); behind OnboardingGate |

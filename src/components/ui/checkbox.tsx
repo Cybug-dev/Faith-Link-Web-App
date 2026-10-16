@@ -11,20 +11,21 @@ type CheckboxProps = Omit<ComponentProps<'input'>, 'type' | 'children'> & {
 
 /**
  * Native checkbox (keyboard, form and screen-reader behaviour for free) with a
- * drawn box. Checked = amber fill + a check mark, so state never rests on colour
- * alone, and the box keeps its 3:1 control border.
+ * drawn box, as the Stitch "Mobile Auth UI Design" sign-in: a soft filled square
+ * with no border; checked = amber fill + a check mark, so state never rests on
+ * colour alone. Keyboard focus still gets the global focus ring.
  */
 export function Checkbox({ label, labelClassName, className, ...props }: CheckboxProps) {
   return (
     <label className="flex cursor-pointer items-start gap-2">
-      {/* 16px box, centred on the label's first line (h-lh = one line of the label text).
+      {/* 20px box, centred on the label's first line (h-lh = one line of the label text).
           The whole label row is the click target. */}
       <span className={cn('flex h-lh shrink-0 items-center text-body-md', labelClassName)}>
-        <span className="relative flex size-4">
+        <span className="relative flex size-5">
         <input
           type="checkbox"
           className={cn(
-            'peer size-4 cursor-pointer appearance-none rounded-xs border border-line-control bg-surface transition-colors checked:bg-accent aria-invalid:border-danger-solid',
+            'peer size-5 cursor-pointer appearance-none rounded-sm bg-muted transition-colors checked:bg-accent aria-invalid:bg-danger-strong',
             className,
           )}
           {...props}
@@ -32,7 +33,7 @@ export function Checkbox({ label, labelClassName, className, ...props }: Checkbo
         <Check
           aria-hidden
           strokeWidth={3}
-          className="pointer-events-none absolute inset-0 m-auto size-3 text-fg-on-accent opacity-0 peer-checked:opacity-100"
+          className="pointer-events-none absolute inset-0 m-auto size-3.5 text-fg-on-accent opacity-0 transition-opacity peer-checked:opacity-100"
         />
         </span>
       </span>

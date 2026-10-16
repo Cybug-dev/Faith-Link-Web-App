@@ -12,9 +12,10 @@ import { fieldTone } from '@/lib/field-tone'
 import { useDocumentTitle } from '@/lib/use-document-title'
 import { AuthError, authClient } from './auth-client'
 import { AuthLayout } from './auth-layout'
+import { dailyLimitMessage, nextResetCodeAt, recordResetCodeSent } from './reset-limits'
 import { emailErrorLabel, OTP_LENGTH, forgotPasswordSchema, type ForgotPasswordValues } from './schemas'
 
-type FormError = 'rate-limited' | 'unknown' | null
+type FormError = { kind: 'daily-limit'; retryAt: number } | { kind: 'rate-limited' } | { kind: 'unknown' } | null
 
 /** No Stitch design: built on the Verify email skeleton (auth archetype). */
 export function ForgotPasswordPage() {
@@ -35,13 +36,19 @@ export function ForgotPasswordPage() {
 
   const onSubmit = handleSubmit(async ({ email }) => {
     setFormError(null)
+    const retryAt = nextResetCodeAt(email)
+    if (retryAt !== null) {
+      setFormError({ kind: 'daily-limit', retryAt })
+      return
+    }
     try {
       // Succeeds for unknown emails too, so this screen never reveals who has an account.
       await authClient.requestPasswordReset({ email })
+      recordResetCodeSent(email)
       setPendingEmail(email)
       navigate('/reset-password', { viewTransition: true })
     } catch (error) {
-      setFormError(error instanceof AuthError && error.code === 'RATE_LIMITED' ? 'rate-limited' : 'unknown')
+      setFormError({ kind: error instanceof AuthError && error.code === 'RATE_LIMITED' ? 'rate-limited' : 'unknown' })
     }
   })
 
@@ -53,12 +60,17 @@ export function ForgotPasswordPage() {
         password.
       </p>
 
-      {formError === 'rate-limited' && (
+      {formError?.kind === 'daily-limit' && (
+        <Alert variant="danger" className="mt-6">
+          {dailyLimitMessage(formError.retryAt)}
+        </Alert>
+      )}
+      {formError?.kind === 'rate-limited' && (
         <Alert variant="danger" className="mt-6">
           Too many requests. Wait a few minutes, then try again.
         </Alert>
       )}
-      {formError === 'unknown' && (
+      {formError?.kind === 'unknown' && (
         <Alert variant="danger" className="mt-6">
           We couldn’t send a code. Check your connection and try again.
         </Alert>

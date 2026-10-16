@@ -17,9 +17,10 @@ function OtpSlot({ char, isActive, hasFakeCaret, invalid }: SlotProps & { invali
   return (
     <div
       className={cn(
-        'relative flex h-14 flex-1 items-center justify-center rounded-md border bg-surface text-title-lg text-fg transition-colors duration-(--motion-duration-fast)',
-        invalid ? 'border-danger-solid' : isActive ? 'border-fg' : 'border-line-control',
-        isActive && 'outline-2 outline-offset-2 outline-focus',
+        // Filled boxes with no border, matching the Stitch auth checkbox. The box being typed in
+        // turns light amber (plus the caret); an invalid code tints every box red.
+        'relative flex h-14 flex-1 items-center justify-center rounded-md text-title-lg text-fg transition-colors duration-(--motion-duration-fast)',
+        invalid ? 'bg-danger-strong text-danger-fg' : isActive ? 'bg-accent-subtle' : 'bg-muted',
       )}
     >
       {char}

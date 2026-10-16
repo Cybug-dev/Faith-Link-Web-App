@@ -28,6 +28,11 @@ UI inventory (tokens, components, screens, drops) lives in [`ui/ui-registry.md`]
 - Onboarding pass 2 (owner feedback): colour trial from the reference app-wide (navy ink, amber gradient buttons with white text, almost-white canvas, brown removed), layered amber panels and confetti behind every illustration, full-bleed step 1 photo with warm frosted verse card, 3D staggered photo grid on step 4 for every size, bigger progress bar under the header, longer step text, every step fits one screen (Next always visible, no desktop scrollbar).
 - Owner kept the colour trial. Navy made visibly blue (#1B2B5A); step 4 outline icons, padded chips, slanted tagline. vercel.json rewrite fixes 404 on refresh/deep links.
 - TEMPORARY: onboarding shows after every sign-in (SHOW_ONBOARDING_EVERY_SIGN_IN in onboarding-storage.ts); set to false to restore once per device.
+- Reset password is now two steps: confirm the emailed code (checked with Neon's checkVerificationOtp), then choose the new password.
+- Stricter email rule on sign in, create account and forgot password (src/lib/email-check.ts): no doubled dots or stray symbols, real-looking TLD, and "Did you mean …@gmail.com?" for typos of big providers.
+- Checkbox and code boxes restyled to the Stitch "Mobile Auth UI Design" checkbox: soft filled boxes, no border.
+- Reset limits (owner): 5 codes per email per day, 3 wrong guesses per code, then the code locks until a new one is sent; Neon TOO_MANY_ATTEMPTS handled. Counted in localStorage (src/features/auth/reset-limits.ts) for now: move to the backend before launch.
+- Final reset step now calls the backend (POST /api/auth/password-reset), which also emails "your password was changed" via Resend. Needs VITE_API_BASE_URL set (locally and in Vercel) and the backend deployed.
 
 ## Next
 

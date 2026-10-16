@@ -1,13 +1,19 @@
 import { screen } from '@testing-library/react'
 import { getPendingEmail, setPendingEmail } from '@/lib/pending-email'
 import { renderRoute } from '@/test/render-route'
-import { LAZY_ROUTE } from '@/test/lazy-route'
 
 const codeBox = () => screen.getByLabelText('Reset code')
 
-async function fill(user: ReturnType<typeof renderRoute>['user'], code: string, password: string, confirm = password) {
+type User = ReturnType<typeof renderRoute>['user']
+
+async function enterCode(user: User, code: string) {
   await user.type(codeBox(), code)
-  await user.type(screen.getByLabelText('New password'), password)
+  await user.click(screen.getByRole('button', { name: 'Continue' }))
+}
+
+async function fill(user: User, code: string, password: string, confirm = password) {
+  await enterCode(user, code)
+  await user.type(await screen.findByLabelText('New password'), password)
   await user.type(screen.getByLabelText('Confirm new password'), confirm)
   await user.click(screen.getByRole('button', { name: 'Reset password' }))
 }
@@ -32,24 +38,47 @@ describe('Reset password page', () => {
     expect(await screen.findByText('Passwords don’t match. Re-enter it.')).toBeInTheDocument()
   })
 
-  it('explains a wrong code and an expired code', async () => {
+  it('asks for the new password only after the code is confirmed', async () => {
     setPendingEmail('alex@gmail.com')
     const { user } = renderRoute('/reset-password')
-    await fill(user, '000000', 'Passw0rd!')
+    expect(screen.queryByLabelText('New password')).not.toBeInTheDocument()
+    await enterCode(user, '123456')
+    expect(await screen.findByRole('heading', { name: 'Set a new password' })).toBeInTheDocument()
+    expect(screen.queryByLabelText('Reset code')).not.toBeInTheDocument()
+  })
+
+  it('explains a wrong code and an expired code, and stays on the code step', async () => {
+    setPendingEmail('alex@gmail.com')
+    const { user } = renderRoute('/reset-password')
+    await enterCode(user, '000000')
     expect(await screen.findByText(/That code isn’t right/)).toBeInTheDocument()
+    expect(screen.queryByLabelText('New password')).not.toBeInTheDocument()
 
     await user.clear(codeBox())
-    await user.type(codeBox(), '999999')
-    await user.click(screen.getByRole('button', { name: 'Reset password' }))
+    await enterCode(user, '999999')
     expect(await screen.findByText(/That code has expired/)).toBeInTheDocument()
   })
 
-  it('resets the password and signs the person in', async () => {
+  it('counts down wrong guesses and locks the code after three', async () => {
     setPendingEmail('alex@gmail.com')
     const { user } = renderRoute('/reset-password')
+    for (const left of ['2 tries left', '1 try left']) {
+      await enterCode(user, '000000')
+      expect(await screen.findByText(new RegExp(left))).toBeInTheDocument()
+      await user.clear(codeBox())
+    }
+    await enterCode(user, '000000')
+    expect(await screen.findByText('Too many wrong tries. Request a new code below.')).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: 'Continue' })).toBeDisabled()
+  })
+
+  it('resets the password and sends the person to sign in again', async () => {
+    setPendingEmail('alex@gmail.com')
+    const { user, router } = renderRoute('/reset-password')
     await fill(user, '123456', 'Passw0rd!')
-    // First sign-in on this device goes through onboarding on the way to home.
-    expect(await screen.findByRole('heading', { name: 'You’re in the right place' }, LAZY_ROUTE)).toBeInTheDocument()
+    expect(await screen.findByRole('heading', { name: 'Welcome back' })).toBeInTheDocument()
+    expect(router.state.location.pathname).toBe('/sign-in')
+    expect(screen.getByRole('status')).toHaveTextContent('Password updated. Sign in with your new password.')
     expect(getPendingEmail()).toBeNull()
   })
 })

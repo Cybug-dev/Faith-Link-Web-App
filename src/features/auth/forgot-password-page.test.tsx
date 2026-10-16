@@ -13,7 +13,7 @@ describe('Forgot password page', () => {
     const { user } = renderRoute('/forgot-password')
     await user.type(screen.getByLabelText('Email address'), 'alex@gmail.com')
     await user.click(screen.getByRole('button', { name: 'Send code' }))
-    expect(await screen.findByRole('heading', { name: 'Set a new password' })).toBeInTheDocument()
+    expect(await screen.findByRole('heading', { name: 'Enter your reset code' })).toBeInTheDocument()
     expect(getPendingEmail()).toBe('alex@gmail.com')
   })
 

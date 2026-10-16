@@ -8,7 +8,7 @@
  */
 import { createAuthClient, isAuthError } from "@neondatabase/auth";
 import { BetterAuthVanillaAdapter } from "@neondatabase/auth/vanilla";
-import { AuthError } from "./auth-errors";
+import { AuthError, type AuthErrorCode } from "./auth-errors";
 
 export { AuthError, type AuthErrorCode } from "./auth-errors";
 
@@ -31,6 +31,8 @@ export type AuthClient = {
   signInWithGoogle(): Promise<void>;
   /** Always resolves for a well-formed email, even an unknown one (anti-enumeration). */
   requestPasswordReset(input: { email: string }): Promise<void>;
+  /** Checks a reset code without using it up, so the new-password step only appears for a valid code. */
+  checkResetCode(input: { email: string; otp: string }): Promise<void>;
   resetPassword(input: {
     email: string;
     otp: string;
@@ -74,10 +76,52 @@ function toAuthError(error: unknown): AuthError {
     case "over_email_send_rate_limit":
       return new AuthError("RATE_LIMITED");
   }
+  if (message.includes("too many attempts"))
+    return new AuthError("TOO_MANY_ATTEMPTS");
   if (message.includes("expired")) return new AuthError("CODE_EXPIRED");
-  if (message.includes("otp") || message.includes("too many attempts"))
-    return new AuthError("INVALID_CODE");
+  if (message.includes("otp")) return new AuthError("INVALID_CODE");
   return new AuthError("UNKNOWN");
+}
+
+/** Codes the backend's POST /api/auth/password-reset can return. */
+const RESET_ERROR_CODES: readonly AuthErrorCode[] = [
+  "INVALID_CODE",
+  "CODE_EXPIRED",
+  "TOO_MANY_ATTEMPTS",
+  "RATE_LIMITED",
+];
+
+/**
+ * The final reset step goes through the FaithLink backend, which completes it
+ * with Neon Auth and then emails a "your password was changed" notice (Neon has
+ * no event for a finished reset).
+ */
+async function resetPasswordViaBackend(input: {
+  email: string;
+  otp: string;
+  password: string;
+}): Promise<void> {
+  const base = import.meta.env.VITE_API_BASE_URL;
+  if (!base)
+    throw new Error(
+      "VITE_API_BASE_URL is not set. Copy .env.example to .env.local and fill it in.",
+    );
+  let response: Response;
+  try {
+    response = await fetch(`${base}/api/auth/password-reset`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(input),
+    });
+  } catch {
+    throw new AuthError("UNKNOWN");
+  }
+  if (response.ok) return;
+  const body = (await response.json().catch(() => null)) as {
+    error?: { code?: string };
+  } | null;
+  const code = RESET_ERROR_CODES.find((c) => c === body?.error?.code);
+  throw new AuthError(code ?? "UNKNOWN");
 }
 
 /** Runs one SDK call and rethrows any failure as an `AuthError`. */
@@ -113,6 +157,9 @@ export const authClient: AuthClient = {
     call((c) =>
       c.emailOtp.sendVerificationOtp({ email, type: "forget-password" }),
     ),
-  resetPassword: ({ email, otp, password }) =>
-    call((c) => c.emailOtp.resetPassword({ email, otp, password })),
+  checkResetCode: ({ email, otp }) =>
+    call((c) =>
+      c.emailOtp.checkVerificationOtp({ email, otp, type: "forget-password" }),
+    ),
+  resetPassword: resetPasswordViaBackend,
 };
