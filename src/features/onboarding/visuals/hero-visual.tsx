@@ -1,6 +1,7 @@
 import { ArrowRight } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { ONBOARDING_SCRIPTURE } from '@/features/auth/scripture'
+import { FadeImage } from '../fade-image'
 import { onboardingImages } from '../onboarding-images'
 import type { StepVisualProps } from '../onboarding-steps'
 import './hero-visual.scss'
@@ -27,7 +28,7 @@ export function HeroVisual({ onNext }: StepVisualProps) {
     <div className="onboarding-hero">
       <span aria-hidden className="onboarding-hero__panel onboarding-hero__panel--back" />
       <span aria-hidden className="onboarding-hero__panel onboarding-hero__panel--front" />
-      <img className="onboarding-hero__photo" src={onboardingImages.hero} alt="A group of young friends smiling at a tablet together" />
+      <FadeImage className="onboarding-hero__photo" src={onboardingImages.hero} alt="A group of young friends smiling at a tablet together" />
       <figure className="onboarding-hero__verse">
         <QuoteMark />
         <blockquote className="onboarding-hero__verse-text">“{text}”</blockquote>

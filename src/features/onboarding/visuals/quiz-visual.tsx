@@ -1,6 +1,7 @@
 import { Check, Crown } from 'lucide-react'
 import { CrossMark } from '@/components/brand/logo'
 import { cn } from '@/lib/cn'
+import { FadeImage } from '../fade-image'
 import { onboardingImages } from '../onboarding-images'
 import './quiz-visual.scss'
 
@@ -54,7 +55,7 @@ export function QuizVisual() {
         </ul>
         <div className="onboarding-quiz__players">
           {onboardingImages.players.map((src) => (
-            <img key={src} className="onboarding-quiz__avatar" src={src} alt="" />
+            <FadeImage key={src} className="onboarding-quiz__avatar" src={src} alt="" />
           ))}
         </div>
       </div>

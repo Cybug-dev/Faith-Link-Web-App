@@ -75,6 +75,7 @@ Role classes and base rules are in Tailwind layers, so utilities (`text-fg-secon
 | Logo, CrossMark, GoogleIcon | `src/components/brand/` | Logo `mark="tile"` (default, favicon) or `"cross"` (bare amber cross from the onboarding design; owner comparing the two, onboarding uses cross). Google fills are brand colours (allowed hex) |
 | OnboardingPage | `src/features/onboarding/onboarding-page.tsx` + `onboarding.scss` | steps from `onboarding-steps.ts`; keyboard (arrows, Enter), swipe (`src/lib/use-swipe.ts`), slide/fade with Motion |
 | OnboardingGate | `src/features/onboarding/onboarding-gate.tsx` | wraps `/home`; sends a device that hasn't seen onboarding to `/onboarding` (`onboarding-storage.ts`, localStorage) |
+| FadeImage | `src/features/onboarding/fade-image.tsx` | img with a pulsing placeholder until loaded, then blur-in; `alt` required |
 | Step visuals | `src/features/onboarding/visuals/` | HeroVisual (photo + verse card), LessonsVisual, QuizVisual, CommunityVisual; each with its own `.scss`; photos in `onboarding-images.ts` |
 | AuthLayout | `src/features/auth/auth-layout.tsx` | `banner` slot (text over the phone/tablet photo) + desktop photo/verse panel, sticky at viewport height; per-photo crop in `authImages`. Sign in: brand line; Create account: verse |
 | AuthTabs | `src/features/auth/auth-tabs.tsx` | Sign in / Create account (NavLink); active pill slides on switch (view transition) |

@@ -21,12 +21,26 @@ const LAST = ONBOARDING_STEPS.length - 1
  * Under "reduce motion" MotionConfig drops the slide and keeps only the fade.
  */
 const SLIDE_PX = 40
+const RISE_PX = 16
 const EASE_OUT = [0.2, 0, 0, 1] as const
+/** Direction 0 is the very first arrival: no sideways slide, the content rises in instead. */
 const slide: Variants = {
   enter: (direction: number) => ({ x: direction * SLIDE_PX, opacity: 0 }),
-  center: { x: 0, opacity: 1, transition: { duration: 0.3, ease: EASE_OUT } },
+  center: { x: 0, opacity: 1, transition: { duration: 0.3, ease: EASE_OUT, staggerChildren: 0.08 } },
   exit: (direction: number) => ({ x: direction * -SLIDE_PX, opacity: 0, transition: { duration: 0.2, ease: EASE_OUT } }),
 }
+/** Text first, then the illustration, each easing up a little behind the one before. */
+const rise: Variants = {
+  enter: { y: RISE_PX, opacity: 0 },
+  center: { y: 0, opacity: 1, transition: { duration: 0.45, ease: EASE_OUT } },
+}
+/** Header and footer settle in from their edges on arrival. */
+const edge = (from: number): Variants => ({
+  hidden: { y: from, opacity: 0 },
+  shown: { y: 0, opacity: 1, transition: { duration: 0.45, ease: EASE_OUT, delay: 0.1 } },
+})
+const fromTop = edge(-RISE_PX)
+const fromBottom = edge(RISE_PX)
 
 /** Elements that already act on Enter themselves. */
 const ENTER_HANDLED = 'button, a, input, textarea, select'
@@ -34,7 +48,7 @@ const ENTER_HANDLED = 'button, a, input, textarea, select'
 export function OnboardingPage() {
   useDocumentTitle('Welcome')
   const navigate = useNavigate()
-  const [[index, direction], setStep] = useState<[number, number]>([0, 1])
+  const [[index, direction], setStep] = useState<[number, number]>([0, 0])
   const step = ONBOARDING_STEPS[index] ?? ONBOARDING_STEPS[0]
   const isFirst = index === 0
   const isLast = index === LAST
@@ -81,19 +95,19 @@ export function OnboardingPage() {
     <LazyMotion features={domAnimation} strict>
       <MotionConfig reducedMotion="user">
         <div className="onboarding">
-          <header className="onboarding__header">
+          <m.header className="onboarding__header" variants={fromTop} initial="hidden" animate="shown">
             <Logo mark="cross" />
             <Button variant="text" size="sm" onClick={finish}>
               Skip
             </Button>
-          </header>
+          </m.header>
 
           {/* Visual only; the announcer below carries "Step X of 4" for screen readers. */}
-          <div className="onboarding__progress" aria-hidden>
+          <m.div className="onboarding__progress" aria-hidden variants={fromTop} initial="hidden" animate="shown">
             {ONBOARDING_STEPS.map((s, i) => (
               <span key={s.id} className={cn('onboarding__segment', i === index && 'onboarding__segment--current')} />
             ))}
-          </div>
+          </m.div>
 
           {/* Says which step this is and announces each change (a replaced heading isn't reported by screen readers). */}
           <p className="onboarding__announcer" aria-live="polite">
@@ -101,7 +115,7 @@ export function OnboardingPage() {
           </p>
 
           <main className="onboarding__main" {...swipe}>
-            <AnimatePresence mode="wait" initial={false} custom={direction}>
+            <AnimatePresence mode="wait" custom={direction}>
               <m.section
                 key={step.id}
                 className={cn('onboarding__step', step.bleed && 'onboarding__step--bleed')}
@@ -112,7 +126,7 @@ export function OnboardingPage() {
                 animate="center"
                 exit="exit"
               >
-                <div className="onboarding__text">
+                <m.div className="onboarding__text" variants={rise}>
                   <p className="onboarding__eyebrow" aria-hidden>
                     {position}
                   </p>
@@ -133,15 +147,20 @@ export function OnboardingPage() {
                       </li>
                     ))}
                   </ul>
-                </div>
-                <div className={cn('onboarding__visual', step.bleed && 'onboarding__visual--bleed')}>
+                </m.div>
+                <m.div className={cn('onboarding__visual', step.bleed && 'onboarding__visual--bleed')} variants={rise}>
                   <Visual onNext={next} />
-                </div>
+                </m.div>
               </m.section>
             </AnimatePresence>
           </main>
 
-          <footer className={cn('onboarding__footer', isFirst && 'onboarding__footer--first')}>
+          <m.footer
+            className={cn('onboarding__footer', isFirst && 'onboarding__footer--first')}
+            variants={fromBottom}
+            initial="hidden"
+            animate="shown"
+          >
             {!isFirst && (
               <Button variant="surface" size="icon" aria-label="Back" className="onboarding__back" onClick={back}>
                 <ChevronLeft aria-hidden className="size-5" />
@@ -151,7 +170,7 @@ export function OnboardingPage() {
               {isLast ? 'Get started' : 'Next'}
               <ArrowRight aria-hidden className="size-5" />
             </Button>
-          </footer>
+          </m.footer>
         </div>
       </MotionConfig>
     </LazyMotion>

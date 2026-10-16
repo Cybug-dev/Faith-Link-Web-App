@@ -1,0 +1,30 @@
+@use '@/styles/mixins' as *;
+
+$blur-start: 0.625rem;
+
+// Placeholder: a quiet pulsing block the size of the photo.
+.fade-image {
+  background: var(--color-bg-muted);
+  animation: fade-image-pulse 1.4s var(--motion-ease-standard) infinite;
+
+  // Photo arrived: stop pulsing and sharpen in.
+  &--loaded {
+    animation: fade-image-in var(--motion-duration-slow) var(--motion-ease-out);
+  }
+
+  @include reduced-motion {
+    animation: none;
+  }
+}
+
+@keyframes fade-image-pulse {
+  50% {
+    background: var(--color-bg-subtle);
+  }
+}
+
+@keyframes fade-image-in {
+  from {
+    filter: blur($blur-start);
+  }
+}

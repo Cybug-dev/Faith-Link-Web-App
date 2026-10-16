@@ -1,5 +1,6 @@
 import { BookOpen } from 'lucide-react'
 import { cn } from '@/lib/cn'
+import { FadeImage } from '../fade-image'
 import { onboardingImages } from '../onboarding-images'
 import './lessons-visual.scss'
 
@@ -36,7 +37,7 @@ export function LessonsVisual() {
         <ul className="onboarding-lessons__list">
           {SAMPLE_LESSONS.map((lesson) => (
             <li key={lesson.title} className="onboarding-lessons__row">
-              <img className="onboarding-lessons__thumb" src={lesson.src} alt="" />
+              <FadeImage className="onboarding-lessons__thumb" src={lesson.src} alt="" />
               <span>
                 <span className="onboarding-lessons__title">{lesson.title}</span>
                 <span className="onboarding-lessons__count">{lesson.count} lessons</span>

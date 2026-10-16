@@ -1,5 +1,6 @@
 import '@fontsource-variable/caveat'
 import { CalendarDays, HandHeart, Heart, Users, type LucideIcon } from 'lucide-react'
+import { FadeImage } from '../fade-image'
 import { onboardingImages } from '../onboarding-images'
 import './community-visual.scss'
 
@@ -28,7 +29,7 @@ export function CommunityVisual() {
           <div key={c} className="onboarding-community__column">
             {column.map(({ label, icon: Icon, src }) => (
               <div key={label} className="onboarding-community__tile">
-                <img className="onboarding-community__photo" src={src} alt="" />
+                <FadeImage className="onboarding-community__photo" src={src} alt="" />
                 <span className="onboarding-community__chip">
                   <Icon aria-hidden className="onboarding-community__chip-icon" />
                   {label}

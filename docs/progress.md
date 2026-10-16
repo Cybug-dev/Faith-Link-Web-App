@@ -33,6 +33,7 @@ UI inventory (tokens, components, screens, drops) lives in [`ui/ui-registry.md`]
 - Checkbox and code boxes restyled to the Stitch "Mobile Auth UI Design" checkbox: soft filled boxes, no border.
 - Reset limits (owner): 5 codes per email per day, 3 wrong guesses per code, then the code locks until a new one is sent; Neon TOO_MANY_ATTEMPTS handled. Counted in localStorage (src/features/auth/reset-limits.ts) for now: move to the backend before launch.
 - Final reset step now calls the backend (POST /api/auth/password-reset), which also emails "your password was changed" via Resend. Needs VITE_API_BASE_URL set (locally and in Vercel) and the backend deployed.
+- Onboarding entrance polish: page code and first photo preload at idle while on sign-in (preload-onboarding.ts); staged entrance (header, text, picture, buttons); FadeImage shows a pulsing placeholder then sharpens each photo in, so no blank frames on slow connections.
 
 ## Next
 
