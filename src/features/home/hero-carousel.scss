@@ -1,0 +1,40 @@
+@use '@/styles/mixins' as *;
+
+.hero-carousel {
+  // Phones and tablets: one swipeable row; the next card peeks in at the edge instead of dots.
+  position: relative; // slides' offsetLeft is measured from here
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: calc(100% - var(--space-8));
+  gap: var(--space-3);
+  margin-inline: calc(var(--page-margin) * -1);
+  padding-inline: var(--page-margin);
+  scroll-padding-inline: var(--page-margin);
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  @include tablet {
+    grid-auto-columns: calc(100% - var(--space-16));
+  }
+
+  // Desktop: both cards always visible, focus card wider, no scrolling.
+  @include desktop {
+    grid-auto-flow: row;
+    grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+    gap: var(--space-6);
+    margin-inline: 0;
+    padding-inline: 0;
+    overflow: visible;
+  }
+
+  .hero-slide {
+    min-width: 0;
+    scroll-snap-align: start;
+  }
+}

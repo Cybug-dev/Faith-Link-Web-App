@@ -48,10 +48,15 @@
   --palette-slate-800: #2c3440; /* brand slate */
   --palette-slate-900: #1a1e24; /* ink */
 
-  /* Navy — ink and dark surfaces from the onboarding reference (temporary trial, owner). */
-  --palette-navy-700: #2e3f6b;
-  --palette-navy-800: #1f2d55;
+  /* Navy — text ink only (owner). Dark surfaces use night below. */
   --palette-navy-900: #1b2b5a; /* visibly blue, not black */
+
+  /* Night — the dark of the desktop sidebar and the quiz screen (owner, Stitch 2026-10-17).
+     Every dark surface uses it today, and it is the base for dark mode later. */
+  --palette-night-950: #1a1f28; /* sidebar, quiz screen background (owner: lightened a step) */
+  --palette-night-900: #20252f;
+  --palette-night-800: #2a303b; /* rows, chips, hover on night */
+  --palette-night-700: #363d4a; /* dividers on night */
 
   /* Status */
   --palette-green-50: #e7f4ec;
@@ -79,8 +84,9 @@
   --color-bg-surface: var(--palette-neutral-0); /* cards, inputs, sheets */
   --color-bg-subtle: var(--palette-neutral-50); /* quiet panels, table stripes */
   --color-bg-muted: var(--palette-neutral-100); /* tracks, skeletons, chips at rest */
-  --color-bg-inverse: var(--palette-navy-800); /* hero panels, secondary buttons, quiz card */
-  --color-bg-inverse-raised: var(--palette-navy-700); /* rows and chips on an inverse surface (quiz card) */
+  --color-bg-inverse: var(--palette-night-950); /* sidebar, hero panels, secondary buttons, quiz card */
+  --color-bg-inverse-raised: var(--palette-night-800); /* rows, chips and hover on an inverse surface */
+  --color-border-inverse: var(--palette-night-700); /* dividers on an inverse surface */
   --color-bg-scrim: rgb(26 30 36 / 0.56); /* modal backdrop */
   --color-bg-scrim-photo: rgb(26 30 36 / 0.78); /* behind text on photos: white text stays >= 4.5:1 */
   --color-bg-glass: rgb(255 255 255 / 0.72); /* light frosted card (desktop verse, lesson card); dark text stays >= 4.5:1 */
@@ -99,6 +105,7 @@
   --color-text-placeholder: var(--palette-neutral-600);
   --color-text-disabled: var(--palette-slate-400);
   --color-text-inverse: var(--palette-neutral-25);
+  --color-text-inverse-muted: var(--palette-neutral-300); /* captions on an inverse surface: ~12:1 on night */
   --color-text-accent: var(--palette-amber-600); /* links, inline emphasis. Owner removed the brown: orange is ~3.3:1 on canvas, fine for bold/large text, weak for small text */
   --color-text-accent-on-photo: var(--palette-amber-200); /* light amber on a dark photo scrim */
   --color-text-on-accent: var(--palette-neutral-0); /* white on amber, as the reference. Only ~2.2:1: owner's trial, below WCAG AA */
@@ -200,7 +207,8 @@
   --w-reading: 40rem; /* 640 — lesson body; also ≈65ch cap */
   --w-content: 70rem; /* 1120 — app content column */
   --w-shell: 80rem; /* 1280 — shell max width */
-  --sidebar-w: 16rem; /* 256 — desktop navigation */
+  --sidebar-w: 16rem; /* 256 — desktop navigation, open */
+  --sidebar-w-collapsed: 4.75rem; /* 76 — icons only; centres a 20px icon in the link */
   --bottom-nav-h: 4rem; /* 64 + safe-area inset */
   --topbar-h: 3.5rem; /* 56 */
 

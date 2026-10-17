@@ -1,0 +1,98 @@
+.progress {
+  .progress-panel {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+  }
+
+  .series {
+    display: flex;
+    align-items: center;
+    gap: var(--space-4);
+    padding: var(--space-3);
+    border-radius: var(--round-md);
+    background: var(--color-bg-subtle);
+    color: var(--color-text-primary);
+    text-decoration: none;
+    transition: background-color var(--motion-duration-fast) var(--motion-ease-standard);
+
+    &:hover {
+      background: var(--color-accent-subtle-bg);
+    }
+  }
+
+  .series-ring {
+    width: var(--space-16);
+    height: var(--space-16);
+    flex-shrink: 0;
+    transform: rotate(-90deg); // start the fill at 12 o'clock
+  }
+
+  .series-ring-track,
+  .series-ring-fill {
+    fill: none;
+    stroke-width: 6;
+  }
+
+  .series-ring-track {
+    stroke: var(--color-bg-muted);
+  }
+
+  .series-ring-fill {
+    stroke: var(--color-accent-bg);
+    stroke-linecap: round;
+    transition: stroke-dashoffset var(--motion-duration-slow) var(--motion-ease-out);
+  }
+
+  .series-text {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+  }
+
+  .series-label {
+    color: var(--color-text-muted);
+    font-size: var(--type-xs);
+    line-height: var(--type-xs-lh);
+  }
+
+  .series-name {
+    font-size: var(--type-base);
+    line-height: var(--type-base-lh);
+    font-weight: var(--weight-bold);
+  }
+
+  .series-count {
+    color: var(--color-text-secondary);
+    font-size: var(--type-sm);
+    line-height: var(--type-sm-lh);
+  }
+
+  .stat-list {
+    margin: 0;
+  }
+
+  .stat-row {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--space-4);
+    padding-block: var(--space-2);
+
+    & + .stat-row {
+      border-top: var(--border-width) solid var(--color-border-subtle);
+    }
+  }
+
+  .stat-label {
+    color: var(--color-text-secondary);
+    font-size: var(--type-sm);
+  }
+
+  .stat-value {
+    margin: 0;
+    font-size: var(--type-base);
+    font-weight: var(--weight-bold);
+    font-variant-numeric: tabular-nums;
+  }
+}

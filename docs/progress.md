@@ -33,11 +33,16 @@ UI inventory (tokens, components, screens, drops) lives in [`ui/ui-registry.md`]
 - Checkbox and code boxes restyled to the Stitch "Mobile Auth UI Design" checkbox: soft filled boxes, no border.
 - Reset limits (owner): 5 codes per email per day, 3 wrong guesses per code, then the code locks until a new one is sent; Neon TOO_MANY_ATTEMPTS handled. Counted in localStorage (src/features/auth/reset-limits.ts) for now: move to the backend before launch.
 - Final reset step now calls the backend (POST /api/auth/password-reset), which also emails "your password was changed" via Resend. Needs VITE_API_BASE_URL set (locally and in Vercel) and the backend deployed.
+- Home screen (`/home`), UI only with sample data: built from the Stitch desktop board "FaithLink - Desktop Home Dashboard" (desktop is the source; phone derived from it). New app shell: navy sidebar on desktop, top bar, bottom nav on phones. Sections: Today's focus + streak (a self-advancing carousel on phones and tablets with the next card peeking in, no dots; side by side on desktop), quick actions, upcoming activities, your progress, recent activity, recent achievements. Invented points/XP/levels/ranks dropped (owner chose option A; streak kept as a tally). Plain SCSS with plain class names (owner: no BEM). Shell and home are lazy-loaded (about 6 kB gzipped together). Placeholder page deleted. Photo from Unsplash.
 - Onboarding entrance polish: page code and first photo preload at idle while on sign-in (preload-onboarding.ts); staged entrance (header, text, picture, buttons); FadeImage shows a pulsing placeholder then sharpens each photo in, so no blank frames on slow connections.
+- Owner direction (2026-10-17): Stitch desktop is the spec, built component by component (AGENTS.md, DESIGN.md). Dark surfaces moved from navy to a new "night" colour (navy kept for text), lightened once at the owner's request; it is the base for dark mode. New collapsible desktop sidebar (starts as icons; opens from the logo or a click on empty space; Stitch items with "Soon" tags; mountain art stand-in + tagline). Shared coming-soon popup for unbuilt features. Phone top bar is now logo, bell and avatar.
 
 ## Next
 
-- More UI refinements (owner to specify).
+- Next components, one at a time: phone bottom nav plan (match sidebar?), then the home sections against the Stitch desktop board.
+- Sidebar art: replace the SVG stand-in if the owner supplies the image.
+- Pages linked from the shell and home: Lessons, Quizzes, Activities, Progress, My church, Achievements, Settings; behaviour for the church switcher, bell, avatar menu, search and Join.
+- Home: swap sample data for the API (and WebSocket updates); loading skeleton and error state once data is fetched.
 - Backend: enforce the same password and name rules (client-side only today; Neon Auth accepts any name).
 - Unbuilt linked pages: `/terms`, `/privacy`.
 - Session handling and route guards (`/home` does not check sign-in yet); show an error when Google sign-in cannot start.

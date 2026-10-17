@@ -4,10 +4,24 @@ import { renderRoute } from '@/test/render-route'
 import { SHOW_ONBOARDING_EVERY_SIGN_IN, hasSeenOnboarding, markOnboardingSeen } from './onboarding-storage'
 
 const heading = (name: string) => screen.findByRole('heading', { level: 1, name }, LAZY_ROUTE)
+const homeHeading = () =>
+  screen.findByRole('heading', { level: 1, name: /^Good (morning|afternoon|evening), David$/ }, LAZY_ROUTE)
 // Step 1 has two Next controls (the phone arrow on the verse card and the desktop footer button); the footer one is last.
 const footerNext = () => screen.getAllByRole('button', { name: /next/i }).at(-1) as HTMLElement
 
 describe('Onboarding', () => {
+  // /home matches three lazy routes (shell, home, then onboarding via the gate). Import them once up
+  // front so each test's timeout measures the flow, not the cold module transform.
+  beforeAll(
+    () =>
+      Promise.all([
+        import('@/features/app-shell/app-shell'),
+        import('@/features/home/home-page'),
+        import('./onboarding-page'),
+      ]),
+    60000,
+  )
+
   it('shows once on this device before home', async () => {
     const { router } = renderRoute('/home')
     expect(await heading('You’re in the right place')).toBeInTheDocument()
@@ -34,7 +48,7 @@ describe('Onboarding', () => {
     await heading('Connect and make an impact')
 
     await user.click(screen.getByRole('button', { name: 'Get started' }))
-    expect(await screen.findByRole('heading', { name: 'You’re signed in' })).toBeInTheDocument()
+    expect(await homeHeading()).toBeInTheDocument()
     expect(router.state.location.pathname).toBe('/home')
     expect(hasSeenOnboarding()).toBe(!SHOW_ONBOARDING_EVERY_SIGN_IN)
   })
@@ -54,7 +68,7 @@ describe('Onboarding', () => {
     const { user, router } = renderRoute('/onboarding')
     await heading('You’re in the right place')
     await user.click(screen.getByRole('button', { name: 'Skip' }))
-    expect(await screen.findByRole('heading', { name: 'You’re signed in' })).toBeInTheDocument()
+    expect(await homeHeading()).toBeInTheDocument()
     expect(router.state.location.pathname).toBe('/home')
     expect(hasSeenOnboarding()).toBe(!SHOW_ONBOARDING_EVERY_SIGN_IN)
   })
@@ -65,6 +79,6 @@ describe('Onboarding', () => {
     if (SHOW_ONBOARDING_EVERY_SIGN_IN) return
     markOnboardingSeen()
     renderRoute('/home')
-    expect(await screen.findByRole('heading', { name: 'You’re signed in' })).toBeInTheDocument()
+    expect(await homeHeading()).toBeInTheDocument()
   })
 })

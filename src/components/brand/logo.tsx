@@ -29,13 +29,23 @@ type LogoProps = {
   className?: string
   /** `tile` (default) is the favicon mark; `cross` is the bare cross from the onboarding design (owner is comparing the two). */
   mark?: 'tile' | 'cross'
+  /** `inverse` sets the wordmark in light text for dark surfaces (desktop sidebar). */
+  tone?: 'default' | 'inverse'
 }
 
-export function Logo({ className, mark = 'tile' }: LogoProps) {
+export function Logo({ className, mark = 'tile', tone = 'default' }: LogoProps) {
   return (
     <div className={cn('flex items-center', mark === 'tile' ? 'gap-3' : 'gap-1', className)}>
       {mark === 'tile' ? <LogoMark /> : <CrossMark className="size-7" />}
-      <span className={cn('text-title-lg text-fg', mark === 'cross' && 'font-bold')}>FaithLink</span>
+      <span
+        className={cn(
+          'text-title-lg',
+          tone === 'inverse' ? 'text-fg-inverse' : 'text-fg',
+          mark === 'cross' && 'font-bold',
+        )}
+      >
+        FaithLink
+      </span>
     </div>
   )
 }

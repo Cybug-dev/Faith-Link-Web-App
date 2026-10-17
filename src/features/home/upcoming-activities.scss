@@ -1,0 +1,96 @@
+.upcoming {
+  .upcoming-list {
+    margin: 0;
+    padding-block: var(--space-2);
+    list-style: none;
+  }
+
+  .upcoming-empty {
+    margin: 0;
+    color: var(--color-text-secondary);
+    font-size: var(--type-sm);
+  }
+
+  .upcoming-row {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    padding-block: var(--space-3);
+
+    & + .upcoming-row {
+      border-top: var(--border-width) solid var(--color-border-subtle);
+    }
+  }
+
+  .date-tile {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: var(--space-12);
+    height: var(--space-12);
+    flex-shrink: 0;
+    border-radius: var(--round-md);
+    background: var(--color-accent-subtle-bg);
+    color: var(--color-accent-subtle-text);
+  }
+
+  .date-tile-month {
+    font-size: var(--type-xs);
+    line-height: var(--type-xs-lh);
+    font-weight: var(--weight-semibold);
+  }
+
+  .date-tile-day {
+    color: var(--color-text-primary);
+    font-size: var(--type-lg);
+    line-height: 1;
+    font-weight: var(--weight-bold);
+  }
+
+  .upcoming-text {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .upcoming-title {
+    margin: 0;
+    overflow: hidden;
+    font-size: var(--type-sm);
+    line-height: var(--type-sm-lh);
+    font-weight: var(--weight-semibold);
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .upcoming-meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    column-gap: var(--space-1);
+    margin: var(--space-1) 0 0;
+    color: var(--color-text-secondary);
+    font-size: var(--type-xs);
+    line-height: var(--type-xs-lh);
+
+    .upcoming-meta-icon:not(:first-child) {
+      margin-inline-start: var(--space-2);
+    }
+  }
+
+  .upcoming-meta-icon {
+    width: var(--type-xs);
+    height: var(--type-xs);
+    flex-shrink: 0;
+  }
+
+  .upcoming-joined {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-1);
+    padding-inline: var(--space-3);
+    color: var(--color-success-icon);
+    font-size: var(--type-xs);
+    font-weight: var(--weight-semibold);
+  }
+}

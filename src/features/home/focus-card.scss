@@ -1,0 +1,128 @@
+@use '@/styles/mixins' as *;
+
+.focus-card {
+  position: relative;
+  display: flex;
+  height: 100%;
+  min-height: 24rem;
+  overflow: hidden;
+  border-radius: var(--round-lg);
+  background: var(--color-bg-inverse); // shows while the photo loads
+  color: var(--color-text-inverse);
+  isolation: isolate;
+
+  @include desktop {
+    min-height: 22rem;
+  }
+
+  .focus-photo {
+    position: absolute;
+    inset: 0;
+    z-index: -2;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 30%;
+  }
+
+  // Dark scrim so the white text stays readable on any part of the photo (DESIGN.md: 4.5:1).
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: linear-gradient(to top, var(--color-bg-scrim-photo) 45%, transparent);
+
+    @include desktop {
+      background: linear-gradient(to right, var(--color-bg-scrim-photo) 50%, transparent);
+    }
+  }
+
+  .focus-body {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-end;
+    gap: var(--space-3);
+    width: 100%;
+    padding: var(--space-5);
+
+    @include desktop {
+      justify-content: center;
+      max-width: 34rem;
+      padding: var(--space-8);
+    }
+  }
+
+  .focus-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    margin: 0;
+    padding: var(--space-1) var(--space-3);
+    border-radius: var(--round-full);
+    background: var(--color-bg-glass-warm);
+    backdrop-filter: blur(var(--blur-glass));
+    font-size: var(--type-xs);
+    line-height: var(--type-xs-lh);
+    font-weight: var(--weight-semibold);
+  }
+
+  .focus-tag-dot {
+    width: var(--space-1);
+    height: var(--space-1);
+    border-radius: var(--round-full);
+    background: var(--color-accent-bg);
+  }
+
+  .focus-tag-icon {
+    width: var(--type-xs);
+    height: var(--type-xs);
+  }
+
+  .focus-title {
+    margin: 0;
+    font-size: var(--role-headline-lg-size);
+    line-height: var(--role-headline-lg-lh);
+    font-weight: var(--weight-bold);
+    letter-spacing: var(--ls-headline);
+  }
+
+  .focus-verse {
+    margin: 0;
+    padding-inline-start: var(--space-3);
+    border-inline-start: var(--accent-rule-width) solid var(--color-accent-bg);
+  }
+
+  .focus-verse-text {
+    max-width: 65ch;
+    margin: 0;
+    font-size: var(--type-sm);
+    line-height: var(--type-sm-lh);
+    font-style: italic;
+
+    @include desktop {
+      font-size: var(--type-base);
+      line-height: var(--type-base-lh);
+    }
+  }
+
+  .focus-verse-ref {
+    display: block;
+    margin-top: var(--space-1);
+    color: var(--color-text-accent-on-photo);
+    font-size: var(--type-xs);
+    line-height: var(--type-xs-lh);
+    font-style: normal;
+    font-weight: var(--weight-semibold);
+  }
+
+  .focus-action {
+    margin-top: var(--space-2);
+  }
+
+  .focus-action-icon {
+    width: var(--icon-md);
+    height: var(--icon-md);
+  }
+}

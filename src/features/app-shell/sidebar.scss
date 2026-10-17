@@ -1,0 +1,285 @@
+@use '@/styles/mixins' as *;
+
+// Desktop sidebar. Collapsed (icons only) by default; data-open="true" when open.
+// Plain class names nested under .sidebar (owner: no BEM).
+.sidebar {
+  display: none;
+
+  @include desktop {
+    grid-area: sidebar;
+    position: sticky;
+    top: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-8);
+    width: var(--sidebar-w-collapsed);
+    height: 100dvh;
+    padding: var(--space-6) var(--space-4);
+    // Collapsed: visible so the icon tooltips can reach past the edge. Each text part clips itself.
+    overflow: visible;
+    background: var(--color-bg-inverse);
+    color: var(--color-text-inverse);
+    cursor: e-resize; // a click on empty space opens it
+    transition: width var(--motion-duration-slow) var(--motion-ease-out);
+
+    &[data-open='true'] {
+      width: var(--sidebar-w);
+      overflow: hidden auto;
+      cursor: auto;
+    }
+  }
+
+  // Text that only shows when open fades instead of popping.
+  .sidebar-wordmark,
+  .sidebar-label,
+  .sidebar-soon,
+  .sidebar-foot {
+    opacity: 0;
+    transition: opacity var(--motion-duration-base) var(--motion-ease-standard);
+  }
+
+  &[data-open='true'] {
+    .sidebar-wordmark,
+    .sidebar-label,
+    .sidebar-soon,
+    .sidebar-foot {
+      opacity: 1;
+      transition-delay: var(--motion-duration-fast);
+    }
+  }
+
+  @include reduced-motion {
+    &,
+    .sidebar-wordmark,
+    .sidebar-label,
+    .sidebar-soon,
+    .sidebar-foot {
+      transition: none;
+    }
+  }
+
+  // ── Head: logo button, wordmark, close ─────────────────────────────
+
+  .sidebar-head {
+    display: flex;
+    align-items: center;
+    gap: var(--space-1);
+    min-height: var(--hit-min);
+  }
+
+  .sidebar-logo,
+  .sidebar-close {
+    display: grid;
+    place-items: center;
+    width: var(--hit-min);
+    height: var(--hit-min);
+    flex-shrink: 0;
+    padding: 0;
+    border: 0;
+    border-radius: var(--round-full);
+    background: transparent;
+    color: var(--color-text-inverse-muted);
+    cursor: pointer;
+    transition: background-color var(--motion-duration-fast) var(--motion-ease-standard);
+
+    &:hover {
+      background: var(--color-bg-inverse-raised);
+    }
+
+    svg {
+      width: var(--icon-md);
+      height: var(--icon-md);
+    }
+  }
+
+  // Cross and "open" icon share one cell; hover swaps them while collapsed (ChatGPT-style).
+  .sidebar-logo-mark,
+  .sidebar-logo-open {
+    grid-area: 1 / 1;
+    transition: opacity var(--motion-duration-fast) var(--motion-ease-standard);
+  }
+
+  .sidebar-logo .sidebar-logo-mark {
+    width: var(--icon-lg);
+    height: var(--icon-lg);
+  }
+
+  .sidebar-logo-open {
+    opacity: 0;
+  }
+
+  &:not([data-open='true']) .sidebar-logo:is(:hover, :focus-visible) {
+    .sidebar-logo-mark {
+      opacity: 0;
+    }
+
+    .sidebar-logo-open {
+      opacity: 1;
+    }
+  }
+
+  &[data-open='true'] .sidebar-logo:hover {
+    background: transparent;
+  }
+
+  .sidebar-wordmark {
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    color: var(--color-text-inverse);
+    font-size: var(--type-xl);
+    line-height: var(--type-xl-lh);
+    font-weight: var(--weight-bold);
+    white-space: nowrap;
+  }
+
+  .sidebar-close {
+    margin-inline-start: auto;
+  }
+
+  // ── Links ──────────────────────────────────────────────────────────
+
+  .sidebar-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .sidebar-link {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    width: 100%;
+    min-height: var(--hit-min);
+    padding-inline: var(--space-3);
+    border: 0;
+    border-radius: var(--round-full);
+    background: transparent;
+    color: var(--color-text-inverse);
+    font: inherit;
+    font-size: var(--type-sm);
+    line-height: var(--type-sm-lh);
+    font-weight: var(--weight-semibold);
+    text-align: start;
+    text-decoration: none;
+    white-space: nowrap;
+    cursor: pointer;
+    transition: background-color var(--motion-duration-fast) var(--motion-ease-standard);
+
+    &:hover {
+      background: var(--color-bg-inverse-raised);
+    }
+
+    // Current page: amber fill, as on the Stitch desktop board.
+    &.active {
+      background: var(--gradient-accent);
+      color: var(--color-text-on-accent);
+    }
+  }
+
+  .sidebar-icon {
+    width: var(--icon-md);
+    height: var(--icon-md);
+    flex-shrink: 0;
+  }
+
+  .sidebar-text {
+    display: flex;
+    flex: 1;
+    align-items: center;
+    gap: var(--space-2);
+    min-width: 0;
+    overflow: hidden;
+  }
+
+  .sidebar-label {
+    flex: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  // Collapsed: the label shows as a tooltip on hover and keyboard focus.
+  // The faded label already names the link for screen readers.
+  &:not([data-open='true']) .sidebar-link::after {
+    content: attr(data-label);
+    position: absolute;
+    inset-inline-start: calc(100% + var(--space-3));
+    top: 50%;
+    z-index: var(--z-dropdown);
+    padding: var(--space-1) var(--space-3);
+    border-radius: var(--round-sm);
+    background: var(--color-bg-inverse);
+    color: var(--color-text-inverse);
+    box-shadow: var(--elevation-popover);
+    font-size: var(--type-xs);
+    line-height: var(--type-xs-lh);
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(-50%);
+    transition: opacity var(--motion-duration-fast) var(--motion-ease-standard);
+  }
+
+  &:not([data-open='true']) .sidebar-link:is(:hover, :focus-visible)::after {
+    opacity: 1;
+  }
+
+  .sidebar-soon {
+    flex-shrink: 0;
+    padding: 0 var(--space-2);
+    border-radius: var(--round-full);
+    background: var(--color-bg-inverse-raised);
+    color: var(--color-text-inverse-muted);
+    font-size: var(--type-xs);
+    line-height: var(--type-xs-lh);
+    font-weight: var(--weight-semibold);
+  }
+
+  // ── Foot: mountain art and tagline, bled to the sidebar edges ──────
+
+  .sidebar-foot {
+    position: relative;
+    margin: auto calc(-1 * var(--space-4)) calc(-1 * var(--space-6));
+    overflow: hidden;
+    pointer-events: none;
+  }
+
+  .sidebar-art {
+    display: block;
+    width: var(--sidebar-w);
+    height: auto;
+
+    .art-rim-stop {
+      stop-color: var(--color-accent-bg);
+    }
+
+    .art-star {
+      fill: var(--color-accent-bg);
+    }
+
+    .art-ridge-far {
+      fill: var(--color-bg-inverse-raised);
+    }
+
+    .art-ridge-near {
+      fill: var(--color-bg-inverse);
+    }
+  }
+
+  .sidebar-tagline {
+    position: absolute;
+    inset-inline: 0;
+    bottom: var(--space-6);
+    margin: 0;
+    color: var(--color-text-inverse-muted);
+    font-size: var(--type-xs);
+    line-height: var(--type-xs-lh);
+    font-weight: var(--weight-semibold);
+    text-align: center;
+    white-space: nowrap;
+  }
+}

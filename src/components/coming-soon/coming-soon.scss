@@ -1,0 +1,83 @@
+@use '@/styles/mixins' as *;
+
+// The shared "coming soon" popup. Plain class names nested under .coming-soon.
+.coming-soon {
+  width: min(100% - 2 * var(--page-margin), var(--w-form));
+  margin: auto;
+  padding: 0;
+  border: 0;
+  border-radius: var(--round-lg);
+  background: var(--color-bg-surface);
+  color: var(--color-text-primary);
+  box-shadow: var(--elevation-modal);
+
+  &::backdrop {
+    background: var(--color-bg-scrim);
+  }
+
+  &[open] {
+    animation: coming-soon-in var(--motion-duration-base) var(--motion-ease-out);
+  }
+
+  @include reduced-motion {
+    &[open] {
+      animation: none;
+    }
+  }
+
+  .coming-soon-panel {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-3);
+    padding: var(--space-8) var(--space-6) var(--space-6);
+    text-align: center;
+  }
+
+  .coming-soon-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: var(--space-12);
+    height: var(--space-12);
+    margin-bottom: var(--space-1);
+    border-radius: var(--round-full);
+    background: var(--color-accent-subtle-bg);
+    color: var(--color-accent-subtle-text);
+
+    svg {
+      width: var(--icon-lg);
+      height: var(--icon-lg);
+    }
+  }
+
+  .coming-soon-title {
+    margin: 0;
+    font-size: var(--type-xl);
+    line-height: var(--type-xl-lh);
+    font-weight: var(--weight-bold);
+  }
+
+  .coming-soon-text {
+    margin: 0;
+    color: var(--color-text-secondary);
+    font-size: var(--type-sm);
+    line-height: var(--type-sm-lh);
+  }
+
+  .coming-soon-button {
+    width: 100%;
+    margin-top: var(--space-3);
+  }
+
+  form {
+    align-self: stretch;
+  }
+}
+
+@keyframes coming-soon-in {
+  from {
+    opacity: 0;
+    transform: translateY(var(--space-2)) scale(0.98);
+  }
+}

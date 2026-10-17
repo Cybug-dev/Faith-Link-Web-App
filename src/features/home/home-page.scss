@@ -1,0 +1,83 @@
+@use '@/styles/mixins' as *;
+
+// Phones: one column in the desktop board's order. Desktop: the board's grid,
+// a wide main column (2fr) beside a narrow one (1fr).
+.home-page {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-areas:
+    'greeting'
+    'hero'
+    'actions'
+    'upcoming'
+    'progress'
+    'recent'
+    'achievements';
+  gap: var(--space-8);
+  max-width: var(--w-content);
+  padding-inline: var(--page-margin);
+  padding-top: var(--space-2);
+  // The carousel's peek bleeds into the page margin; keep the page itself from scrolling sideways.
+  overflow-x: clip;
+
+  @include desktop {
+    grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+    grid-template-areas:
+      'greeting greeting'
+      'hero hero'
+      'actions actions'
+      'upcoming progress'
+      'recent achievements';
+    gap: var(--space-8) var(--space-6);
+    padding-top: var(--space-4);
+  }
+
+  .home-greeting {
+    grid-area: greeting;
+  }
+
+  .home-title {
+    margin: 0;
+    font-size: var(--role-headline-lg-size);
+    line-height: var(--role-headline-lg-lh);
+    font-weight: var(--weight-bold);
+    letter-spacing: var(--ls-headline);
+  }
+
+  .home-subtitle {
+    margin: var(--space-1) 0 0;
+    color: var(--color-text-secondary);
+    font-size: var(--type-sm);
+    line-height: var(--type-sm-lh);
+
+    @include desktop {
+      font-size: var(--type-base);
+      line-height: var(--type-base-lh);
+    }
+  }
+
+  .home-hero {
+    grid-area: hero;
+    min-width: 0;
+  }
+
+  .home-actions {
+    grid-area: actions;
+  }
+
+  .home-upcoming {
+    grid-area: upcoming;
+  }
+
+  .home-progress {
+    grid-area: progress;
+  }
+
+  .home-recent {
+    grid-area: recent;
+  }
+
+  .home-achievements {
+    grid-area: achievements;
+  }
+}

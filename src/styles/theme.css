@@ -42,6 +42,7 @@
   --color-subtle: var(--color-bg-subtle);
   --color-muted: var(--color-bg-muted);
   --color-inverse: var(--color-bg-inverse);
+  --color-inverse-raised: var(--color-bg-inverse-raised);
   --color-scrim: var(--color-bg-scrim);
   --color-scrim-photo: var(--color-bg-scrim-photo);
 

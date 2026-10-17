@@ -16,6 +16,8 @@ Use semantic tokens (`--color-*`), never `--palette-*` or hex, in components. Ta
 | Text / secondary / muted | `--color-text-primary` / `-secondary` / `-muted` | `#14213D` (navy) / `#4F5864` / `#5F6B78` |
 | Accent fill, gradient, label on it | `--color-accent-bg`, `--gradient-accent`, `--color-text-on-accent` | `#F39C2B`, `#DA8826` → `#F39C2B`, white |
 | Links, focus ring | `--color-text-accent`, `--color-focus-ring` | `#C27419` (orange; owner removed the dark brown) |
+| Dark surface / raised on it / divider on it | `--color-bg-inverse` / `-inverse-raised` / `--color-border-inverse` | `#1A1F28` / `#2A303B` / `#363D4A` (the "night" of the Stitch desktop sidebar and quiz screen) |
+| Text on dark / muted on dark | `--color-text-inverse` / `-inverse-muted` | `#FBF9F5` / `#CFC9BD` |
 | Control border (3:1) / divider | `--color-border-control` / `-subtle` | `#857F75` / `#E2DED5` |
 | Status | `--color-{danger,success,warning,info}-{bg,border,text}` | see tokens.css |
 
@@ -23,7 +25,8 @@ Use semantic tokens (`--color-*`), never `--palette-*` or hex, in components. Ta
 - Owner's trial, below WCAG AA: white on the amber button (~2.2:1) and orange links (~3.3:1). Revisit before launch.
 - Anything that defines a control (input, checkbox, outlined button) uses the control border, not the divider colour.
 - Status is icon + words, never colour alone.
-- Light theme only for now.
+- Light theme only for now. **Dark mode is planned (owner, 2026-10-17):** night (`--palette-night-*`) is its base colour. Navy is for text only; every dark surface uses night.
+- **Built for a cheap dark mode:** components reference semantic tokens only (never palette or hex), so dark mode is one `[data-theme='dark']` block in `tokens.css` that re-points the semantic tokens. No component should need its own dark styles. Keep styling simple and light: the app must stay fast because live quizzes will run over WebSockets.
 - Decoration (`--color-deco-glow`, `--color-deco-shape`, `--color-bg-glass`) only behind illustrations on showcase screens such as onboarding; never behind form fields or body text.
 
 ## Typography

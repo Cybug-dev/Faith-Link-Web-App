@@ -1,0 +1,237 @@
+@use '@/styles/mixins' as *;
+
+// Signed-in layout. Plain class names nested under .app-shell (owner: no BEM),
+// so they stay readable in devtools without leaking into other screens.
+.app-shell {
+  min-height: 100dvh;
+  background: var(--color-bg-canvas);
+  color: var(--color-text-primary);
+
+  @include desktop {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr); // the sidebar sets its own (animated) width
+    grid-template-rows: auto 1fr;
+    grid-template-areas:
+      'sidebar topbar'
+      'sidebar content';
+  }
+
+  .skip-link {
+    position: absolute;
+    inset-inline-start: var(--space-4);
+    top: var(--space-4);
+    z-index: var(--z-toast);
+    padding: var(--space-2) var(--space-4);
+    border-radius: var(--round-full);
+    background: var(--color-bg-surface);
+    box-shadow: var(--elevation-popover);
+    font-weight: var(--weight-semibold);
+    transform: translateY(-200%);
+
+    &:focus-visible {
+      transform: none;
+    }
+  }
+
+  // ── Top bar ────────────────────────────────────────────────────────
+
+  .topbar {
+    position: sticky;
+    top: 0;
+    z-index: var(--z-sticky);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-4);
+    min-height: var(--topbar-h);
+    padding: var(--space-2) var(--page-margin);
+    background: var(--color-bg-canvas);
+
+    @include desktop {
+      grid-area: topbar;
+      padding-block: var(--space-4);
+    }
+  }
+
+  // Phones and tablets: the logo leads the top bar; on desktop the sidebar carries it.
+  .topbar-logo {
+    min-width: 0;
+
+    @include desktop {
+      display: none;
+    }
+  }
+
+  // Search lives on desktop only; phones will reach it from its own page.
+  .topbar-search {
+    display: none;
+
+    @include desktop {
+      display: block;
+      flex: 1;
+      max-width: var(--w-form);
+    }
+  }
+
+  .topbar-actions {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+  }
+
+  .notify-button {
+    position: relative;
+  }
+
+  .notify-icon {
+    width: var(--icon-md);
+    height: var(--icon-md);
+  }
+
+  // Amber dot, not red: amber is the one accent and red is kept for errors (DESIGN.md).
+  // The ring keeps it visible against the white button.
+  .notify-dot {
+    position: absolute;
+    top: var(--space-3);
+    inset-inline-end: var(--space-3);
+    width: var(--space-2);
+    height: var(--space-2);
+    border-radius: var(--round-full);
+    background: var(--color-accent-bg);
+    box-shadow: 0 0 0 var(--focus-ring-width) var(--color-bg-surface);
+  }
+
+  .profile-button {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    min-height: var(--hit-min);
+    padding: 0;
+    border: 0;
+    border-radius: var(--round-full);
+    background: transparent;
+    color: inherit;
+    font: inherit;
+    text-align: start;
+    cursor: pointer;
+  }
+
+  .avatar {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: var(--hit-min);
+    height: var(--hit-min);
+    flex-shrink: 0;
+    border-radius: var(--round-full);
+    background: var(--color-bg-inverse);
+    color: var(--color-text-inverse);
+    font-size: var(--type-sm);
+    font-weight: var(--weight-semibold);
+  }
+
+  .profile-text {
+    display: none;
+
+    @include desktop {
+      display: flex;
+      flex-direction: column;
+      padding-inline-end: var(--space-2);
+    }
+  }
+
+  .profile-name {
+    font-size: var(--type-sm);
+    line-height: var(--type-sm-lh);
+    font-weight: var(--weight-semibold);
+  }
+
+  .profile-role {
+    color: var(--color-text-muted);
+    font-size: var(--type-xs);
+    line-height: var(--type-xs-lh);
+  }
+
+  // ── Content ────────────────────────────────────────────────────────
+
+  .app-content {
+    // Room for the fixed bottom nav (and the iPhone home bar) on phones.
+    padding-bottom: calc(var(--bottom-nav-h) + env(safe-area-inset-bottom) + var(--space-6));
+
+    &:focus {
+      outline: none;
+    }
+
+    @include desktop {
+      grid-area: content;
+      padding-bottom: var(--space-10);
+    }
+  }
+
+  // ── Bottom navigation (phones and tablets) ─────────────────────────
+
+  .bottom-nav {
+    position: fixed;
+    inset-inline: 0;
+    bottom: 0;
+    z-index: var(--z-sticky);
+    padding-bottom: env(safe-area-inset-bottom);
+    border-top: var(--border-width) solid var(--color-border-subtle);
+    background: var(--color-bg-surface);
+
+    @include desktop {
+      display: none;
+    }
+  }
+
+  .bottom-nav-list {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    max-width: var(--w-reading);
+    height: var(--bottom-nav-h);
+    margin: 0 auto;
+    padding: 0;
+    list-style: none;
+  }
+
+  .bottom-nav-link {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-1);
+    height: 100%;
+    color: var(--color-text-muted);
+    font-size: var(--type-xs);
+    line-height: var(--type-xs-lh);
+    text-decoration: none;
+
+    &.active {
+      color: var(--color-text-primary);
+      font-weight: var(--weight-semibold);
+
+      .bottom-nav-pill {
+        background: var(--color-accent-subtle-bg);
+      }
+
+      .bottom-nav-icon {
+        color: var(--color-accent-subtle-text);
+      }
+    }
+  }
+
+  .bottom-nav-pill {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: var(--space-12);
+    height: var(--space-8);
+    border-radius: var(--round-full);
+    transition: background-color var(--motion-duration-base) var(--motion-ease-standard);
+  }
+
+  .bottom-nav-icon {
+    width: var(--icon-md);
+    height: var(--icon-md);
+  }
+}

@@ -15,7 +15,7 @@ Keep entries one line each. Paths are repo-relative. Intent and conventions: [`D
 | Framework          | Vite 8 + React 19 + TypeScript 7 (strict) |
 | Routing            | React Router 8, route table in `src/app/router.tsx` (shared with tests) |
 | Forms              | react-hook-form + zod (`@hookform/resolvers`); validate on submit only (no warnings on leaving a field), then on change |
-| Styling system     | Tailwind CSS v4 via `@tailwindcss/vite` for the auth screens and the `ui` kit; **plain SCSS** (`sass-embedded`, BEM, one file per component) for new screens from onboarding on (owner). Both read the CSS variables in `tokens.css`; `theme.css` wipes Tailwind's default scales; SCSS helpers in `src/styles/_mixins.scss` |
+| Styling system     | Tailwind CSS v4 via `@tailwindcss/vite` for the auth screens and the `ui` kit; **plain SCSS** (`sass-embedded`, one file per component) for new screens from onboarding on (owner). Class names: plain kebab-case nested under the component's root class, **no BEM** from the home screen on (owner); onboarding keeps its older BEM names. Both read the CSS variables in `tokens.css`; `theme.css` wipes Tailwind's default scales; SCSS helpers in `src/styles/_mixins.scss` |
 | Motion             | `motion` (`motion/react`, LazyMotion + domAnimation) on lazy-loaded routes only (onboarding); reduced motion respected |
 | Components         | shadcn-style (cva + clsx), hand-built on the tokens. The shadcn CLI is not initialised on purpose: it would overwrite the token theme. |
 | Icon set           | Lucide (`lucide-react`), 20px default |
@@ -30,10 +30,10 @@ Keep entries one line each. Paths are repo-relative. Intent and conventions: [`D
 | Decision          | Value |
 |-------------------|-------|
 | Accent            | Amber `#F39C2B`; primary buttons use `--gradient-accent` with white text; orange `#C27419` for links and focus (no brown anywhere, owner) |
-| Ink / canvas      | Navy `#14213D` text, navy `#1B2847` inverse (logo tile, quiz card), canvas `#FDF9F3` (almost white, app-wide). Owner's colour trial from the onboarding reference |
+| Ink / canvas      | Navy `#1B2B5A` text only; every dark surface (sidebar, logo tile, focus/streak/quiz cards, secondary button) is night `#1A1F28` with `#2A303B` raised, from the Stitch desktop sidebar and quiz screen (owner, 2026-10-17). Canvas `#FDF9F3` (almost white, app-wide) |
 | Radius            | 4 (checkbox) / 8 (small tags) / 16 (cards, banners, photos, code boxes) / 24 (large illustration cards and photos) / full (buttons, inputs, tabs, chips) |
 | Elevation         | Soft `shadow-raised` on inputs, white buttons, tabs and cards (Stitch design); popover and modal for floating things |
-| Dark mode         | Not in MVP |
+| Dark mode         | Planned (owner). Night is its base; components use semantic tokens only so dark mode is one token block in `tokens.css`, no per-component restyling |
 | Breakpoints       | tablet 600, desktop 1024 (`tablet:` / `desktop:`) |
 | Imagery           | AI-generated Stitch photos as placeholders: two auth photos in `public/images`, 13 onboarding WebPs in `public/images/onboarding` (sized per use); replace with licensed photos |
 | Scripture         | King James Version (owner's choice; public domain outside the UK) in `src/features/auth/scripture.ts`; verses italic with quotation marks |
@@ -64,7 +64,7 @@ Role classes and base rules are in Tailwind layers, so utilities (`text-fg-secon
 
 | Component | Path | Variants / notes |
 |-----------|------|------------------|
-| Button | `src/components/ui/button.tsx` | primary (amber gradient, white text), secondary, outline, surface, ghost, text (plain ink, e.g. Skip), danger; sm/md/lg/icon (round 48px, needs aria-label); `loading` (spinner, aria-busy, blocks repeat submits) |
+| Button | `src/components/ui/button.tsx` (+ `button-variants.ts`, also used to style router Links as buttons) | primary (amber gradient, white text), secondary, outline, surface, ghost, text (plain ink, e.g. Skip), danger; sm/md/lg/icon (round 48px, needs aria-label); `loading` (spinner, aria-busy, blocks repeat submits) |
 | Input | `src/components/ui/input.tsx` | 52px white pill + soft shadow, **no border** (owner); 14px text, 16px on iOS (stops Safari zoom, `global.css`); focus = amber ring + icon turns dark amber; error = red ring via `aria-invalid`; `startIcon`, `endAdornment` |
 | PasswordInput | `src/components/ui/password-input.tsx` | show/hide toggle (44px hit area); icon shows state: slashed eye = hidden, open eye = visible |
 | FormField, FieldError | `src/components/ui/form-field.tsx` | render-prop wiring label/hint/error/aria; `hideLabel`, `labelAction` |
@@ -72,7 +72,14 @@ Role classes and base rules are in Tailwind layers, so utilities (`text-fg-secon
 | Checkbox | `src/components/ui/checkbox.tsx` | native input + drawn 20px soft filled box, no border (Stitch "Mobile Auth UI Design" sign-in); checked = amber + check; label may hold links |
 | OrDivider | `src/components/ui/or-divider.tsx` | lowercase labelled rule |
 | OtpInput | `src/components/ui/otp-input.tsx` | 6 digits, paste and autofill; soft filled boxes, no border (matches Checkbox); active box light amber, invalid boxes red tint |
-| Logo, CrossMark, GoogleIcon | `src/components/brand/` | Logo `mark="tile"` (default, favicon) or `"cross"` (bare amber cross from the onboarding design; owner comparing the two, onboarding uses cross). Google fills are brand colours (allowed hex) |
+| Logo, CrossMark, GoogleIcon | `src/components/brand/` | Logo `mark="tile"` (default, favicon) or `"cross"` (bare amber cross from the onboarding design; owner comparing the two, onboarding and the sidebar use cross); `tone="inverse"` for dark surfaces. Google fills are brand colours (allowed hex) |
+| AppShell | `src/features/app-shell/app-shell.tsx` + `.scss` | signed-in layout, lazy-loaded, wraps the ComingSoonProvider. Phone/tablet: top bar (logo, bell, avatar) + fixed bottom nav (5 items, `PRIMARY_NAV`). Desktop: Sidebar, top bar with search, bell, avatar + name + role. Viewer in `sample-viewer.ts` (sample) |
+| Sidebar, SidebarArt | `src/features/app-shell/sidebar.tsx` + `.scss`, `sidebar-art.tsx` | desktop only, night background. Starts collapsed (76px, icons, title tooltips); opens to 256px from the logo button (cross swaps to an "open" icon on hover) or a click on empty space; closes from the button at the top; width + fade transition, off under reduced motion. Items (`SIDEBAR_NAV`): Home, Bible Lessons, Quizzes, Live Games, Groups, Events, Leaderboard, Messages, Settings; unbuilt ones carry a "Soon" tag and open the coming-soon popup. Foot: inline-SVG mountains with amber rim and star + "Faith, Community, Impact" (stand-in until the owner supplies the image) |
+| ComingSoonProvider, useComingSoon | `src/components/coming-soon/` | one shared native `<dialog>` popup: "{Feature} is coming soon", one line, "Got it"; Escape/backdrop close it. Call `useComingSoon()(name)` from any unbuilt button |
+| HomeSection | `src/features/home/home-section.tsx` + `.scss` | heading row with optional "See all" link; `.panel` white card used by the home sections |
+| HeroCarousel | `src/features/home/hero-carousel.tsx` + `.scss` | below 1024px: native scroll-snap row, next card peeks in (no dots), slides on its own every 6s, pauses on touch/hover/focus/hidden tab, off under reduced motion; desktop: all cards side by side (2fr / 1fr), no motion |
+| FocusCard, StreakCard | `src/features/home/` | Today's focus (photo, verse with amber rule, "Continue lesson"); streak (navy, days in a row + this week's days, icon + text, no score) |
+| QuickActions, UpcomingActivities, ProgressCard, RecentActivity, AchievementsRow | `src/features/home/` | each with its own `.scss`; empty states written; data shapes in `home-sample-data.ts` (sample, replace with API) |
 | OnboardingPage | `src/features/onboarding/onboarding-page.tsx` + `onboarding.scss` | steps from `onboarding-steps.ts`; keyboard (arrows, Enter), swipe (`src/lib/use-swipe.ts`), slide/fade with Motion |
 | OnboardingGate | `src/features/onboarding/onboarding-gate.tsx` | wraps `/home`; sends a device that hasn't seen onboarding to `/onboarding` (`onboarding-storage.ts`, localStorage) |
 | FadeImage | `src/features/onboarding/fade-image.tsx` | img with a pulsing placeholder until loaded, then blur-in; `alt` required |
@@ -94,7 +101,7 @@ Role classes and base rules are in Tailwind layers, so utilities (`text-fg-secon
 | Reset password | `/reset-password` | auth | Verify email skeleton + Create account password fields (no Stitch design) | built; two steps: code first (checked with the server), then new password + confirm, then back to sign in; a code rejected at the end sends the person back to the code step |
 | Not found | `*` | error/404 | n/a | also where unbuilt links land |
 | App entry | `/` | n/a | n/a | redirects to `/sign-in` (owner) |
-| Home placeholder | `/home` | n/a | n/a | **temporary** landing after sign in (see below); behind OnboardingGate |
+| Home | `/home` | dashboard/overview | Stitch `FaithLink - Desktop Home Dashboard` (desktop is the source; phone derived from it) | UI only, sample data; inside AppShell, behind OnboardingGate, lazy-loaded. Phone: same sections stacked, focus + streak cards in the HeroCarousel |
 | Onboarding | `/onboarding` | onboarding | owner's 4-step image (mobile + desktop boards) | built, responsive, lazy-loaded; once per device; Skip / Get started go to home |
 
 ## Dropped from the Stitch sources, and why
@@ -126,10 +133,21 @@ Per the owner's instruction to drop inconsistent and unnecessary content.
 | Onboarding: NIV Matthew 18:20 | KJV text, as everywhere else |
 | Onboarding: phone home-indicator bar | Device chrome, not app UI |
 | Onboarding: "Mateo (26)" caption baked into a Stitch portrait | AI artifact; cropped out |
+| Home: XP, points ("1,280 Pts", "+120 today", "+50 Grace XP"), levels ("Lvl 14", "Tier II Disciple"), league rank ("Top 8%", "Rank #14"), daily quest, "Claim grace" | DESIGN.md: no points, levels or ranks in the API; nothing that ranks people (owner chose option A) |
+| Home: "72% overall" ring | Invented score; replaced by progress through the current lesson series ("4 of 7 lessons") |
+| Home: "342 youth studying right now", "Listen (3:45)" | Invented user count; no audio in the product |
+| Home: (sidebar items reversed 2026-10-17, now "Soon")  "View leaderboard" and "Join a live quiz" quick actions | Not in the product (no live quizzes, no ranking); Events is "Activities" (fixed vocabulary); quick actions now Take a quiz and Achievements |
+| Home: "FaithLink Fellowship" sidebar card | "Fellowship" is not our word for church. Tagline "Faith, Community, Impact" restored under the sidebar art (owner, 2026-10-17) |
+| Home: "Devotional reflection" and "Activities: 3 new" cards | Second verse duplicates Today's focus; activities card duplicates Upcoming activities |
+| Home: "Keep growing. Keep connecting. God has great plans for you.", "On fire", emoji (👋 🔥 📖 ⚡ 🏆) | Marketing slogan and emoji icons (UI rules §6); replaced by specific copy and Lucide icons |
+| Home: "Youth Member" role, red notification dot on some phone boards, carousel dots | Roles are Member/Leader/Pastor/Admin; amber dot everywhere (red is for errors); owner asked for no dots (next card peeks instead) |
+| Home: AI-generated Stitch photos and a photo avatar | Unsplash photo (friends at sunrise) for Today's focus; initials avatar |
 
 ## Temporary and open items
 
-- `src/pages/home-placeholder-page.tsx` and the `/home` route: replace when the real church home exists. With real sessions, `/` should send signed-in people to home, not sign in.
+- Home is UI only: `home-sample-data.ts` and `sample-viewer.ts` hold sample data to replace with the API (and WebSocket updates). With real sessions, `/` should send signed-in people to home, not sign in.
+- Unbuilt pages linked from the shell and home (land on Not found): `/lessons`, `/quizzes`, `/activities`, `/progress`, `/church`, `/achievements`, `/settings`. Church switcher, bell, avatar menu, search and Join buttons have no behaviour yet.
+- Home's Today's focus photo is hot-linked from Unsplash (`images.unsplash.com`); check the licence/credit wording and whether to self-host before launch.
 - `src/features/auth/auth-client.ts` now calls Neon Auth; tests use `src/test/fake-auth-client.ts`. Still unbuilt from the contract: "Last used" tag, session handling, route guards.
 - Linked pages not built (land on Not found): `/terms`, `/privacy`.
 - **Decision for the owner:** Stitch puts "Continue with Google" below the form (built that way); the backend auth notes recommend above it. Swap the `<GoogleButton />` block if you want the notes' order.
@@ -150,3 +168,6 @@ Per the owner's instruction to drop inconsistent and unnecessary content.
 | 2026-10-15 | Onboarding | Step 4 photo grid: staggered columns tilted in 3D (concave panel) on every size; phone step 1 photo full-bleed with a warm frosted verse card, verse upright | Owner: match the reference exactly | Owner |
 | 2026-10-15 | Onboarding | Soft amber glow, tilted shapes, frosted verse card, 24px radius, Caveat script line, illustrative "+100 pts" | Owner's onboarding design (UI rules §6 bans glassmorphism/blobs and DESIGN.md bans invented points) | Owner |
 | 2026-10-15 | New screens | Plain SCSS instead of Tailwind; Motion library for step transitions | Owner finds Tailwind hard to read; wants smooth but light transitions | Owner |
+| 2026-10-17 | Whole app | Stitch is the spec: the desktop board is the source of truth, phone derived from it, built component by component. Dark surfaces moved from navy to night; navy kept for text | Owner | Owner |
+| 2026-10-17 | Sidebar | Collapsible, ChatGPT-style; Live Games, Groups, Events, Leaderboard, Messages and the "Faith, Community, Impact" tagline restored (earlier drops reversed) as "Soon" items; church card removed; three dots under the tagline dropped (no meaning) | Owner: keep as designed, mark unbuilt features | Owner |
+| 2026-10-17 | Phone top bar | Logo, bell and avatar only; church switcher removed | Owner | Owner |
