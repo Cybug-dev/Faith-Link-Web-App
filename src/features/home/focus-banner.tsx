@@ -12,9 +12,9 @@ type Stat = { key: string; icon: ReactNode; value: string; label: string }
 /**
  * Full-width "Today's focus" hero from the owner's reference images: the lesson
  * card and the welcome panel. One DOM, pure CSS layout (container queries in the .scss):
- * - wide: one photo card, the welcome panel sits inside it on the right
- * - tighter: the panel steps out beside the lesson as its own card with its own photo
- * - phones: the two cards sit in a swipeable row, the panel peeking in from the side
+ * 1. wide: one photo card, the welcome panel inside it on the right
+ * 2. medium: one photo card, the panel inside it underneath the lesson, full width
+ * 3. phones: the panel steps out as its own card (own photo) in a swipeable row, a sliver peeking in
  */
 export function FocusBanner({
   lesson,

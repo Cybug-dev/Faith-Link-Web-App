@@ -1,20 +1,32 @@
 @use '@/styles/mixins' as *;
 
-// "Today's focus" hero (owner's reference images). One DOM, CSS-only layout:
-// container queries follow the width the hero really has, so nothing is measured
-// in JavaScript. Container queries can't read CSS variables; keep these in rem.
-$hero-phone: 37.5rem; // below: swipeable row of two cards
-$hero-together: 62rem; // from here: one photo card with the panel inside it
+// "Today's focus" hero (owner's reference images). One DOM, CSS-only layout with
+// three states, chosen by the width the hero really has (container queries):
+//   1. wide:   one photo card, welcome panel inside it on the right
+//   2. medium: one photo card, welcome panel inside it, underneath the lesson, full width
+//   3. narrow: the panel steps out as its own card beside the lesson, in a swipeable row
+// Container queries can't read CSS variables; keep these in rem.
+$hero-inside: 37.5rem; // from here: states 1 and 2 (panel inside)
+$hero-inline: 62rem; // from here: state 1 (panel on the right)
 
 .focus-hero {
   container: focus-hero / inline-size;
 
-  // ── Default (tablet-ish widths): two cards side by side, same height ─
+  // ── State 3 (default, phones): two cards in a swipeable row ──────────
 
   .focus-row {
     display: grid;
-    grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
-    gap: var(--space-4);
+    grid-auto-columns: calc(100% - var(--space-5)); // only a sliver of the next card shows
+    grid-auto-flow: column;
+    gap: var(--space-2);
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
   }
 
   .focus-card,
@@ -22,12 +34,13 @@ $hero-together: 62rem; // from here: one photo card with the panel inside it
     position: relative;
     isolation: isolate;
     min-width: 0;
-    min-height: 17rem;
-    padding: var(--space-5);
+    min-height: 11rem; // compact, as the owner's phone reference
+    padding: var(--space-4);
     overflow: hidden;
     border-radius: var(--round-lg);
     background: var(--color-bg-inverse); // shows while a photo loads
     color: var(--color-text-inverse);
+    scroll-snap-align: start;
 
     // Darkening over the photo so the text stays readable.
     &::after {
@@ -55,44 +68,20 @@ $hero-together: 62rem; // from here: one photo card with the panel inside it
     object-fit: cover;
   }
 
-  // ── Phones: the panel moves to the side in a swipeable row, peeking in ─
+  // ── States 1 and 2: one photo card, the panel inside it ──────────────
 
-  @container focus-hero (max-width: #{$hero-phone - 0.01rem}) {
-    .focus-row {
-      grid-template-columns: none;
-      grid-auto-columns: calc(100% - var(--space-8));
-      grid-auto-flow: column;
-      gap: var(--space-3);
-      overflow-x: auto;
-      overscroll-behavior-x: contain;
-      scroll-snap-type: x mandatory;
-      scrollbar-width: none;
-
-      &::-webkit-scrollbar {
-        display: none;
-      }
-    }
-
-    .focus-card,
-    .welcome-panel {
-      scroll-snap-align: start;
-    }
-  }
-
-  // ── Wide: one photo card, panel inside on the right ──────────────────
-
-  @container focus-hero (min-width: #{$hero-together}) {
+  @container focus-hero (min-width: #{$hero-inside}) {
     .focus-row {
       position: relative;
       isolation: isolate;
-      grid-template-columns: minmax(0, 1fr) minmax(0, 34rem);
-      align-items: center;
-      gap: var(--space-6);
-      min-height: 17rem;
-      padding: var(--space-8);
+      grid-auto-columns: auto;
+      grid-auto-flow: row;
+      gap: var(--space-5);
+      padding: var(--space-6);
       overflow: hidden;
       border-radius: var(--round-lg);
       background: var(--color-bg-inverse);
+      scroll-snap-type: none;
 
       &::after {
         content: '';
@@ -118,7 +107,7 @@ $hero-together: 62rem; // from here: one photo card with the panel inside it
       }
     }
 
-    // The panel becomes a frosted card on the shared photo; its own photo is not loaded.
+    // The panel becomes a frosted card on the shared photo; its own photo is never loaded.
     .welcome-panel {
       min-height: 0;
       border: var(--border-width) solid var(--color-border-inverse);
@@ -136,7 +125,17 @@ $hero-together: 62rem; // from here: one photo card with the panel inside it
     }
   }
 
-  // ── Lesson content ───────────────────────────────────────────────────
+  // State 1: panel on the right.
+  @container focus-hero (min-width: #{$hero-inline}) {
+    .focus-row {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 32rem);
+      align-items: center;
+      gap: var(--space-6);
+      padding: var(--space-6) var(--space-8);
+    }
+  }
+
+  // ── Lesson content (compact) ─────────────────────────────────────────
 
   .focus-card {
     display: flex;
@@ -146,8 +145,8 @@ $hero-together: 62rem; // from here: one photo card with the panel inside it
   }
 
   .focus-tag {
-    margin: 0 0 var(--space-3);
-    padding: var(--space-1) var(--space-3);
+    margin: 0 0 var(--space-2);
+    padding: 0 var(--space-2);
     border-radius: var(--round-full);
     background: var(--gradient-accent);
     color: var(--color-text-on-accent);
@@ -158,22 +157,17 @@ $hero-together: 62rem; // from here: one photo card with the panel inside it
 
   .focus-title {
     margin: 0;
-    font-size: var(--type-2xl);
-    line-height: var(--type-2xl-lh);
+    font-size: var(--type-lg);
+    line-height: var(--type-lg-lh);
     font-weight: var(--weight-bold);
     letter-spacing: var(--ls-headline);
-
-    @include desktop {
-      font-size: var(--type-3xl);
-      line-height: var(--type-3xl-lh);
-    }
   }
 
   // Verse with the amber rule, italic, as the owner's reference.
   .focus-verse {
     max-width: var(--w-reading);
-    margin: var(--space-3) 0 0;
-    padding-inline-start: var(--space-3);
+    margin: var(--space-2) 0 0;
+    padding-inline-start: var(--space-2);
     border-inline-start: var(--accent-rule-width) solid var(--color-accent-bg);
   }
 
@@ -182,25 +176,27 @@ $hero-together: 62rem; // from here: one photo card with the panel inside it
     margin: 0;
     overflow: hidden;
     color: var(--color-text-inverse-muted);
-    font-size: var(--type-sm);
-    line-height: var(--type-sm-lh);
+    font-size: var(--type-xs);
+    line-height: var(--type-xs-lh);
     font-style: italic;
     -webkit-box-orient: vertical;
-    -webkit-line-clamp: 2;
+    -webkit-line-clamp: 1;
   }
 
   .focus-verse-ref {
     display: block;
-    margin-top: var(--space-1);
     color: var(--color-accent-bg);
-    font-size: var(--type-sm);
-    line-height: var(--type-sm-lh);
+    font-size: var(--type-xs);
+    line-height: var(--type-xs-lh);
     font-weight: var(--weight-semibold);
     font-style: normal;
   }
 
   .focus-action {
-    margin-top: var(--space-5);
+    height: var(--control-h-sm);
+    margin-top: var(--space-3);
+    padding-inline: var(--space-4);
+    font-size: var(--type-xs);
   }
 
   .focus-action-icon {
@@ -208,13 +204,36 @@ $hero-together: 62rem; // from here: one photo card with the panel inside it
     height: var(--icon-sm);
   }
 
-  // ── Welcome panel content ────────────────────────────────────────────
+  // A step larger once the hero is wide.
+  @container focus-hero (min-width: #{$hero-inside}) {
+    .focus-title {
+      font-size: var(--type-2xl);
+      line-height: var(--type-2xl-lh);
+    }
+
+    .focus-verse-text {
+      font-size: var(--type-sm);
+      line-height: var(--type-sm-lh);
+      -webkit-line-clamp: 2;
+    }
+
+    .focus-verse-ref {
+      font-size: var(--type-sm);
+      line-height: var(--type-sm-lh);
+    }
+
+    .focus-action {
+      font-size: var(--type-sm);
+    }
+  }
+
+  // ── Welcome panel content (compact) ──────────────────────────────────
 
   .welcome-panel {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    gap: var(--space-4);
+    gap: var(--space-3);
   }
 
   .welcome-head {
@@ -222,21 +241,21 @@ $hero-together: 62rem; // from here: one photo card with the panel inside it
     flex-wrap: wrap;
     align-items: flex-start;
     justify-content: space-between;
-    gap: var(--space-2) var(--space-4);
+    gap: var(--space-1) var(--space-3);
   }
 
   .welcome-title {
     margin: 0;
-    font-size: var(--type-xl);
-    line-height: var(--type-xl-lh);
+    font-size: var(--type-base);
+    line-height: var(--type-base-lh);
     font-weight: var(--weight-bold);
   }
 
   .welcome-message {
-    margin: var(--space-1) 0 0;
+    margin: 0;
     color: var(--color-text-inverse-muted);
-    font-size: var(--type-sm);
-    line-height: var(--type-sm-lh);
+    font-size: var(--type-xs);
+    line-height: var(--type-xs-lh);
   }
 
   .welcome-verse {
@@ -247,8 +266,8 @@ $hero-together: 62rem; // from here: one photo card with the panel inside it
   .welcome-verse-text {
     margin: 0;
     font-family: var(--font-family-script);
-    font-size: var(--type-lg);
-    line-height: var(--type-lg-lh);
+    font-size: var(--type-base);
+    line-height: var(--type-base-lh);
   }
 
   .welcome-verse-ref {
@@ -271,8 +290,8 @@ $hero-together: 62rem; // from here: one photo card with the panel inside it
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    gap: var(--space-2);
-    padding: var(--space-3);
+    gap: var(--space-1);
+    padding: var(--space-2);
     border-radius: var(--round-md);
     background: var(--color-bg-glass-tile);
     transition:
@@ -298,22 +317,30 @@ $hero-together: 62rem; // from here: one photo card with the panel inside it
     }
   }
 
-  // Icon beside the numbers when the panel sits inside the wide card.
-  @container focus-hero (min-width: #{$hero-together}) {
-    .welcome-stats {
-      gap: var(--space-3);
+  // Inside the card: a step larger, icon beside the numbers.
+  @container focus-hero (min-width: #{$hero-inside}) {
+    .welcome-title {
+      font-size: var(--type-lg);
+      line-height: var(--type-lg-lh);
+    }
+
+    .welcome-message {
+      font-size: var(--type-sm);
+      line-height: var(--type-sm-lh);
     }
 
     .welcome-stat {
       flex-direction: row;
       align-items: center;
+      gap: var(--space-2);
+      padding: var(--space-2) var(--space-3);
     }
   }
 
   .welcome-stat-icon {
     display: inline-flex;
-    width: var(--icon-lg);
-    height: var(--icon-lg);
+    width: var(--icon-md);
+    height: var(--icon-md);
     flex-shrink: 0;
     transition: transform var(--motion-duration-base) var(--motion-ease-out);
 
@@ -330,8 +357,8 @@ $hero-together: 62rem; // from here: one photo card with the panel inside it
   }
 
   .welcome-stat-value {
-    font-size: var(--type-base);
-    line-height: var(--type-base-lh);
+    font-size: var(--type-sm);
+    line-height: var(--type-sm-lh);
     font-weight: var(--weight-bold);
     white-space: nowrap;
   }
