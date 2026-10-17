@@ -191,6 +191,7 @@
 
   /* ── 6. Control sizing ───────────────────────────────────────────── */
 
+  --control-h-xs: 1.75rem; /* 28 — phone top-bar bell and avatar (owner) */
   --control-h-sm: 2.25rem; /* 36 — chips, dense desktop actions; keep a 44px hit area */
   --control-h-md: 3rem; /* 48 — default button / input / select */
   --control-h-lg: 3.5rem; /* 56 — primary mobile CTA */

@@ -79,25 +79,16 @@
     gap: var(--space-3);
   }
 
+  // Small white bell, as the owner's reference: 28px on phones, 36px on desktop
+  // (both above the 24px WCAG 2.2 target minimum).
   .notify-button {
     position: relative;
+    width: var(--control-h-xs);
+    height: var(--control-h-xs);
 
-    // Small on phones and tablets, as the owner's reference: 32px button, 16px bell
-    // (still above the 24px WCAG 2.2 target minimum).
-    @media not all and (min-width: 64rem) {
-      width: var(--space-8);
-      height: var(--space-8);
-      box-shadow: none;
-
-      .notify-icon {
-        width: var(--icon-sm);
-        height: var(--icon-sm);
-      }
-
-      .notify-dot {
-        top: var(--space-1);
-        inset-inline-end: var(--space-1);
-      }
+    @include desktop {
+      width: var(--control-h-sm);
+      height: var(--control-h-sm);
     }
   }
 
@@ -115,16 +106,16 @@
   }
 
   .notify-icon {
-    width: var(--icon-md);
-    height: var(--icon-md);
+    width: var(--icon-sm);
+    height: var(--icon-sm);
   }
 
   // Amber dot, not red: amber is the one accent and red is kept for errors (DESIGN.md).
   // The ring keeps it visible against the white button.
   .notify-dot {
     position: absolute;
-    top: var(--space-3);
-    inset-inline-end: var(--space-3);
+    top: var(--space-1);
+    inset-inline-end: var(--space-1);
     width: var(--space-2);
     height: var(--space-2);
     border-radius: var(--round-full);
@@ -136,7 +127,6 @@
     display: flex;
     align-items: center;
     gap: var(--space-3);
-    min-height: var(--hit-min);
     padding: 0;
     border: 0;
     border-radius: var(--round-full);
@@ -145,14 +135,22 @@
     font: inherit;
     text-align: start;
     cursor: pointer;
+
+    // Desktop: white pill with avatar and name, as the owner's reference.
+    @include desktop {
+      gap: var(--space-2);
+      padding: var(--space-1) var(--space-3) var(--space-1) var(--space-1);
+      background: var(--color-bg-surface);
+      box-shadow: var(--elevation-raised);
+    }
   }
 
   .avatar {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: var(--space-8);
-    height: var(--space-8);
+    width: var(--control-h-xs);
+    height: var(--control-h-xs);
     flex-shrink: 0;
     border-radius: var(--round-full);
     background: var(--color-bg-inverse);
@@ -161,9 +159,8 @@
     font-weight: var(--weight-semibold);
 
     @include desktop {
-      width: var(--hit-min);
-      height: var(--hit-min);
-      font-size: var(--type-sm);
+      width: var(--space-8);
+      height: var(--space-8);
     }
   }
 
