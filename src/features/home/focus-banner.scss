@@ -34,7 +34,7 @@ $hero-inline: 62rem; // from here: state 1 (panel on the right)
     position: relative;
     isolation: isolate;
     min-width: 0;
-    min-height: 11rem; // compact, as the owner's phone reference
+    min-height: 13.5rem; // owner: not too thin; grows with content
     padding: var(--space-4);
     overflow: hidden;
     border-radius: var(--round-lg);
@@ -74,6 +74,7 @@ $hero-inline: 62rem; // from here: state 1 (panel on the right)
     .focus-row {
       position: relative;
       isolation: isolate;
+      min-height: 15rem;
       grid-auto-columns: auto;
       grid-auto-flow: row;
       gap: var(--space-5);
@@ -157,8 +158,8 @@ $hero-inline: 62rem; // from here: state 1 (panel on the right)
 
   .focus-title {
     margin: 0;
-    font-size: var(--type-lg);
-    line-height: var(--type-lg-lh);
+    font-size: var(--type-base);
+    line-height: var(--type-base-lh);
     font-weight: var(--weight-bold);
     letter-spacing: var(--ls-headline);
   }
@@ -207,23 +208,23 @@ $hero-inline: 62rem; // from here: state 1 (panel on the right)
   // A step larger once the hero is wide.
   @container focus-hero (min-width: #{$hero-inside}) {
     .focus-title {
-      font-size: var(--type-2xl);
-      line-height: var(--type-2xl-lh);
+      font-size: var(--type-xl);
+      line-height: var(--type-xl-lh);
     }
 
     .focus-verse-text {
-      font-size: var(--type-sm);
-      line-height: var(--type-sm-lh);
+      font-size: var(--type-xs);
+      line-height: var(--type-xs-lh);
       -webkit-line-clamp: 2;
     }
 
     .focus-verse-ref {
-      font-size: var(--type-sm);
-      line-height: var(--type-sm-lh);
+      font-size: var(--type-xs);
+      line-height: var(--type-xs-lh);
     }
 
     .focus-action {
-      font-size: var(--type-sm);
+      font-size: var(--type-xs);
     }
   }
 
@@ -246,8 +247,8 @@ $hero-inline: 62rem; // from here: state 1 (panel on the right)
 
   .welcome-title {
     margin: 0;
-    font-size: var(--type-base);
-    line-height: var(--type-base-lh);
+    font-size: var(--type-sm);
+    line-height: var(--type-sm-lh);
     font-weight: var(--weight-bold);
   }
 
@@ -266,8 +267,8 @@ $hero-inline: 62rem; // from here: state 1 (panel on the right)
   .welcome-verse-text {
     margin: 0;
     font-family: var(--font-family-script);
-    font-size: var(--type-base);
-    line-height: var(--type-base-lh);
+    font-size: var(--type-sm);
+    line-height: var(--type-sm-lh);
   }
 
   .welcome-verse-ref {
@@ -320,13 +321,13 @@ $hero-inline: 62rem; // from here: state 1 (panel on the right)
   // Inside the card: a step larger, icon beside the numbers.
   @container focus-hero (min-width: #{$hero-inside}) {
     .welcome-title {
-      font-size: var(--type-lg);
-      line-height: var(--type-lg-lh);
+      font-size: var(--type-base);
+      line-height: var(--type-base-lh);
     }
 
     .welcome-message {
-      font-size: var(--type-sm);
-      line-height: var(--type-sm-lh);
+      font-size: var(--type-xs);
+      line-height: var(--type-xs-lh);
     }
 
     .welcome-stat {

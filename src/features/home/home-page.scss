@@ -85,6 +85,8 @@
   .home-hero {
     grid-area: hero;
     min-width: 0;
+    // Sit close under the greeting (owner): 12px instead of the 32px section gap.
+    margin-top: calc(var(--space-3) - var(--space-8));
   }
 
   .home-actions {
