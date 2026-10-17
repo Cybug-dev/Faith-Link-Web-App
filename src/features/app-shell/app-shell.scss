@@ -16,23 +16,6 @@
       'sidebar content';
   }
 
-  .skip-link {
-    position: absolute;
-    inset-inline-start: var(--space-4);
-    top: var(--space-4);
-    z-index: var(--z-toast);
-    padding: var(--space-2) var(--space-4);
-    border-radius: var(--round-full);
-    background: var(--color-bg-surface);
-    box-shadow: var(--elevation-popover);
-    font-weight: var(--weight-semibold);
-    transform: translateY(-200%);
-
-    &:focus-visible {
-      transform: none;
-    }
-  }
-
   // ── Top bar ────────────────────────────────────────────────────────
 
   .topbar {

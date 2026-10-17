@@ -6,7 +6,7 @@
 
 export type FocusLesson = {
   title: string
-  reference: string
+  verse: { text: string; reference: string }
   to: string
   image: { src: string; alt: string }
 }
@@ -19,6 +19,7 @@ export type WelcomeStats = {
   level: number
   levelName: string
   verse: { text: string; reference: string }
+  image: { src: string; alt: string }
 }
 
 export type ActivityItem = {
@@ -57,12 +58,15 @@ function unsplash(id: string, width: number): string {
 }
 
 const FOCUS_PHOTO = '1508672019048-805c876b67e2'
+/** Behind the welcome panel when it stands on its own (decorative). */
+const WELCOME_PHOTO = '1519904981063-b0cf448d479e'
+export const WELCOME_IMAGE_SRCSET = [480, 800].map((w) => `${unsplash(WELCOME_PHOTO, w)} ${w}w`).join(', ')
 
 export const FOCUS_IMAGE_SRCSET = [640, 1200, 1800].map((w) => `${unsplash(FOCUS_PHOTO, w)} ${w}w`).join(', ')
 
 export const SAMPLE_FOCUS: FocusLesson = {
   title: 'The Burning Ones',
-  reference: 'Matthew 5:14-16',
+  verse: { text: 'Ye are the light of the world. A city that is set on an hill cannot be hid.', reference: 'Matthew 5:14-16' },
   to: '/lessons',
   image: { src: unsplash(FOCUS_PHOTO, 1200), alt: 'A person sitting alone by a calm mountain lake' },
 }
@@ -74,6 +78,7 @@ export const SAMPLE_WELCOME: WelcomeStats = {
   level: 14,
   levelName: 'Growing Strong',
   verse: { text: 'Be strong and courageous…', reference: 'Joshua 1:9' },
+  image: { src: unsplash(WELCOME_PHOTO, 800), alt: '' },
 }
 
 export const SAMPLE_ACTIVITIES: ActivityItem[] = [

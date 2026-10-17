@@ -1,34 +1,52 @@
 @use '@/styles/mixins' as *;
 
-// "Today's focus" banner (owner's reference). Plain class names nested under .focus-banner.
-.focus-banner {
-  position: relative;
-  isolation: isolate;
-  display: grid;
-  gap: var(--space-6);
-  padding: var(--space-6) var(--space-5);
-  overflow: hidden;
-  border-radius: var(--round-lg);
-  background: var(--color-bg-inverse); // shows while the photo loads
-  color: var(--color-text-inverse);
+// "Today's focus" hero (owner's reference images). One DOM, CSS-only layout:
+// container queries follow the width the hero really has, so nothing is measured
+// in JavaScript. Container queries can't read CSS variables; keep these in rem.
+$hero-phone: 37.5rem; // below: swipeable row of two cards
+$hero-together: 62rem; // from here: one photo card with the panel inside it
 
-  // Dark side behind the text, over the photo.
-  &::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    z-index: -1;
+.focus-hero {
+  container: focus-hero / inline-size;
+
+  // ── Default (tablet-ish widths): two cards side by side, same height ─
+
+  .focus-row {
+    display: grid;
+    grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
+    gap: var(--space-4);
+  }
+
+  .focus-card,
+  .welcome-panel {
+    position: relative;
+    isolation: isolate;
+    min-width: 0;
+    min-height: 17rem;
+    padding: var(--space-5);
+    overflow: hidden;
+    border-radius: var(--round-lg);
+    background: var(--color-bg-inverse); // shows while a photo loads
+    color: var(--color-text-inverse);
+
+    // Darkening over the photo so the text stays readable.
+    &::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      z-index: -1;
+    }
+  }
+
+  .focus-card::after {
     background: var(--gradient-photo-left);
   }
 
-  @include desktop {
-    grid-template-columns: minmax(0, 1fr) minmax(0, 34rem);
-    align-items: center;
-    min-height: 17rem;
-    padding: var(--space-8);
+  .welcome-panel::after {
+    background: var(--color-bg-scrim-photo);
   }
 
-  .banner-photo {
+  .hero-photo {
     position: absolute;
     inset: 0;
     z-index: -2;
@@ -37,15 +55,97 @@
     object-fit: cover;
   }
 
-  // ── Left: the lesson ───────────────────────────────────────────────
+  // ── Phones: the panel moves to the side in a swipeable row, peeking in ─
 
-  .banner-focus {
+  @container focus-hero (max-width: #{$hero-phone - 0.01rem}) {
+    .focus-row {
+      grid-template-columns: none;
+      grid-auto-columns: calc(100% - var(--space-8));
+      grid-auto-flow: column;
+      gap: var(--space-3);
+      overflow-x: auto;
+      overscroll-behavior-x: contain;
+      scroll-snap-type: x mandatory;
+      scrollbar-width: none;
+
+      &::-webkit-scrollbar {
+        display: none;
+      }
+    }
+
+    .focus-card,
+    .welcome-panel {
+      scroll-snap-align: start;
+    }
+  }
+
+  // ── Wide: one photo card, panel inside on the right ──────────────────
+
+  @container focus-hero (min-width: #{$hero-together}) {
+    .focus-row {
+      position: relative;
+      isolation: isolate;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 34rem);
+      align-items: center;
+      gap: var(--space-6);
+      min-height: 17rem;
+      padding: var(--space-8);
+      overflow: hidden;
+      border-radius: var(--round-lg);
+      background: var(--color-bg-inverse);
+
+      &::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        z-index: -1;
+        background: var(--gradient-photo-left);
+      }
+    }
+
+    // The lesson becomes plain content on the shared photo.
+    .focus-card {
+      position: static;
+      isolation: auto;
+      min-height: 0;
+      padding: 0;
+      overflow: visible;
+      border-radius: 0;
+      background: none;
+
+      &::after {
+        display: none;
+      }
+    }
+
+    // The panel becomes a frosted card on the shared photo; its own photo is not loaded.
+    .welcome-panel {
+      min-height: 0;
+      border: var(--border-width) solid var(--color-border-inverse);
+      border-radius: var(--round-md);
+      background: var(--color-bg-glass-night);
+      backdrop-filter: blur(var(--blur-glass));
+
+      &::after {
+        display: none;
+      }
+    }
+
+    .welcome-photo {
+      display: none;
+    }
+  }
+
+  // ── Lesson content ───────────────────────────────────────────────────
+
+  .focus-card {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
+    justify-content: center;
   }
 
-  .banner-tag {
+  .focus-tag {
     margin: 0 0 var(--space-3);
     padding: var(--space-1) var(--space-3);
     border-radius: var(--round-full);
@@ -56,7 +156,7 @@
     font-weight: var(--weight-semibold);
   }
 
-  .banner-title {
+  .focus-title {
     margin: 0;
     font-size: var(--type-2xl);
     line-height: var(--type-2xl-lh);
@@ -69,36 +169,55 @@
     }
   }
 
-  .banner-reference {
-    margin: var(--space-1) 0 0;
+  // Verse with the amber rule, italic, as the owner's reference.
+  .focus-verse {
+    max-width: var(--w-reading);
+    margin: var(--space-3) 0 0;
+    padding-inline-start: var(--space-3);
+    border-inline-start: var(--accent-rule-width) solid var(--color-accent-bg);
+  }
+
+  .focus-verse-text {
+    display: -webkit-box;
+    margin: 0;
+    overflow: hidden;
     color: var(--color-text-inverse-muted);
     font-size: var(--type-sm);
     line-height: var(--type-sm-lh);
+    font-style: italic;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
   }
 
-  .banner-action {
+  .focus-verse-ref {
+    display: block;
+    margin-top: var(--space-1);
+    color: var(--color-accent-bg);
+    font-size: var(--type-sm);
+    line-height: var(--type-sm-lh);
+    font-weight: var(--weight-semibold);
+    font-style: normal;
+  }
+
+  .focus-action {
     margin-top: var(--space-5);
   }
 
-  .banner-action-icon {
+  .focus-action-icon {
     width: var(--icon-sm);
     height: var(--icon-sm);
   }
 
-  // ── Right (desktop) / below (phone): welcome, verse, stats ─────────
+  // ── Welcome panel content ────────────────────────────────────────────
 
-  .banner-panel {
+  .welcome-panel {
     display: flex;
     flex-direction: column;
+    justify-content: space-between;
     gap: var(--space-4);
-    padding: var(--space-5);
-    border: var(--border-width) solid var(--color-border-inverse);
-    border-radius: var(--round-md);
-    background: var(--color-bg-glass-night);
-    backdrop-filter: blur(var(--blur-glass));
   }
 
-  .banner-panel-head {
+  .welcome-head {
     display: flex;
     flex-wrap: wrap;
     align-items: flex-start;
@@ -106,53 +225,49 @@
     gap: var(--space-2) var(--space-4);
   }
 
-  .banner-welcome {
+  .welcome-title {
     margin: 0;
     font-size: var(--type-xl);
     line-height: var(--type-xl-lh);
     font-weight: var(--weight-bold);
   }
 
-  .banner-message {
+  .welcome-message {
     margin: var(--space-1) 0 0;
     color: var(--color-text-inverse-muted);
     font-size: var(--type-sm);
     line-height: var(--type-sm-lh);
   }
 
-  .banner-verse {
+  .welcome-verse {
     margin: 0;
     text-align: end;
   }
 
-  .banner-verse-text {
+  .welcome-verse-text {
     margin: 0;
     font-family: var(--font-family-script);
     font-size: var(--type-lg);
     line-height: var(--type-lg-lh);
   }
 
-  .banner-verse-ref {
+  .welcome-verse-ref {
     color: var(--color-text-inverse-muted);
     font-size: var(--type-xs);
     line-height: var(--type-xs-lh);
     font-style: normal;
   }
 
-  .banner-stats {
+  .welcome-stats {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: var(--space-2);
     margin: 0;
     padding: 0;
     list-style: none;
-
-    @include tablet {
-      gap: var(--space-3);
-    }
   }
 
-  .banner-stat {
+  .welcome-stat {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
@@ -160,49 +275,68 @@
     padding: var(--space-3);
     border-radius: var(--round-md);
     background: var(--color-bg-glass-tile);
+    transition:
+      transform var(--motion-duration-base) var(--motion-ease-out),
+      background-color var(--motion-duration-base) var(--motion-ease-standard);
 
-    @include tablet {
+    &:hover {
+      background: var(--color-bg-glass-tile-hover);
+      transform: translateY(calc(-1 * var(--space-1)));
+
+      .welcome-stat-icon {
+        transform: scale(1.12);
+      }
+    }
+
+    @include reduced-motion {
+      transition: none;
+
+      &:hover,
+      &:hover .welcome-stat-icon {
+        transform: none;
+      }
+    }
+  }
+
+  // Icon beside the numbers when the panel sits inside the wide card.
+  @container focus-hero (min-width: #{$hero-together}) {
+    .welcome-stats {
+      gap: var(--space-3);
+    }
+
+    .welcome-stat {
       flex-direction: row;
       align-items: center;
     }
   }
 
-  .banner-stat-icon {
+  .welcome-stat-icon {
+    display: inline-flex;
     width: var(--icon-lg);
     height: var(--icon-lg);
     flex-shrink: 0;
+    transition: transform var(--motion-duration-base) var(--motion-ease-out);
+
+    svg {
+      width: 100%;
+      height: 100%;
+    }
   }
 
-  // Flame and star are solid in the reference; the level bars are a line icon.
-  .banner-stat-icon-streak {
-    color: var(--color-stat-streak);
-    fill: currentColor;
-  }
-
-  .banner-stat-icon-points {
-    color: var(--color-stat-points);
-    fill: currentColor;
-  }
-
-  .banner-stat-icon-level {
-    color: var(--color-stat-level);
-    stroke-width: 2.5;
-  }
-
-  .banner-stat-text {
+  .welcome-stat-text {
     display: flex;
     flex-direction: column;
     min-width: 0;
   }
 
-  .banner-stat-value {
+  .welcome-stat-value {
     font-size: var(--type-base);
     line-height: var(--type-base-lh);
     font-weight: var(--weight-bold);
     white-space: nowrap;
   }
 
-  .banner-stat-label {
+  .welcome-stat-label {
     overflow: hidden;
     color: var(--color-text-inverse-muted);
     font-size: var(--type-xs);

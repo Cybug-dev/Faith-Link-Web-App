@@ -29,10 +29,6 @@ export function AppShell() {
   return (
     <ComingSoonProvider>
       <div className="app-shell">
-        <a href="#main" className="skip-link">
-          Skip to content
-        </a>
-
         <Sidebar />
 
         <header className="topbar">

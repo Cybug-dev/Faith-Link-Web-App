@@ -138,6 +138,9 @@
   --color-stat-streak: var(--palette-amber-400);
   --color-stat-points: var(--palette-amber-400);
   --color-stat-level: var(--palette-teal-400);
+  --color-stat-flame-core: var(--palette-amber-200); /* bright inner flame */
+  --color-stat-glow: rgb(243 156 43 / 0.6); /* glow around the flame and star */
+  --color-bg-glass-tile-hover: rgb(255 255 255 / 0.12);
 
   /* Status — each has bg / border / text so banners and badges stay legible. */
   --color-success-bg: var(--palette-green-50);
@@ -173,7 +176,7 @@
   --space-16: 4rem; /* 64 */
   --space-20: 5rem; /* 80 */
 
-  --page-margin: var(--space-5); /* phones; steps up at the breakpoints below */
+  --page-margin: var(--space-3); /* phones (owner: slimmer so components breathe); steps up at the breakpoints below */
   --gutter: var(--space-4);
 
   /* ── 4. Shape ────────────────────────────────────────────────────── */

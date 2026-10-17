@@ -14,10 +14,9 @@
     'recent'
     'achievements';
   gap: var(--space-8);
-  max-width: var(--w-content);
   padding-inline: var(--page-margin);
   padding-top: var(--space-2);
-  // The carousel's peek bleeds into the page margin; keep the page itself from scrolling sideways.
+  // Keep the page itself from ever scrolling sideways.
   overflow-x: clip;
 
   @include desktop {

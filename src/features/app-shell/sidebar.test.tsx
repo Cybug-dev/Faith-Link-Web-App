@@ -5,6 +5,9 @@ import { LAZY_ROUTE } from '@/test/lazy-route'
 import { renderRoute } from '@/test/render-route'
 
 describe('Sidebar', () => {
+  // Load the lazy shell and home page once up front, so a slow first import can't time out a test.
+  beforeAll(() => Promise.all([import('./app-shell'), import('@/features/home/home-page')]), 60000)
+
   async function renderHome() {
     renderRoute({ pathname: '/home', state: FROM_ONBOARDING })
     return screen.findByRole('complementary', { name: 'Sidebar' }, LAZY_ROUTE)
