@@ -36,19 +36,37 @@
     grid-area: greeting;
   }
 
+  // Small greeting, as the owner's phone reference (20px title, 12px line); larger on desktop.
   .home-title {
     margin: 0;
-    font-size: var(--role-headline-lg-size);
-    line-height: var(--role-headline-lg-lh);
+    font-size: var(--type-xl);
+    line-height: var(--type-xl-lh);
     font-weight: var(--weight-bold);
     letter-spacing: var(--ls-headline);
+
+    @include desktop {
+      font-size: var(--role-headline-lg-size);
+      line-height: var(--role-headline-lg-lh);
+    }
+  }
+
+  // A real wave: the hand swings from the wrist a few times, rests, then waves again.
+  // Pure CSS (transform only, no library, no extra download); still under reduced motion.
+  .home-wave {
+    display: inline-block;
+    transform-origin: 70% 70%; // the wrist
+    animation: home-wave 2.6s ease-in-out infinite;
+
+    @include reduced-motion {
+      animation: none;
+    }
   }
 
   .home-subtitle {
     margin: var(--space-1) 0 0;
     color: var(--color-text-secondary);
-    font-size: var(--type-sm);
-    line-height: var(--type-sm-lh);
+    font-size: var(--type-xs);
+    line-height: var(--type-xs-lh);
 
     @include desktop {
       font-size: var(--type-base);
@@ -79,5 +97,29 @@
 
   .home-achievements {
     grid-area: achievements;
+  }
+}
+
+// Wave for the first 60% of the cycle, rest for the other 40%.
+@keyframes home-wave {
+  0%,
+  60%,
+  100% {
+    transform: rotate(0deg);
+  }
+  10% {
+    transform: rotate(14deg);
+  }
+  20% {
+    transform: rotate(-8deg);
+  }
+  30% {
+    transform: rotate(14deg);
+  }
+  40% {
+    transform: rotate(-4deg);
+  }
+  50% {
+    transform: rotate(10deg);
   }
 }

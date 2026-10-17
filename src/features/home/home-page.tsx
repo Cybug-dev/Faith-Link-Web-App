@@ -40,7 +40,12 @@ export function HomePage() {
   return (
     <div className="home-page">
       <header className="home-greeting">
-        <h1 className="home-title">{greeting}</h1>
+        <h1 className="home-title">
+          {greeting}{' '}
+          <span aria-hidden className="home-wave">
+            👋
+          </span>
+        </h1>
         <p className="home-subtitle">Here’s what’s next for you this week.</p>
       </header>
 

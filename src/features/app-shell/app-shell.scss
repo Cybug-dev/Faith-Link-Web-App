@@ -69,7 +69,7 @@
     @include desktop {
       display: block;
       flex: 1;
-      max-width: var(--w-form);
+      max-width: var(--w-reading); // wide, as the Stitch desktop board
     }
   }
 
@@ -81,6 +81,30 @@
 
   .notify-button {
     position: relative;
+
+    // Smaller on phones and tablets, as the owner's reference (36px still clears the 24px target minimum).
+    @media not all and (min-width: 64rem) {
+      width: var(--control-h-sm);
+      height: var(--control-h-sm);
+
+      .notify-dot {
+        top: var(--space-2);
+        inset-inline-end: var(--space-2);
+      }
+    }
+  }
+
+  // Phones and tablets: smaller logo in the top bar.
+  .topbar-logo {
+    svg {
+      width: var(--icon-md);
+      height: var(--icon-md);
+    }
+
+    span {
+      font-size: var(--type-base);
+      line-height: var(--type-base-lh);
+    }
   }
 
   .notify-icon {
@@ -120,14 +144,20 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: var(--hit-min);
-    height: var(--hit-min);
+    width: var(--control-h-sm);
+    height: var(--control-h-sm);
     flex-shrink: 0;
     border-radius: var(--round-full);
     background: var(--color-bg-inverse);
     color: var(--color-text-inverse);
-    font-size: var(--type-sm);
+    font-size: var(--type-xs);
     font-weight: var(--weight-semibold);
+
+    @include desktop {
+      width: var(--hit-min);
+      height: var(--hit-min);
+      font-size: var(--type-sm);
+    }
   }
 
   .profile-text {
