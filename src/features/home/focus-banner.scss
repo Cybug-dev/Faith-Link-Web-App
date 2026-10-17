@@ -35,7 +35,7 @@ $hero-inline: 62rem; // from here: state 1 (panel on the right)
     isolation: isolate;
     min-width: 0;
     min-height: 13.5rem; // owner: not too thin; grows with content
-    padding: var(--space-4);
+    padding: var(--space-5);
     overflow: hidden;
     border-radius: var(--round-lg);
     background: var(--color-bg-inverse); // shows while a photo loads
@@ -146,7 +146,7 @@ $hero-inline: 62rem; // from here: state 1 (panel on the right)
   }
 
   .focus-tag {
-    margin: 0 0 var(--space-2);
+    margin: 0 0 var(--space-3);
     padding: 0 var(--space-2);
     border-radius: var(--round-full);
     background: var(--gradient-accent);
@@ -167,7 +167,7 @@ $hero-inline: 62rem; // from here: state 1 (panel on the right)
   // Verse with the amber rule, italic, as the owner's reference.
   .focus-verse {
     max-width: var(--w-reading);
-    margin: var(--space-2) 0 0;
+    margin: var(--space-3) 0 0;
     padding-inline-start: var(--space-2);
     border-inline-start: var(--accent-rule-width) solid var(--color-accent-bg);
   }
@@ -186,6 +186,7 @@ $hero-inline: 62rem; // from here: state 1 (panel on the right)
 
   .focus-verse-ref {
     display: block;
+    margin-top: var(--space-1);
     color: var(--color-accent-bg);
     font-size: var(--type-xs);
     line-height: var(--type-xs-lh);
@@ -195,7 +196,7 @@ $hero-inline: 62rem; // from here: state 1 (panel on the right)
 
   .focus-action {
     height: var(--control-h-sm);
-    margin-top: var(--space-3);
+    margin-top: var(--space-4);
     padding-inline: var(--space-4);
     font-size: var(--type-xs);
   }
@@ -234,7 +235,7 @@ $hero-inline: 62rem; // from here: state 1 (panel on the right)
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    gap: var(--space-3);
+    gap: var(--space-4);
   }
 
   .welcome-head {
@@ -242,7 +243,7 @@ $hero-inline: 62rem; // from here: state 1 (panel on the right)
     flex-wrap: wrap;
     align-items: flex-start;
     justify-content: space-between;
-    gap: var(--space-1) var(--space-3);
+    gap: var(--space-2) var(--space-4);
   }
 
   .welcome-title {
@@ -253,7 +254,7 @@ $hero-inline: 62rem; // from here: state 1 (panel on the right)
   }
 
   .welcome-message {
-    margin: 0;
+    margin: var(--space-1) 0 0;
     color: var(--color-text-inverse-muted);
     font-size: var(--type-xs);
     line-height: var(--type-xs-lh);
@@ -281,7 +282,7 @@ $hero-inline: 62rem; // from here: state 1 (panel on the right)
   .welcome-stats {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: var(--space-2);
+    gap: var(--space-3);
     margin: 0;
     padding: 0;
     list-style: none;
@@ -291,8 +292,8 @@ $hero-inline: 62rem; // from here: state 1 (panel on the right)
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    gap: var(--space-1);
-    padding: var(--space-2);
+    gap: var(--space-2);
+    padding: var(--space-3);
     border-radius: var(--round-md);
     background: var(--color-bg-glass-tile);
     transition:
@@ -333,8 +334,8 @@ $hero-inline: 62rem; // from here: state 1 (panel on the right)
     .welcome-stat {
       flex-direction: row;
       align-items: center;
-      gap: var(--space-2);
-      padding: var(--space-2) var(--space-3);
+      gap: var(--space-3);
+      padding: var(--space-3);
     }
   }
 

@@ -1,5 +1,7 @@
 @use '@/styles/mixins' as *;
 
+// Quick actions (owner's reference): white cards with a light border, a small
+// tinted icon square top-left, then the title and hint.
 .quick-actions {
   .quick-list {
     display: grid;
@@ -18,38 +20,70 @@
   .quick-card {
     display: flex;
     flex-direction: column;
-    gap: var(--space-1);
+    align-items: flex-start;
+    gap: var(--space-4);
+    width: 100%;
     height: 100%;
-    padding: var(--space-4);
+    padding: var(--space-3);
+    border: var(--border-width) solid var(--color-border-subtle);
     border-radius: var(--round-md);
     background: var(--color-bg-surface);
-    box-shadow: var(--elevation-raised);
     color: var(--color-text-primary);
-    text-decoration: none;
+    font: inherit;
+    text-align: start;
+    cursor: pointer;
     transition:
       transform var(--motion-duration-fast) var(--motion-ease-standard),
       box-shadow var(--motion-duration-fast) var(--motion-ease-standard);
 
     &:hover {
-      box-shadow: var(--elevation-popover);
+      box-shadow: var(--elevation-raised);
       transform: translateY(calc(var(--space-1) * -0.5));
     }
 
     &:active {
       transform: none;
     }
+
+    @include reduced-motion {
+      transition: none;
+
+      &:hover {
+        transform: none;
+      }
+    }
+  }
+
+  // One tint per action; the icon colour matches.
+  .quick-card-learn {
+    --quick-bg: var(--color-tile-learn-bg);
+    --quick-icon: var(--color-tile-learn-icon);
+  }
+
+  .quick-card-quiz {
+    --quick-bg: var(--color-tile-quiz-bg);
+    --quick-icon: var(--color-tile-quiz-icon);
+  }
+
+  .quick-card-church {
+    --quick-bg: var(--color-tile-church-bg);
+    --quick-icon: var(--color-tile-church-icon);
+  }
+
+  .quick-card-rank {
+    --quick-bg: var(--color-tile-rank-bg);
+    --quick-icon: var(--color-tile-rank-icon);
   }
 
   .quick-icon {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: var(--hit-min);
-    height: var(--hit-min);
-    margin-bottom: var(--space-2);
-    border-radius: var(--round-full);
-    background: var(--color-accent-subtle-bg);
-    color: var(--color-accent-subtle-text);
+    width: var(--space-10);
+    height: var(--space-10);
+    border-radius: var(--round-sm);
+    background: var(--quick-bg);
+    color: var(--quick-icon);
   }
 
   .quick-icon-svg {
@@ -57,10 +91,15 @@
     height: var(--icon-md);
   }
 
+  .quick-text {
+    display: flex;
+    flex-direction: column;
+  }
+
   .quick-title {
     font-size: var(--type-sm);
     line-height: var(--type-sm-lh);
-    font-weight: var(--weight-bold);
+    font-weight: var(--weight-semibold);
   }
 
   .quick-hint {

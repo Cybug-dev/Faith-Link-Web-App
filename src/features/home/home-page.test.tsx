@@ -22,7 +22,7 @@ describe('Home page', () => {
     expect(sections).toEqual([
       'The Burning Ones',
       'Welcome back, David!',
-      'Quick actions',
+      'Quick Actions',
       'Upcoming activities',
       'Your progress',
       'Recent activity',
