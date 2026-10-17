@@ -42,9 +42,8 @@ export function HomePage() {
       <header className="home-greeting">
         <h1 className="home-title">
           {greeting}{' '}
-          <span aria-hidden className="home-wave">
-            👋
-          </span>
+          {/* Microsoft Fluent 3D emoji (MIT), resized to 64px: 5.7 kB. */}
+          <img src="/images/waving-hand.png" alt="" width={64} height={64} decoding="async" className="home-wave" />
         </h1>
         <p className="home-subtitle">Here’s what’s next for you this week.</p>
       </header>

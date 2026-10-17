@@ -54,6 +54,15 @@
   // Pure CSS (transform only, no library, no extra download); still under reduced motion.
   .home-wave {
     display: inline-block;
+    width: var(--icon-lg);
+    height: var(--icon-lg);
+    vertical-align: -0.2em; // sit on the text baseline like a letter
+
+    @include desktop {
+      width: var(--space-8);
+      height: var(--space-8);
+    }
+
     transform-origin: 70% 70%; // the wrist
     animation: home-wave 2.6s ease-in-out infinite;
 
