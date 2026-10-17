@@ -1,0 +1,213 @@
+@use '@/styles/mixins' as *;
+
+// "Today's focus" banner (owner's reference). Plain class names nested under .focus-banner.
+.focus-banner {
+  position: relative;
+  isolation: isolate;
+  display: grid;
+  gap: var(--space-6);
+  padding: var(--space-6) var(--space-5);
+  overflow: hidden;
+  border-radius: var(--round-lg);
+  background: var(--color-bg-inverse); // shows while the photo loads
+  color: var(--color-text-inverse);
+
+  // Dark side behind the text, over the photo.
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: var(--gradient-photo-left);
+  }
+
+  @include desktop {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 34rem);
+    align-items: center;
+    min-height: 17rem;
+    padding: var(--space-8);
+  }
+
+  .banner-photo {
+    position: absolute;
+    inset: 0;
+    z-index: -2;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  // ── Left: the lesson ───────────────────────────────────────────────
+
+  .banner-focus {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .banner-tag {
+    margin: 0 0 var(--space-3);
+    padding: var(--space-1) var(--space-3);
+    border-radius: var(--round-full);
+    background: var(--gradient-accent);
+    color: var(--color-text-on-accent);
+    font-size: var(--type-xs);
+    line-height: var(--type-xs-lh);
+    font-weight: var(--weight-semibold);
+  }
+
+  .banner-title {
+    margin: 0;
+    font-size: var(--type-2xl);
+    line-height: var(--type-2xl-lh);
+    font-weight: var(--weight-bold);
+    letter-spacing: var(--ls-headline);
+
+    @include desktop {
+      font-size: var(--type-3xl);
+      line-height: var(--type-3xl-lh);
+    }
+  }
+
+  .banner-reference {
+    margin: var(--space-1) 0 0;
+    color: var(--color-text-inverse-muted);
+    font-size: var(--type-sm);
+    line-height: var(--type-sm-lh);
+  }
+
+  .banner-action {
+    margin-top: var(--space-5);
+  }
+
+  .banner-action-icon {
+    width: var(--icon-sm);
+    height: var(--icon-sm);
+  }
+
+  // ── Right (desktop) / below (phone): welcome, verse, stats ─────────
+
+  .banner-panel {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+    padding: var(--space-5);
+    border: var(--border-width) solid var(--color-border-inverse);
+    border-radius: var(--round-md);
+    background: var(--color-bg-glass-night);
+    backdrop-filter: blur(var(--blur-glass));
+  }
+
+  .banner-panel-head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: var(--space-2) var(--space-4);
+  }
+
+  .banner-welcome {
+    margin: 0;
+    font-size: var(--type-xl);
+    line-height: var(--type-xl-lh);
+    font-weight: var(--weight-bold);
+  }
+
+  .banner-message {
+    margin: var(--space-1) 0 0;
+    color: var(--color-text-inverse-muted);
+    font-size: var(--type-sm);
+    line-height: var(--type-sm-lh);
+  }
+
+  .banner-verse {
+    margin: 0;
+    text-align: end;
+  }
+
+  .banner-verse-text {
+    margin: 0;
+    font-family: var(--font-family-script);
+    font-size: var(--type-lg);
+    line-height: var(--type-lg-lh);
+  }
+
+  .banner-verse-ref {
+    color: var(--color-text-inverse-muted);
+    font-size: var(--type-xs);
+    line-height: var(--type-xs-lh);
+    font-style: normal;
+  }
+
+  .banner-stats {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--space-2);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+
+    @include tablet {
+      gap: var(--space-3);
+    }
+  }
+
+  .banner-stat {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-2);
+    padding: var(--space-3);
+    border-radius: var(--round-md);
+    background: var(--color-bg-glass-tile);
+
+    @include tablet {
+      flex-direction: row;
+      align-items: center;
+    }
+  }
+
+  .banner-stat-icon {
+    width: var(--icon-lg);
+    height: var(--icon-lg);
+    flex-shrink: 0;
+  }
+
+  // Flame and star are solid in the reference; the level bars are a line icon.
+  .banner-stat-icon-streak {
+    color: var(--color-stat-streak);
+    fill: currentColor;
+  }
+
+  .banner-stat-icon-points {
+    color: var(--color-stat-points);
+    fill: currentColor;
+  }
+
+  .banner-stat-icon-level {
+    color: var(--color-stat-level);
+    stroke-width: 2.5;
+  }
+
+  .banner-stat-text {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+  }
+
+  .banner-stat-value {
+    font-size: var(--type-base);
+    line-height: var(--type-base-lh);
+    font-weight: var(--weight-bold);
+    white-space: nowrap;
+  }
+
+  .banner-stat-label {
+    overflow: hidden;
+    color: var(--color-text-inverse-muted);
+    font-size: var(--type-xs);
+    line-height: var(--type-xs-lh);
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}

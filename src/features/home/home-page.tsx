@@ -2,8 +2,7 @@ import { useState } from 'react'
 import { useDocumentTitle } from '@/lib/use-document-title'
 import { SAMPLE_VIEWER } from '@/features/app-shell/sample-viewer'
 import { AchievementsRow } from './achievements-row'
-import { FocusCard } from './focus-card'
-import { HeroCarousel } from './hero-carousel'
+import { FocusBanner } from './focus-banner'
 import {
   SAMPLE_ACHIEVEMENTS,
   SAMPLE_ACTIVITIES,
@@ -11,12 +10,11 @@ import {
   SAMPLE_RECENT,
   SAMPLE_SERIES,
   SAMPLE_STATS,
-  SAMPLE_STREAK,
+  SAMPLE_WELCOME,
 } from './home-sample-data'
 import { ProgressCard } from './progress-card'
 import { QuickActions } from './quick-actions'
 import { RecentActivity } from './recent-activity'
-import { StreakCard } from './streak-card'
 import { UpcomingActivities } from './upcoming-activities'
 import './home-page.scss'
 
@@ -49,10 +47,7 @@ export function HomePage() {
       </header>
 
       <div className="home-hero">
-        <HeroCarousel label="Today">
-          <FocusCard lesson={SAMPLE_FOCUS} />
-          <StreakCard streak={SAMPLE_STREAK} />
-        </HeroCarousel>
+        <FocusBanner lesson={SAMPLE_FOCUS} welcome={SAMPLE_WELCOME} firstName={SAMPLE_VIEWER.firstName} />
       </div>
 
       <div className="home-actions">

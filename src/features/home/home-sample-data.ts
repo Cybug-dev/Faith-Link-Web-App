@@ -1,23 +1,24 @@
 /**
  * SAMPLE DATA for the UI build only: the shapes the home screen expects from
  * the backend. Replace with API data (and live updates over the WebSocket)
- * when those endpoints exist. Only counts and real records, never points,
- * levels or ranks (DESIGN.md: the API has no points system).
+ * when those endpoints exist.
  */
 
 export type FocusLesson = {
   title: string
-  minutes: number
-  verse: { text: string; reference: string }
+  reference: string
   to: string
   image: { src: string; alt: string }
 }
 
-export type WeekDay = { label: string; name: string; isActive: boolean }
-
-export type Streak = {
-  days: number
-  week: WeekDay[]
+/** The stats panel on the focus banner (owner kept points and levels as designed, 2026-10-17). */
+export type WelcomeStats = {
+  message: string
+  streakDays: number
+  points: number
+  level: number
+  levelName: string
+  verse: { text: string; reference: string }
 }
 
 export type ActivityItem = {
@@ -55,32 +56,24 @@ function unsplash(id: string, width: number): string {
   return `https://images.unsplash.com/photo-${id}?auto=format&fit=crop&q=70&w=${width}`
 }
 
-const FOCUS_PHOTO = '1511632765486-a01980e01a18'
+const FOCUS_PHOTO = '1508672019048-805c876b67e2'
 
-export const FOCUS_IMAGE_SRCSET = [480, 800, 1200].map((w) => `${unsplash(FOCUS_PHOTO, w)} ${w}w`).join(', ')
+export const FOCUS_IMAGE_SRCSET = [640, 1200, 1800].map((w) => `${unsplash(FOCUS_PHOTO, w)} ${w}w`).join(', ')
 
 export const SAMPLE_FOCUS: FocusLesson = {
-  title: 'The burning ones',
-  minutes: 8,
-  verse: {
-    text: 'Ye are the light of the world. A city that is set on an hill cannot be hid.',
-    reference: 'Matthew 5:14',
-  },
+  title: 'The Burning Ones',
+  reference: 'Matthew 5:14-16',
   to: '/lessons',
-  image: { src: unsplash(FOCUS_PHOTO, 800), alt: 'Four friends with their arms around each other, watching the sunrise' },
+  image: { src: unsplash(FOCUS_PHOTO, 1200), alt: 'A person sitting alone by a calm mountain lake' },
 }
 
-export const SAMPLE_STREAK: Streak = {
-  days: 4,
-  week: [
-    { label: 'M', name: 'Monday', isActive: true },
-    { label: 'T', name: 'Tuesday', isActive: true },
-    { label: 'W', name: 'Wednesday', isActive: true },
-    { label: 'T', name: 'Thursday', isActive: true },
-    { label: 'F', name: 'Friday', isActive: false },
-    { label: 'S', name: 'Saturday', isActive: false },
-    { label: 'S', name: 'Sunday', isActive: false },
-  ],
+export const SAMPLE_WELCOME: WelcomeStats = {
+  message: 'Keep going. You’re making an impact!',
+  streakDays: 4,
+  points: 1280,
+  level: 14,
+  levelName: 'Growing Strong',
+  verse: { text: 'Be strong and courageous…', reference: 'Joshua 1:9' },
 }
 
 export const SAMPLE_ACTIVITIES: ActivityItem[] = [

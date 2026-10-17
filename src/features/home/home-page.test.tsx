@@ -20,8 +20,8 @@ describe('Home page', () => {
 
     const sections = screen.getAllByRole('heading', { level: 2 }).map((heading) => heading.textContent)
     expect(sections).toEqual([
-      'The burning ones',
-      '4-day streak',
+      'The Burning Ones',
+      'Welcome back, David!',
       'Quick actions',
       'Upcoming activities',
       'Your progress',
@@ -30,11 +30,14 @@ describe('Home page', () => {
     ])
   })
 
-  // Page content only: the owner put Leaderboard in the sidebar (2026-10-17).
-  it('never shows points, levels or ranks in the page content', async () => {
+  // Owner kept streak, points and level as designed (2026-10-17).
+  it('shows the streak, points and level on the focus banner', async () => {
     renderRoute('/home')
     await screen.findByRole('heading', { level: 1 }, LAZY_ROUTE)
-    expect(within(screen.getByRole('main')).queryByText(/\b(xp|pts|points|level|rank|leaderboard)\b/i)).not.toBeInTheDocument()
+    const stats = within(screen.getByRole('region', { name: /welcome back/i }))
+    expect(stats.getByText('Day Streak')).toBeInTheDocument()
+    expect(stats.getByText('1,280')).toBeInTheDocument()
+    expect(stats.getByText('Level 14')).toBeInTheDocument()
   })
 
   it('marks Home as the current page and names the unread notifications', async () => {
