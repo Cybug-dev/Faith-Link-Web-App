@@ -1,7 +1,6 @@
 import { useState } from 'react'
 import { useDocumentTitle } from '@/lib/use-document-title'
 import { SAMPLE_VIEWER } from '@/features/app-shell/sample-viewer'
-import { AchievementsRow } from './achievements-row'
 import { FocusBanner } from './focus-banner'
 import {
   SAMPLE_ACHIEVEMENTS,
@@ -10,11 +9,13 @@ import {
   SAMPLE_RECENT,
   SAMPLE_OVERVIEW,
   SAMPLE_STATS,
+  SAMPLE_TRENDING,
   SAMPLE_WELCOME,
 } from './home-sample-data'
 import { ProgressCard } from './progress-card'
 import { QuickActions } from './quick-actions'
 import { RecentActivity } from './recent-activity'
+import { TrendingCard } from './trending-card'
 import { UpcomingActivities } from './upcoming-activities'
 import './home-page.scss'
 
@@ -62,8 +63,8 @@ export function HomePage() {
       <div className="home-recent">
         <RecentActivity items={SAMPLE_RECENT} />
       </div>
-      <div className="home-achievements">
-        <AchievementsRow achievements={SAMPLE_ACHIEVEMENTS} />
+      <div className="home-trending">
+        <TrendingCard items={SAMPLE_TRENDING} />
       </div>
     </div>
   )

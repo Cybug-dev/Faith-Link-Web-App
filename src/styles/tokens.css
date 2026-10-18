@@ -117,6 +117,7 @@
   --color-bg-glass-night: rgb(26 31 40 / 0.78); /* night frosted panel over a photo (focus banner stats) */
   --color-bg-glass-tile: rgb(255 255 255 / 0.07); /* tiles inside a night panel */
   --gradient-photo-left: linear-gradient(90deg, rgb(15 18 23 / 0.88) 0%, rgb(15 18 23 / 0.55) 45%, rgb(15 18 23 / 0.15) 100%); /* dark side behind text on a wide photo */
+  --gradient-photo-banner: linear-gradient(90deg, rgb(15 18 23 / 0.88) 0%, rgb(15 18 23 / 0.75) 45%, rgb(15 18 23 / 0.55) 100%); /* short photo banner: text stays >= 4.5:1 over any photo */
   /* Decorative backdrop only (soft glow, layered panels, confetti behind illustrations). Never behind text. */
   --color-deco-glow: rgb(243 156 43 / 0.16);
   --gradient-deco-panel: linear-gradient(160deg, rgb(252 213 158 / 0.35), rgb(247 182 102 / 0.7));

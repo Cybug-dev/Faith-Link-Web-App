@@ -1,0 +1,223 @@
+@use '@/styles/mixins' as *;
+
+// Trending this week (owner's reference): photo tiles, then a dark "Join a Group" photo banner.
+// Same card, title hover and type steps as the base component (Upcoming Events).
+.trending {
+  @include card;
+
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  min-width: 0;
+
+  .trending-empty {
+    @include type-body-sm;
+
+    margin: 0;
+    color: var(--color-text-secondary);
+  }
+
+  // Phones: one full-width block per series (photo left, text right). Tablet and up: three tiles across.
+  .trending-list {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-3);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+
+    @include tablet {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+
+  .trending-item {
+    display: grid;
+    grid-template-columns: calc(var(--space-20) + var(--space-4)) minmax(0, 1fr);
+    grid-template-rows: auto auto;
+    column-gap: var(--space-3);
+    row-gap: var(--space-1);
+    align-items: center;
+    width: 100%;
+    padding: 0;
+    border: 0;
+    background: none;
+    color: var(--color-text-primary);
+    font: inherit;
+    text-align: start;
+    cursor: pointer;
+
+    @include tablet {
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      gap: var(--space-1);
+    }
+  }
+
+  .trending-photo {
+    display: block;
+    width: 100%;
+    height: auto;
+    grid-row: 1 / span 2;
+    aspect-ratio: 3 / 2;
+    border-radius: var(--round-tile);
+    background: var(--color-bg-muted); // while the photo loads
+    object-fit: cover;
+    transition: box-shadow var(--motion-duration-fast) var(--motion-ease-standard);
+
+    @include tablet {
+      margin-bottom: var(--space-1);
+    }
+
+    @include reduced-motion {
+      transition: none;
+    }
+  }
+
+  .trending-item:hover .trending-photo {
+    box-shadow: var(--elevation-raised);
+  }
+
+  .trending-title {
+    @include type-body-sm;
+
+    display: -webkit-box;
+    align-self: end;
+    overflow: hidden;
+    font-weight: var(--weight-bold);
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    transition: color var(--motion-duration-fast) var(--motion-ease-standard);
+
+    @include tablet {
+      align-self: auto;
+    }
+  }
+
+  .trending-item:hover .trending-title {
+    color: var(--color-text-accent);
+  }
+
+  .trending-meta {
+    @include type-caption;
+
+    display: flex;
+    flex-wrap: wrap;
+    align-self: start;
+    align-items: center;
+    gap: var(--space-1);
+    color: var(--color-text-muted);
+
+    @include tablet {
+      align-self: auto;
+    }
+  }
+
+  .trending-dot {
+    width: var(--space-1);
+    height: var(--space-1);
+    border-radius: var(--round-full);
+    background: var(--color-border-soft);
+  }
+
+  .visually-hidden {
+    @include visually-hidden;
+  }
+
+  // Dark photo banner: the scrim keeps white text readable over any photo.
+  .group-banner {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    width: 100%;
+    min-height: var(--space-16);
+    padding: var(--space-3) var(--space-4);
+    overflow: hidden;
+    border: 0;
+    border-radius: var(--round-md);
+    background: var(--color-bg-inverse);
+    color: var(--color-text-inverse);
+    font: inherit;
+    text-align: start;
+    cursor: pointer;
+    isolation: isolate;
+    transition: box-shadow var(--motion-duration-fast) var(--motion-ease-standard);
+
+    @include tablet {
+      min-height: calc(var(--space-20) + var(--space-2));
+      padding-inline: var(--space-5);
+    }
+
+    &::before {
+      position: absolute;
+      inset: 0;
+      z-index: -1;
+      background: var(--gradient-photo-banner);
+      content: '';
+    }
+
+    &:hover {
+      box-shadow: var(--elevation-raised);
+    }
+
+    @include reduced-motion {
+      transition: none;
+    }
+  }
+
+  .group-photo {
+    position: absolute;
+    inset: 0;
+    z-index: -2;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 35%;
+  }
+
+  .group-icon {
+    display: inline-flex;
+    flex-shrink: 0;
+    color: var(--color-accent-bg);
+
+    svg {
+      width: var(--icon-lg);
+      height: var(--icon-lg);
+    }
+  }
+
+  .group-text {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    min-width: 0;
+  }
+
+  .group-title {
+    @include type-card-title;
+  }
+
+  .group-hint {
+    @include type-caption;
+
+    color: var(--color-text-inverse);
+  }
+
+  .group-chevron {
+    flex-shrink: 0;
+    width: var(--icon-md);
+    height: var(--icon-md);
+    transition: transform var(--motion-duration-fast) var(--motion-ease-standard);
+
+    @include reduced-motion {
+      transition: none;
+    }
+  }
+
+  .group-banner:hover .group-chevron {
+    transform: translateX(var(--space-1));
+  }
+}

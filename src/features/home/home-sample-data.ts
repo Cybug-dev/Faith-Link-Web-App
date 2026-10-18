@@ -102,6 +102,31 @@ export const SAMPLE_RECENT: RecentItem[] = [
   { id: 'r3', kind: 'activity', text: 'You joined', subject: 'Sunday Bible challenge', when: '2 days ago' },
 ]
 
+/** A lesson series people in the church are reading this week. */
+export type TrendingItem = {
+  id: string
+  title: string
+  kind: string
+  lessons: number
+  /** Decorative: the title next to it names the series. */
+  image: { src: string; srcSet: string }
+}
+
+function photo(id: string): TrendingItem['image'] {
+  return { src: unsplash(id, 480), srcSet: [320, 480].map((w) => `${unsplash(id, w)} ${w}w`).join(', ') }
+}
+
+export const SAMPLE_TRENDING: TrendingItem[] = [
+  { id: 't1', title: 'The Brave Choice', kind: 'Bible Study', lessons: 12, image: photo('1501555088652-021faa106b9b') },
+  { id: 't2', title: 'Light in the City', kind: 'Devotional', lessons: 8, image: photo('1477959858617-67f85cf4f1df') },
+  { id: 't3', title: 'Faith in Daily Life', kind: 'Lessons', lessons: 10, image: photo('1523348837708-15d4a09cfac2') },
+]
+
+/** Behind the Join a Group banner (decorative). */
+const GROUP_PHOTO = '1511632765486-a01980e01a18'
+export const GROUP_IMAGE_SRCSET = [640, 1200].map((w) => `${unsplash(GROUP_PHOTO, w)} ${w}w`).join(', ')
+export const GROUP_IMAGE_SRC = unsplash(GROUP_PHOTO, 640)
+
 export const SAMPLE_ACHIEVEMENTS: Achievement[] = [
   { id: 'b1', name: 'First Quiz', kind: 'quiz' },
   { id: 'b2', name: '7-Day Streak', kind: 'streak' },

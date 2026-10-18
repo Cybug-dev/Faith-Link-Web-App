@@ -7,14 +7,7 @@
 const KEY = 'faithlink.onboardingSeen'
 let seenThisVisit = false
 
-/**
- * TEMPORARY (owner, for testing on other screens): show onboarding after every
- * sign-in instead of once per device. Set to false to go back to once per device.
- */
-export const SHOW_ONBOARDING_EVERY_SIGN_IN = true
-
 export function hasSeenOnboarding(): boolean {
-  if (SHOW_ONBOARDING_EVERY_SIGN_IN) return false
   if (seenThisVisit) return true
   try {
     return localStorage.getItem(KEY) === '1'

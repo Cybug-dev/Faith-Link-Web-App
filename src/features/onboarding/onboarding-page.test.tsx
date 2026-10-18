@@ -1,7 +1,7 @@
 import { fireEvent, screen } from '@testing-library/react'
 import { LAZY_ROUTE } from '@/test/lazy-route'
 import { renderRoute } from '@/test/render-route'
-import { SHOW_ONBOARDING_EVERY_SIGN_IN, hasSeenOnboarding, markOnboardingSeen } from './onboarding-storage'
+import { hasSeenOnboarding, markOnboardingSeen } from './onboarding-storage'
 
 const heading = (name: string) => screen.findByRole('heading', { level: 1, name }, LAZY_ROUTE)
 const homeHeading = () =>
@@ -50,7 +50,7 @@ describe('Onboarding', () => {
     await user.click(screen.getByRole('button', { name: 'Get started' }))
     expect(await homeHeading()).toBeInTheDocument()
     expect(router.state.location.pathname).toBe('/home')
-    expect(hasSeenOnboarding()).toBe(!SHOW_ONBOARDING_EVERY_SIGN_IN)
+    expect(hasSeenOnboarding()).toBe(true)
   })
 
   it('follows the arrow keys and Enter', async () => {
@@ -70,13 +70,11 @@ describe('Onboarding', () => {
     await user.click(screen.getByRole('button', { name: 'Skip' }))
     expect(await homeHeading()).toBeInTheDocument()
     expect(router.state.location.pathname).toBe('/home')
-    expect(hasSeenOnboarding()).toBe(!SHOW_ONBOARDING_EVERY_SIGN_IN)
+    expect(hasSeenOnboarding()).toBe(true)
   })
 
   // Last: marking as seen also sets an in-memory flag that lasts for the rest of this file.
-  // Off while onboarding temporarily shows after every sign-in.
   it('goes straight to home once it has been seen', async () => {
-    if (SHOW_ONBOARDING_EVERY_SIGN_IN) return
     markOnboardingSeen()
     renderRoute('/home')
     expect(await homeHeading()).toBeInTheDocument()

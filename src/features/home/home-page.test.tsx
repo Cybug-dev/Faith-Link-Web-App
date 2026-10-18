@@ -3,7 +3,7 @@ import { FROM_ONBOARDING } from '@/features/onboarding/onboarding-routes'
 import { LAZY_ROUTE } from '@/test/lazy-route'
 import { renderRoute as renderAnyRoute } from '@/test/render-route'
 
-// Arrive as onboarding hands over, so the gate lets us through whatever the onboarding setting is.
+// Arrive as onboarding hands over, so the gate lets us through even on a device that has not seen onboarding.
 const renderRoute = (pathname: string) => renderAnyRoute({ pathname, state: FROM_ONBOARDING })
 
 describe('Home page', () => {
@@ -26,7 +26,7 @@ describe('Home page', () => {
       'Upcoming Events',
       'Your Progress',
       'Recent Activity',
-      'Recent Achievements',
+      'Trending This Week',
     ])
   })
 

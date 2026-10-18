@@ -1,7 +1,8 @@
 @use '@/styles/mixins' as *;
 
-// Phones: one column in the desktop board's order. Desktop: the board's grid,
-// a wide main column (2fr) beside a narrow one (1fr).
+// Phones: one column, each card a full-width block, in the desktop order. Desktop: three equal
+// tracks, so row one is wide | narrow (Upcoming | Progress) and row two the mirror, narrow | wide
+// (Recent | Trending), with the same 2:1 proportions (owner).
 .home-page {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
@@ -12,7 +13,7 @@
     'upcoming'
     'progress'
     'recent'
-    'achievements';
+    'trending';
   gap: var(--space-8);
   padding-inline: var(--page-margin);
   padding-top: var(--space-2);
@@ -20,13 +21,13 @@
   overflow-x: clip;
 
   @include desktop {
-    grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+    grid-template-columns: repeat(3, minmax(0, 1fr));
     grid-template-areas:
-      'greeting greeting'
-      'hero hero'
-      'actions actions'
-      'upcoming progress'
-      'recent achievements';
+      'greeting greeting greeting'
+      'hero hero hero'
+      'actions actions actions'
+      'upcoming upcoming progress'
+      'recent trending trending';
     gap: var(--space-8) var(--space-6);
     padding-top: var(--space-4);
   }
@@ -105,8 +106,8 @@
     grid-area: recent;
   }
 
-  .home-achievements {
-    grid-area: achievements;
+  .home-trending {
+    grid-area: trending;
   }
 }
 
