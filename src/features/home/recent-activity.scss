@@ -1,14 +1,24 @@
+@use '@/styles/mixins' as *;
+
 .recent {
+  @include card;
+
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  min-width: 0;
+
   .recent-list {
     margin: 0;
-    padding-block: var(--space-2);
+    padding: 0;
     list-style: none;
   }
 
   .recent-empty {
+    @include type-body-sm;
+
     margin: 0;
     color: var(--color-text-secondary);
-    font-size: var(--type-sm);
   }
 
   .recent-row {
@@ -18,20 +28,35 @@
     padding-block: var(--space-3);
 
     & + .recent-row {
-      border-top: var(--border-width) solid var(--color-border-subtle);
+      border-top: var(--border-width) solid var(--color-border-row);
     }
+  }
+
+  .recent-row-lesson {
+    --recent-bg: var(--color-tone-purple-bg);
+    --recent-icon: var(--color-tone-purple-solid);
+  }
+
+  .recent-row-achievement {
+    --recent-bg: var(--color-tone-amber-bg);
+    --recent-icon: var(--color-tile-church-icon);
+  }
+
+  .recent-row-activity {
+    --recent-bg: var(--color-tone-green-bg);
+    --recent-icon: var(--color-tone-green-solid);
   }
 
   .recent-icon {
     display: inline-flex;
+    flex-shrink: 0;
     align-items: center;
     justify-content: center;
-    width: var(--space-10);
-    height: var(--space-10);
-    flex-shrink: 0;
-    border-radius: var(--round-full);
-    background: var(--color-bg-subtle);
-    color: var(--color-text-secondary);
+    width: var(--space-8);
+    height: var(--space-8);
+    border-radius: var(--round-tile);
+    background: var(--recent-bg);
+    color: var(--recent-icon);
   }
 
   .recent-icon-svg {
@@ -40,12 +65,12 @@
   }
 
   .recent-text {
+    @include type-body-sm;
+
     flex: 1;
     min-width: 0;
     margin: 0;
     color: var(--color-text-secondary);
-    font-size: var(--type-sm);
-    line-height: var(--type-sm-lh);
 
     strong {
       color: var(--color-text-primary);
@@ -54,9 +79,9 @@
   }
 
   .recent-when {
+    @include type-caption;
+
     flex-shrink: 0;
     color: var(--color-text-muted);
-    font-size: var(--type-xs);
-    line-height: var(--type-xs-lh);
   }
 }

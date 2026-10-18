@@ -69,6 +69,9 @@
   --color-accent-subtle: var(--color-accent-subtle-bg);
   --color-accent-subtle-fg: var(--color-accent-subtle-text);
   --color-accent-line: var(--color-accent-border);
+  --color-soft: var(--color-bg-soft);
+  --color-soft-hover: var(--color-bg-soft-hover);
+  --color-line-soft: var(--color-border-soft);
   --color-focus: var(--color-focus-ring);
 
   /* Status */
@@ -92,13 +95,17 @@
   /* Shape + elevation (three of each) */
   --radius-xs: var(--round-xs);
   --radius-sm: var(--round-sm);
+  --radius-tile: var(--round-tile);
   --radius-md: var(--round-md);
   --radius-full: var(--round-full);
+  --shadow-card: var(--elevation-card);
   --shadow-raised: var(--elevation-raised);
   --shadow-popover: var(--elevation-popover);
   --shadow-modal: var(--elevation-modal);
 
   /* Type scale: 12 14 16 18 20 24 30 36 */
+  --text-2xs: var(--type-2xs);
+  --text-2xs--line-height: var(--type-2xs-lh);
   --text-xs: var(--type-xs);
   --text-xs--line-height: var(--type-xs-lh);
   --text-sm: var(--type-sm);

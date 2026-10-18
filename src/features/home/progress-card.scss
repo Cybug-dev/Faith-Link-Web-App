@@ -1,98 +1,167 @@
-.progress {
-  .progress-panel {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-4);
-  }
+@use '@/styles/mixins' as *;
 
-  .series {
+// Your progress: same card, type steps and tones as the base component (Upcoming Events).
+.progress {
+  @include card;
+
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  min-width: 0;
+
+  .progress-body {
     display: flex;
     align-items: center;
     gap: var(--space-4);
-    padding: var(--space-3);
-    border-radius: var(--round-md);
-    background: var(--color-bg-subtle);
-    color: var(--color-text-primary);
-    text-decoration: none;
-    transition: background-color var(--motion-duration-fast) var(--motion-ease-standard);
+    padding-bottom: var(--space-4);
+    border-bottom: var(--border-width) solid var(--color-border-row);
 
-    &:hover {
-      background: var(--color-accent-subtle-bg);
+    @include tablet {
+      gap: var(--space-6);
     }
   }
 
-  .series-ring {
-    width: var(--space-16);
-    height: var(--space-16);
+  .progress-ring {
+    position: relative;
     flex-shrink: 0;
-    transform: rotate(-90deg); // start the fill at 12 o'clock
+    width: calc(var(--space-12) * 2);
+    height: calc(var(--space-12) * 2);
+
+    @include tablet {
+      width: calc(var(--space-16) * 2);
+      height: calc(var(--space-16) * 2);
+    }
+
+    svg {
+      display: block;
+      width: 100%;
+      height: 100%;
+      transform: rotate(-90deg); // start the fill at 12 o'clock
+    }
   }
 
-  .series-ring-track,
-  .series-ring-fill {
+  .ring-track,
+  .ring-fill {
     fill: none;
-    stroke-width: 6;
+    stroke-width: 10;
   }
 
-  .series-ring-track {
+  .ring-track {
     stroke: var(--color-bg-muted);
   }
 
-  .series-ring-fill {
-    stroke: var(--color-accent-bg);
+  .ring-fill {
+    stroke: var(--color-tone-blue-solid);
     stroke-linecap: round;
     transition: stroke-dashoffset var(--motion-duration-slow) var(--motion-ease-out);
   }
 
-  .series-text {
+  .ring-text {
+    position: absolute;
+    inset: 0;
     display: flex;
     flex-direction: column;
-    min-width: 0;
+    align-items: center;
+    justify-content: center;
   }
 
-  .series-label {
-    color: var(--color-text-muted);
-    font-size: var(--type-xs);
-    line-height: var(--type-xs-lh);
-  }
-
-  .series-name {
+  .ring-percent {
     font-size: var(--type-base);
     line-height: var(--type-base-lh);
     font-weight: var(--weight-bold);
+
+    @include tablet {
+      font-size: var(--type-xl);
+      line-height: var(--type-xl-lh);
+    }
   }
 
-  .series-count {
-    color: var(--color-text-secondary);
-    font-size: var(--type-sm);
-    line-height: var(--type-sm-lh);
+  .visually-hidden {
+    @include visually-hidden;
+  }
+
+  .ring-caption {
+    @include type-micro;
+
+    color: var(--color-text-muted);
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
   }
 
   .stat-list {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    gap: var(--space-2);
+    min-width: 0;
     margin: 0;
   }
 
   .stat-row {
-    display: flex;
-    align-items: baseline;
-    justify-content: space-between;
-    gap: var(--space-4);
-    padding-block: var(--space-2);
+    @include type-caption;
 
-    & + .stat-row {
-      border-top: var(--border-width) solid var(--color-border-subtle);
-    }
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-3);
   }
 
   .stat-label {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    min-width: 0;
     color: var(--color-text-secondary);
-    font-size: var(--type-sm);
+  }
+
+  .stat-dot {
+    width: calc(var(--space-1) * 1.5);
+    height: calc(var(--space-1) * 1.5);
+    flex-shrink: 0;
+    border-radius: var(--round-full);
+  }
+
+  .stat-dot-blue {
+    background: var(--color-tone-blue-dot);
+  }
+
+  .stat-dot-green {
+    background: var(--color-tone-green-dot);
+  }
+
+  .stat-dot-amber {
+    background: var(--color-tone-amber-dot);
+  }
+
+  .stat-dot-purple {
+    background: var(--color-tone-purple-dot);
   }
 
   .stat-value {
     margin: 0;
-    font-size: var(--type-base);
     font-weight: var(--weight-bold);
     font-variant-numeric: tabular-nums;
+  }
+
+  .badges-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-3);
+    margin-bottom: var(--space-3);
+  }
+
+  .badges-title {
+    @include type-caption;
+
+    margin: 0;
+    font-weight: var(--weight-bold);
+  }
+
+  .badges-empty {
+    @include type-body-sm;
+
+    margin: 0;
+    color: var(--color-text-secondary);
   }
 }

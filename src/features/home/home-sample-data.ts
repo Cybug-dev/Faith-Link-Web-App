@@ -27,19 +27,19 @@ export type ActivityItem = {
   title: string
   month: string
   day: string
+  /** Time range, e.g. "7:00 PM – 8:30 PM". */
   when: string
   place: string
-  isJoined: boolean
+  /** Small label next to the title ("Tomorrow", "Weekly", "Online"). */
+  status: { label: string; tone: 'amber' | 'green' | 'blue' }
+  /** "join" for events you can still join, "view" for ones you only look at. */
+  action: 'join' | 'view'
 }
 
-export type SeriesProgress = {
-  series: string
-  lessonsDone: number
-  lessonsTotal: number
-  to: string
-}
+export type ProgressStat = { label: string; value: string; tone: 'blue' | 'green' | 'amber' | 'purple' }
 
-export type ProgressStat = { label: string; value: string }
+/** Overall share of weekly spiritual goals done, 0 to 100. */
+export type ProgressOverview = { percent: number; to: string }
 
 export type RecentItem = {
   id: string
@@ -50,7 +50,7 @@ export type RecentItem = {
 }
 
 /** The most recently earned achievements. */
-export type Achievement = { id: string; name: string }
+export type Achievement = { id: string; name: string; kind: 'quiz' | 'streak' | 'explorer' | 'member' }
 
 /** Unsplash photo, sized by the CDN so phones never download desktop pixels. */
 function unsplash(id: string, width: number): string {
@@ -82,23 +82,18 @@ export const SAMPLE_WELCOME: WelcomeStats = {
 }
 
 export const SAMPLE_ACTIVITIES: ActivityItem[] = [
-  { id: 'a1', title: 'Youth fellowship', month: 'Oct', day: '18', when: 'Fri, 7:00 PM', place: 'Main hall', isJoined: false },
-  { id: 'a2', title: 'Sunday Bible challenge', month: 'Oct', day: '20', when: 'Sun, 9:00 AM', place: 'Teens church hall', isJoined: true },
-  { id: 'a3', title: 'Inter-church quiz practice', month: 'Oct', day: '26', when: 'Sat, 6:30 PM', place: 'Online', isJoined: false },
+  { id: 'a1', title: 'Youth Fellowship', month: 'Oct', day: '18', when: '7:00 PM – 8:30 PM', place: 'DCC, Iyana Ipaja', status: { label: 'Tomorrow', tone: 'amber' }, action: 'join' },
+  { id: 'a2', title: 'Sunday Bible Challenge', month: 'Oct', day: '20', when: '9:00 AM – 10:15 AM', place: 'Teens Church Hall', status: { label: 'Weekly', tone: 'green' }, action: 'join' },
+  { id: 'a3', title: 'Inter-Church Quiz (Practice)', month: 'Oct', day: '26', when: '6:30 PM – 7:45 PM', place: 'Zoom Live Stream', status: { label: 'Online', tone: 'blue' }, action: 'view' },
 ]
 
-export const SAMPLE_SERIES: SeriesProgress = {
-  series: 'Life of Christ',
-  lessonsDone: 4,
-  lessonsTotal: 7,
-  to: '/lessons',
-}
+export const SAMPLE_OVERVIEW: ProgressOverview = { percent: 72, to: '/progress' }
 
 export const SAMPLE_STATS: ProgressStat[] = [
-  { label: 'Lessons completed', value: '27' },
-  { label: 'Quizzes completed', value: '12' },
-  { label: 'Correct answers', value: '72%' },
-  { label: 'Achievements', value: '5' },
+  { label: 'Lessons Completed', value: '27', tone: 'blue' },
+  { label: 'Quiz Questions', value: '183', tone: 'green' },
+  { label: 'Correct Answers', value: '72%', tone: 'amber' },
+  { label: 'Scriptures Memorized', value: '14', tone: 'purple' },
 ]
 
 export const SAMPLE_RECENT: RecentItem[] = [
@@ -108,8 +103,8 @@ export const SAMPLE_RECENT: RecentItem[] = [
 ]
 
 export const SAMPLE_ACHIEVEMENTS: Achievement[] = [
-  { id: 'b1', name: 'First quiz' },
-  { id: 'b2', name: '7-day streak' },
-  { id: 'b3', name: 'Book explorer' },
-  { id: 'b4', name: 'Active member' },
+  { id: 'b1', name: 'First Quiz', kind: 'quiz' },
+  { id: 'b2', name: '7-Day Streak', kind: 'streak' },
+  { id: 'b3', name: 'Book Explorer', kind: 'explorer' },
+  { id: 'b4', name: 'Active Member', kind: 'member' },
 ]

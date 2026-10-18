@@ -1,7 +1,6 @@
 @use '@/styles/mixins' as *;
 
-// Quick actions (owner's reference): white cards with a light border, a small
-// tinted icon square top-left, then the title and hint.
+// Quick actions: the shared card and hover (base component), a tinted icon tile, title and hint.
 .quick-actions {
   .quick-list {
     display: grid;
@@ -18,43 +17,28 @@
   }
 
   .quick-card {
+    @include card;
+    @include card-hover;
+
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    gap: var(--space-4);
+    gap: var(--space-2);
     width: 100%;
     height: 100%;
     padding: var(--space-3);
-    border: var(--border-width) solid var(--color-border-subtle);
-    border-radius: var(--round-md);
-    background: var(--color-bg-surface);
     color: var(--color-text-primary);
     font: inherit;
     text-align: start;
     cursor: pointer;
-    transition:
-      transform var(--motion-duration-fast) var(--motion-ease-standard),
-      box-shadow var(--motion-duration-fast) var(--motion-ease-standard);
 
-    &:hover {
-      box-shadow: var(--elevation-raised);
-      transform: translateY(calc(var(--space-1) * -0.5));
-    }
-
-    &:active {
-      transform: none;
-    }
-
-    @include reduced-motion {
-      transition: none;
-
-      &:hover {
-        transform: none;
-      }
+    @include tablet {
+      gap: var(--space-3);
+      padding: var(--space-4);
     }
   }
 
-  // One tint per action; the icon colour matches.
+  // One tone per action; the icon colour matches.
   .quick-card-learn {
     --quick-bg: var(--color-tile-learn-bg);
     --quick-icon: var(--color-tile-learn-icon);
@@ -79,16 +63,26 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: var(--space-10);
-    height: var(--space-10);
-    border-radius: var(--round-sm);
+    width: var(--space-8);
+    height: var(--space-8);
+    border-radius: var(--round-tile);
     background: var(--quick-bg);
     color: var(--quick-icon);
+
+    @include tablet {
+      width: var(--space-10);
+      height: var(--space-10);
+    }
   }
 
   .quick-icon-svg {
-    width: var(--icon-md);
-    height: var(--icon-md);
+    width: var(--icon-sm);
+    height: var(--icon-sm);
+
+    @include tablet {
+      width: var(--icon-md);
+      height: var(--icon-md);
+    }
   }
 
   .quick-text {
@@ -97,14 +91,19 @@
   }
 
   .quick-title {
-    font-size: var(--type-sm);
-    line-height: var(--type-sm-lh);
-    font-weight: var(--weight-semibold);
+    @include type-body-sm;
+
+    font-weight: var(--weight-bold);
+    transition: color var(--motion-duration-fast) var(--motion-ease-standard);
+  }
+
+  .quick-card:hover .quick-title {
+    color: var(--color-text-accent);
   }
 
   .quick-hint {
+    @include type-caption;
+
     color: var(--color-text-secondary);
-    font-size: var(--type-xs);
-    line-height: var(--type-xs-lh);
   }
 }

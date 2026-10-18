@@ -23,10 +23,10 @@ describe('Home page', () => {
       'The Burning Ones',
       'Welcome back, David!',
       'Quick Actions',
-      'Upcoming activities',
-      'Your progress',
-      'Recent activity',
-      'Recent achievements',
+      'Upcoming Events',
+      'Your Progress',
+      'Recent Activity',
+      'Recent Achievements',
     ])
   })
 

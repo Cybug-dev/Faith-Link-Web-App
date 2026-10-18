@@ -1,21 +1,18 @@
 import type { ReactNode } from 'react'
-import { Link } from 'react-router'
-import { ArrowRight, ChevronRight } from 'lucide-react'
+import { SectionLink, type SectionLinkProps } from './section-link'
 import './home-section.scss'
 
 type HomeSectionProps = {
   id: string
   title: string
-  /** Optional link on the right of the heading, e.g. "See all". */
-  action?: { label: string; to: string; accessibleLabel: string }
-  /** Same look as `action`, but a button, for pages not built yet (e.g. opens the coming-soon popup). */
-  onAction?: { label: string; accessibleLabel: string; onClick: () => void }
+  /** The shared "See All →" link on the right of the heading. */
+  link?: SectionLinkProps
   className?: string
   children: ReactNode
 }
 
-/** Heading row + content shared by every home section, so they all line up the same way. */
-export function HomeSection({ id, title, action, onAction, className, children }: HomeSectionProps) {
+/** A heading that sits above loose content (not inside a card), e.g. the quick action tiles. */
+export function HomeSection({ id, title, link, className, children }: HomeSectionProps) {
   const headingId = `${id}-heading`
   return (
     <section aria-labelledby={headingId} className={className ? `home-section ${className}` : 'home-section'}>
@@ -23,23 +20,7 @@ export function HomeSection({ id, title, action, onAction, className, children }
         <h2 id={headingId} className="section-title">
           {title}
         </h2>
-        {action && (
-          <Link to={action.to} className="section-link" aria-label={action.accessibleLabel}>
-            {action.label}
-            <ChevronRight aria-hidden className="section-link-icon" />
-          </Link>
-        )}
-        {onAction && (
-          <button
-            type="button"
-            className="section-link"
-            aria-label={onAction.accessibleLabel}
-            onClick={onAction.onClick}
-          >
-            {onAction.label}
-            <ArrowRight aria-hidden className="section-link-icon" />
-          </button>
-        )}
+        {link && <SectionLink {...link} />}
       </div>
       {children}
     </section>

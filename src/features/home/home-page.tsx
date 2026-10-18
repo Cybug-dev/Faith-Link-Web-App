@@ -8,7 +8,7 @@ import {
   SAMPLE_ACTIVITIES,
   SAMPLE_FOCUS,
   SAMPLE_RECENT,
-  SAMPLE_SERIES,
+  SAMPLE_OVERVIEW,
   SAMPLE_STATS,
   SAMPLE_WELCOME,
 } from './home-sample-data'
@@ -57,7 +57,7 @@ export function HomePage() {
         <UpcomingActivities activities={SAMPLE_ACTIVITIES} />
       </div>
       <div className="home-progress">
-        <ProgressCard series={SAMPLE_SERIES} stats={SAMPLE_STATS} />
+        <ProgressCard overview={SAMPLE_OVERVIEW} stats={SAMPLE_STATS} badges={SAMPLE_ACHIEVEMENTS} />
       </div>
       <div className="home-recent">
         <RecentActivity items={SAMPLE_RECENT} />

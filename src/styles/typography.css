@@ -26,6 +26,8 @@
   --weight-bold: 700;
 
   /* Size + line-height pairs. */
+  --type-2xs: 0.625rem; /* 10 — chips, date-tile month, phone captions (base component) */
+  --type-2xs-lh: 0.875rem;
   --type-xs: 0.75rem; /* 12 */
   --type-xs-lh: 1rem;
   --type-sm: 0.875rem; /* 14 */

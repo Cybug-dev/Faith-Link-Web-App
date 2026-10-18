@@ -25,7 +25,10 @@
 
   /* Warm neutrals — canvas, surfaces, borders. */
   --palette-neutral-0: #ffffff;
+  --palette-neutral-10: #fdfcf8; /* row hover (base component) */
   --palette-neutral-25: #fbf9f5;
+  --palette-neutral-75: #f0ece3; /* row borders and dividers inside a card (base component) */
+  --palette-neutral-150: #eae6df; /* card border (base component) */
   --palette-neutral-50: #f5f2ec;
   --palette-neutral-100: #ede9e1;
   --palette-neutral-200: #e2ded5;
@@ -58,28 +61,41 @@
   --palette-night-800: #2a303b; /* rows, chips, hover on night */
   --palette-night-700: #363d4a; /* dividers on night */
 
-  /* Teal — the level stat icon (focus banner reference). */
-  --palette-teal-400: #2dd4bf;
+  /* Green, blue, purple and teal come from the owner's base component, "Upcoming Events" on the
+     Stitch "FaithLink - Desktop Home (Collapsed Sidebar)" board (2026-10-18). Amber and navy are unchanged. */
 
-  /* Purple — the "Continue Learning" quick action (reference). */
-  --palette-purple-50: #f1edfb;
-  --palette-purple-400: #8b6fd6;
+  /* Teal — the level stat icon and the Active Member badge. */
+  --palette-teal-50: #f0fdfa;
+  --palette-teal-100: #ccfbf1;
+  --palette-teal-400: #2dd4bf;
+  --palette-teal-600: #0d9488;
+
+  /* Purple — the "Continue Learning" quick action, First Quiz badge. */
+  --palette-purple-50: #faf5ff;
+  --palette-purple-100: #f3e8ff;
+  --palette-purple-400: #c084fc;
+  --palette-purple-500: #a855f7;
 
   /* Status */
-  --palette-green-50: #e7f4ec;
-  --palette-green-300: #a8d5ba;
-  --palette-green-500: #1f9d55;
-  --palette-green-700: #1b6b45;
-  --palette-green-900: #14532d;
+  --palette-green-50: #ecfdf5;
+  --palette-green-100: #d1fae5;
+  --palette-green-300: #6ee7b7;
+  --palette-green-500: #10b981;
+  --palette-green-600: #059669;
+  --palette-green-700: #047857;
+  --palette-green-900: #064e3b;
   --palette-red-50: #fdecea;
   --palette-red-100: #ffdad6;
   --palette-red-300: #f2b8b5;
   --palette-red-700: #ba1a1a;
   --palette-red-900: #93000a;
-  --palette-blue-50: #e6eef7;
-  --palette-blue-300: #b3c9e0;
-  --palette-blue-700: #2f5d8a;
-  --palette-blue-900: #1e3f63;
+  --palette-blue-50: #eff6ff;
+  --palette-blue-100: #dbeafe;
+  --palette-blue-300: #93c5fd;
+  --palette-blue-500: #3b82f6;
+  --palette-blue-600: #2563eb;
+  --palette-blue-700: #1d4ed8;
+  --palette-blue-900: #1e3a8a;
   --palette-gold-50: #fff4d6;
   --palette-gold-300: #e8c46a;
   --palette-gold-900: #6b4400;
@@ -146,22 +162,61 @@
   --color-stat-glow: rgb(243 156 43 / 0.6); /* glow around the flame and star */
   --color-bg-glass-tile-hover: rgb(255 255 255 / 0.12);
 
-  /* Quick action tiles (owner reference): pastel tile + coloured icon. Church uses the brand amber. */
-  --color-tile-learn-bg: var(--palette-purple-50);
-  --color-tile-learn-icon: var(--palette-purple-400);
-  --color-tile-quiz-bg: var(--palette-green-50);
-  --color-tile-quiz-icon: var(--palette-green-500);
-  --color-tile-church-bg: var(--palette-amber-50);
+  /* Cards and rows (base component: Stitch "Upcoming Events"). Every card in the app uses these. */
+  --color-border-card: var(--palette-neutral-150); /* the card's own 1px edge */
+  --color-border-row: var(--palette-neutral-75); /* rows and dividers inside a card */
+  --color-bg-row-hover: var(--palette-neutral-10);
+
+  /* Tones (base component). bg + border for chips and tiles, solid for icon fills,
+     dot for small keys, text for words on the tint. */
+  --color-tone-amber-bg: var(--palette-amber-50);
+  --color-tone-amber-border: var(--palette-amber-100);
+  --color-tone-amber-solid: var(--palette-amber-400);
+  --color-tone-amber-dot: var(--palette-amber-500);
+  --color-tone-amber-text: var(--palette-amber-600); /* never the brown amber-800 from Stitch (owner) */
+  --color-tone-green-bg: var(--palette-green-50);
+  --color-tone-green-border: var(--palette-green-100);
+  --color-tone-green-solid: var(--palette-green-600);
+  --color-tone-green-dot: var(--palette-green-500);
+  --color-tone-green-text: var(--palette-green-600);
+  --color-tone-blue-bg: var(--palette-blue-50);
+  --color-tone-blue-border: var(--palette-blue-100);
+  --color-tone-blue-solid: var(--palette-blue-600);
+  --color-tone-blue-dot: var(--palette-blue-500);
+  --color-tone-blue-text: var(--palette-blue-600);
+  --color-tone-purple-bg: var(--palette-purple-50);
+  --color-tone-purple-border: var(--palette-purple-100);
+  --color-tone-purple-solid: var(--palette-purple-500);
+  --color-tone-purple-dot: var(--palette-purple-500);
+  --color-tone-teal-bg: var(--palette-teal-50);
+  --color-tone-teal-border: var(--palette-teal-100);
+  --color-tone-teal-solid: var(--palette-teal-600);
+
+  /* Quiet date tile and the View button (base component). */
+  --gradient-date-accent: linear-gradient(180deg, var(--palette-amber-400), var(--palette-amber-500));
+  --gradient-date-quiet: linear-gradient(180deg, var(--palette-slate-50), var(--palette-slate-200));
+  --color-bg-soft: var(--palette-neutral-50);
+  --color-bg-soft-hover: var(--palette-neutral-100);
+  --color-border-soft: var(--palette-neutral-200);
+
+  /* Quick action tiles: pastel tile + coloured icon, from the tones above. */
+  --color-tile-learn-bg: var(--color-tone-purple-bg);
+  --color-tile-learn-icon: var(--color-tone-purple-solid);
+  --color-tile-quiz-bg: var(--color-tone-green-bg);
+  --color-tile-quiz-icon: var(--color-tone-green-solid);
+  --color-tile-church-bg: var(--color-tone-amber-bg);
   --color-tile-church-icon: var(--palette-amber-500);
-  --color-tile-rank-bg: var(--palette-blue-50);
-  --color-tile-rank-icon: var(--palette-blue-700);
+  --color-tile-rank-bg: var(--color-tone-blue-bg);
+  --color-tile-rank-icon: var(--color-tone-blue-solid);
+  --color-tile-member-bg: var(--color-tone-teal-bg);
+  --color-tile-member-icon: var(--color-tone-teal-solid);
 
   /* Status — each has bg / border / text so banners and badges stay legible. */
   --color-success-bg: var(--palette-green-50);
   --color-success-border: var(--palette-green-300);
   --color-success-text: var(--palette-green-900);
   --color-success-icon: var(--palette-green-700);
-  --color-success-solid: var(--palette-green-500); /* chosen answer fill (quiz), white text */
+  --color-success-solid: var(--palette-green-600); /* chosen answer fill (quiz), white text */
   --color-danger-bg: var(--palette-red-50);
   --color-danger-border: var(--palette-red-300);
   --color-danger-text: var(--palette-red-900);
@@ -199,6 +254,7 @@
 
   --round-xs: 0.25rem; /* 4 — small checkbox */
   --round-sm: 0.5rem; /* 8 */
+  --round-tile: 0.75rem; /* 12 — date tiles, icon tiles, small buttons inside cards (base component) */
   --round-md: 1rem; /* 16 */
   --round-lg: 1.5rem; /* 24 — large illustration cards and photos (onboarding design) */
   --round-full: 9999px;
@@ -209,9 +265,10 @@
   --focus-ring-offset: 2px;
 
   /* ── 5. Elevation ────────────────────────────────────────────────── */
-  /* Cards at rest have NO shadow — a 1px subtle border carries them. Shadow
-     is reserved for things that float. */
+  /* Cards at rest: a 1px --color-border-card edge plus the faint --elevation-card shadow
+     (base component, owner 2026-10-18). Bigger shadows are for things that float. */
 
+  --elevation-card: 0 1px 2px rgb(15 23 42 / 0.05); /* every card at rest, with --color-border-card (base component) */
   --elevation-raised: 0 1px 2px rgb(26 30 36 / 0.06), 0 4px 12px rgb(26 30 36 / 0.06); /* sticky bars, selected cards */
   --elevation-popover: 0 8px 24px rgb(26 30 36 / 0.12), 0 2px 6px rgb(26 30 36 / 0.06); /* menus, popovers, toasts */
   --elevation-modal: 0 16px 40px rgb(26 30 36 / 0.18); /* dialogs, bottom sheets */

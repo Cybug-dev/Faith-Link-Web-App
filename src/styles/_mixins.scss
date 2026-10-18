@@ -36,3 +36,78 @@ $bp-desktop: 64rem; // 1024px
   white-space: nowrap;
   border: 0;
 }
+
+// ── Cards (base component: Stitch "Upcoming Events", owner 2026-10-18) ──
+// One look for every card in the app: hairline warm edge, faint shadow, 16px corners.
+@mixin card {
+  padding: var(--space-4);
+  border: var(--border-width) solid var(--color-border-card);
+  border-radius: var(--round-md);
+  background: var(--color-bg-surface);
+  box-shadow: var(--elevation-card);
+
+  @include desktop {
+    padding: var(--space-6);
+  }
+}
+
+// One hover for anything clickable that is, or sits on, a card: amber edge, warm fill, lifted shadow.
+@mixin card-hover {
+  transition:
+    border-color var(--motion-duration-fast) var(--motion-ease-standard),
+    background-color var(--motion-duration-fast) var(--motion-ease-standard),
+    box-shadow var(--motion-duration-fast) var(--motion-ease-standard);
+
+  &:hover {
+    border-color: var(--color-accent-border);
+    background-color: var(--color-bg-row-hover);
+    box-shadow: var(--elevation-raised);
+  }
+
+  @include reduced-motion {
+    transition: none;
+  }
+}
+
+// ── Small type steps. Phones get the step below; tablet and up the base component's size. ──
+// Card and section titles: 14 → 16.
+@mixin type-card-title {
+  font-size: var(--type-sm);
+  line-height: var(--type-sm-lh);
+  font-weight: var(--weight-bold);
+  letter-spacing: var(--ls-headline);
+
+  @include tablet {
+    font-size: var(--type-base);
+    line-height: var(--type-base-lh);
+  }
+}
+
+// Row titles and body text inside a card: 12 → 14.
+@mixin type-body-sm {
+  font-size: var(--type-xs);
+  line-height: var(--type-xs-lh);
+
+  @include tablet {
+    font-size: var(--type-sm);
+    line-height: var(--type-sm-lh);
+  }
+}
+
+// Subtitles, meta lines, hints, links: 10 → 12.
+@mixin type-caption {
+  font-size: var(--type-2xs);
+  line-height: var(--type-2xs-lh);
+
+  @include tablet {
+    font-size: var(--type-xs);
+    line-height: var(--type-xs-lh);
+  }
+}
+
+// Chips, date-tile month, badge names: 10 everywhere.
+@mixin type-micro {
+  font-size: var(--type-2xs);
+  line-height: var(--type-2xs-lh);
+  font-weight: var(--weight-bold);
+}

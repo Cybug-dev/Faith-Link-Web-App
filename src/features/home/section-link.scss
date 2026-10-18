@@ -1,0 +1,36 @@
+@use '@/styles/mixins' as *;
+
+// Accent text, never Stitch's brown amber-800 (owner). Padded so the tap target stays comfortable.
+.section-link {
+  @include type-caption;
+
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  gap: var(--space-1);
+  min-height: var(--control-h-xs);
+  padding: 0 var(--space-2);
+  margin-inline-end: calc(var(--space-2) * -1);
+  border: 0;
+  border-radius: var(--round-sm);
+  background: none;
+  color: var(--color-text-accent);
+  font-family: inherit;
+  font-weight: var(--weight-semibold);
+  text-decoration: none;
+  cursor: pointer;
+  transition: background-color var(--motion-duration-fast) var(--motion-ease-standard);
+
+  &:hover {
+    background-color: var(--color-tone-amber-bg);
+  }
+
+  @include reduced-motion {
+    transition: none;
+  }
+
+  .section-link-icon {
+    width: var(--type-xs);
+    height: var(--type-xs);
+  }
+}

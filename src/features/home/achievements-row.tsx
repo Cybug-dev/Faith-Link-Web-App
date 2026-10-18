@@ -1,30 +1,22 @@
-import { Award } from 'lucide-react'
-import { HomeSection } from './home-section'
+import { BadgeList } from './badge-list'
+import { CardHead } from './card-head'
 import type { Achievement } from './home-sample-data'
 import './achievements-row.scss'
 
 export function AchievementsRow({ achievements }: { achievements: Achievement[] }) {
   return (
-    <HomeSection
-      id="achievements"
-      title="Recent achievements"
-      action={{ label: 'See all', to: '/achievements', accessibleLabel: 'See all achievements' }}
-      className="achievements"
-    >
+    <section aria-labelledby="achievements-heading" className="achievements">
+      <CardHead
+        id="achievements-heading"
+        title="Recent Achievements"
+        subtitle="Badges you earned lately"
+        link={{ label: 'See All', to: '/achievements', accessibleLabel: 'See all achievements' }}
+      />
       {achievements.length === 0 ? (
-        <p className="panel achievements-empty">Finish your first lesson or quiz to earn an achievement.</p>
+        <p className="achievements-empty">Finish your first lesson or quiz to earn an achievement.</p>
       ) : (
-        <ul className="panel achievement-list">
-          {achievements.map((achievement) => (
-            <li key={achievement.id} className="achievement">
-              <span aria-hidden className="achievement-badge">
-                <Award className="achievement-icon" />
-              </span>
-              <span className="achievement-name">{achievement.name}</span>
-            </li>
-          ))}
-        </ul>
+        <BadgeList badges={achievements} />
       )}
-    </HomeSection>
+    </section>
   )
 }

@@ -25,7 +25,7 @@ export function QuickActions() {
       id="quick-actions"
       title="Quick Actions"
       className="quick-actions"
-      onAction={{
+      link={{
         label: 'See All',
         accessibleLabel: 'See all quick actions',
         onClick: () => showComingSoon('All quick actions'),

@@ -1,5 +1,5 @@
 import { Award, BookOpen, CalendarCheck, type LucideIcon } from 'lucide-react'
-import { HomeSection } from './home-section'
+import { CardHead } from './card-head'
 import type { RecentItem } from './home-sample-data'
 import './recent-activity.scss'
 
@@ -11,15 +11,16 @@ const KIND_ICON: Record<RecentItem['kind'], LucideIcon> = {
 
 export function RecentActivity({ items }: { items: RecentItem[] }) {
   return (
-    <HomeSection id="recent" title="Recent activity" className="recent">
+    <section aria-labelledby="recent-heading" className="recent">
+      <CardHead id="recent-heading" title="Recent Activity" subtitle="What you did this week" />
       {items.length === 0 ? (
-        <p className="panel recent-empty">Lessons, quizzes and activities you finish will show here.</p>
+        <p className="recent-empty">Lessons, quizzes and activities you finish will show here.</p>
       ) : (
-        <ul className="panel recent-list">
+        <ul className="recent-list">
           {items.map((item) => {
             const Icon = KIND_ICON[item.kind]
             return (
-              <li key={item.id} className="recent-row">
+              <li key={item.id} className={`recent-row recent-row-${item.kind}`}>
                 <span aria-hidden className="recent-icon">
                   <Icon className="recent-icon-svg" />
                 </span>
@@ -32,6 +33,6 @@ export function RecentActivity({ items }: { items: RecentItem[] }) {
           })}
         </ul>
       )}
-    </HomeSection>
+    </section>
   )
 }

@@ -1,50 +1,62 @@
-import { Check, Clock, MapPin } from 'lucide-react'
+import { Calendar, Clock } from 'lucide-react'
 import { Button } from '@/components/ui/button'
-import { HomeSection } from './home-section'
+import { CardHead } from './card-head'
 import type { ActivityItem } from './home-sample-data'
 import './upcoming-activities.scss'
 
+/** The base component (owner, 2026-10-18): Stitch "Upcoming Events" on the Desktop Home board. */
 export function UpcomingActivities({ activities }: { activities: ActivityItem[] }) {
   return (
-    <HomeSection
-      id="upcoming"
-      title="Upcoming activities"
-      action={{ label: 'See all', to: '/activities', accessibleLabel: 'See all activities' }}
-      className="upcoming"
-    >
+    <section aria-labelledby="upcoming-heading" className="upcoming">
+      <CardHead
+        id="upcoming-heading"
+        title="Upcoming Events"
+        subtitle="Fellowship and gatherings this week"
+        icon={<Calendar />}
+        link={{ label: 'See All', to: '/activities', accessibleLabel: 'See all events' }}
+        hasDivider
+      />
       {activities.length === 0 ? (
-        <p className="panel upcoming-empty">Nothing planned yet. Your church’s next activities will show here.</p>
+        <p className="upcoming-empty">Nothing planned yet. Your church’s next events will show here.</p>
       ) : (
-        <ul className="panel upcoming-list">
-          {activities.map((activity) => (
-            <li key={activity.id} className="upcoming-row">
-              <span className="date-tile">
-                <span className="date-tile-month">{activity.month}</span>
-                <span className="date-tile-day">{activity.day}</span>
-              </span>
-              <div className="upcoming-text">
-                <p className="upcoming-title">{activity.title}</p>
-                <p className="upcoming-meta">
-                  <Clock aria-hidden className="upcoming-meta-icon" />
-                  {activity.when}
-                  <MapPin aria-hidden className="upcoming-meta-icon" />
-                  {activity.place}
-                </p>
-              </div>
-              {activity.isJoined ? (
-                <span className="upcoming-joined">
-                  <Check aria-hidden className="upcoming-meta-icon" />
-                  Joined
+        <ul className="upcoming-list">
+          {activities.map((activity) => {
+            const canJoin = activity.action === 'join'
+            return (
+              <li key={activity.id} className="upcoming-row">
+                <span className={canJoin ? 'date-tile' : 'date-tile date-tile-quiet'}>
+                  <span className="date-tile-month">{activity.month}</span>{' '}
+                  <span className="date-tile-day">{activity.day}</span>
                 </span>
-              ) : (
-                <Button variant="outline" size="sm" className="upcoming-join" aria-label={`Join ${activity.title}`}>
-                  Join
+                <div className="upcoming-text">
+                  <div className="upcoming-title-line">
+                    <h3 className="upcoming-title">{activity.title}</h3>
+                    <span className={`upcoming-status upcoming-status-${activity.status.tone}`}>
+                      {activity.status.label}
+                    </span>
+                  </div>
+                  <p className="upcoming-meta">
+                    <span className="upcoming-time">
+                      <Clock aria-hidden className="upcoming-time-icon" />
+                      {activity.when}
+                    </span>
+                    <span aria-hidden className="upcoming-meta-dot" />
+                    <span className="visually-hidden">, </span>
+                    <span className="upcoming-place">{activity.place}</span>
+                  </p>
+                </div>
+                <Button
+                  variant={canJoin ? 'solid' : 'soft'}
+                  size="xs"
+                  aria-label={`${canJoin ? 'Join' : 'View'} ${activity.title}`}
+                >
+                  {canJoin ? 'Join' : 'View'}
                 </Button>
-              )}
-            </li>
-          ))}
+              </li>
+            )
+          })}
         </ul>
       )}
-    </HomeSection>
+    </section>
   )
 }
