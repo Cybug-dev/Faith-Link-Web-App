@@ -14,11 +14,17 @@ $hero-inline: 62rem; // from here: state 1 (panel on the right)
 
   // ── State 3 (default, phones): two cards in a swipeable row ──────────
 
+  // The row runs under the page margin to both screen edges (owner), so cards slide in and out
+  // from the edge of the screen; the matching padding and scroll padding keep each card lined up
+  // with the page margin when it snaps.
   .focus-row {
     display: grid;
     grid-auto-columns: calc(100% - var(--space-5)); // only a sliver of the next card shows
     grid-auto-flow: column;
     gap: var(--space-2);
+    margin-inline: calc(var(--page-margin) * -1);
+    padding-inline: var(--page-margin);
+    scroll-padding-inline: var(--page-margin);
     overflow-x: auto;
     overscroll-behavior-x: contain;
     scroll-snap-type: x mandatory;
@@ -78,6 +84,7 @@ $hero-inline: 62rem; // from here: state 1 (panel on the right)
       grid-auto-columns: auto;
       grid-auto-flow: row;
       gap: var(--space-5);
+      margin-inline: 0;
       padding: var(--space-6);
       overflow: hidden;
       border-radius: var(--round-lg);

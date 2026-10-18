@@ -1,4 +1,5 @@
 import { Calendar, Clock } from 'lucide-react'
+import { useComingSoon } from '@/components/coming-soon/coming-soon-context'
 import { Button } from '@/components/ui/button'
 import { CardHead } from './card-head'
 import type { ActivityItem } from './home-sample-data'
@@ -6,6 +7,7 @@ import './upcoming-activities.scss'
 
 /** The base component (owner, 2026-10-18): Stitch "Upcoming Events" on the Desktop Home board. */
 export function UpcomingActivities({ activities }: { activities: ActivityItem[] }) {
+  const showComingSoon = useComingSoon()
   return (
     <section aria-labelledby="upcoming-heading" className="upcoming">
       <CardHead
@@ -49,6 +51,7 @@ export function UpcomingActivities({ activities }: { activities: ActivityItem[] 
                   variant={canJoin ? 'solid' : 'soft'}
                   size="xs"
                   aria-label={`${canJoin ? 'Join' : 'View'} ${activity.title}`}
+                  onClick={() => showComingSoon(canJoin ? 'Joining events' : 'Event details')}
                 >
                   {canJoin ? 'Join' : 'View'}
                 </Button>

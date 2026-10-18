@@ -1,5 +1,4 @@
-import { useCallback, useRef, useState, type MouseEvent, type PointerEvent, type ReactNode } from 'react'
-import { flushSync } from 'react-dom'
+import { useCallback, useEffect, useRef, useState, type MouseEvent, type PointerEvent, type ReactNode } from 'react'
 import { Hourglass } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { ComingSoonContext } from './coming-soon-context'
@@ -12,13 +11,29 @@ import './coming-soon.scss'
  */
 export function ComingSoonProvider({ children }: { children: ReactNode }) {
   const dialogRef = useRef<HTMLDialogElement>(null)
-  const [featureName, setFeatureName] = useState('')
+  // Each request gets a new id, so asking for the same feature twice still reopens the popup.
+  const [request, setRequest] = useState<{ id: number; name: string } | null>(null)
+  const openerRef = useRef<Element | null>(null)
 
   const showComingSoon = useCallback((name: string) => {
-    // Render the title before opening, so screen readers announce the right feature.
-    flushSync(() => setFeatureName(name))
-    dialogRef.current?.showModal()
+    openerRef.current = document.activeElement
+    setRequest((previous) => ({ id: (previous?.id ?? 0) + 1, name }))
   }, [])
+
+  // Open after the title has rendered, so screen readers announce the right feature. Works for
+  // clicks and for the catch-all route, which asks from an effect (flushSync can't run there).
+  useEffect(() => {
+    const dialog = dialogRef.current
+    // showModal() throws if the popup is already open (e.g. two triggers in a row).
+    if (request && dialog && !dialog.open) dialog.showModal()
+  }, [request])
+
+  // The control that opened the popup may be gone (the catch-all route swaps the page).
+  // Then focus goes to the main content instead of dropping to the top of the document.
+  function handleClose() {
+    if (openerRef.current?.isConnected) return
+    document.getElementById('main')?.focus()
+  }
 
   // A click on the dialog element itself (not the panel) is a click on the backdrop.
   // Both press and release must land there, so a text selection dragged out of the panel doesn't close it.
@@ -44,13 +59,14 @@ export function ComingSoonProvider({ children }: { children: ReactNode }) {
         aria-describedby="coming-soon-text"
         onPointerDown={handleBackdropPress}
         onClick={handleBackdropClick}
+        onClose={handleClose}
       >
         <div className="coming-soon-panel">
           <span aria-hidden className="coming-soon-icon">
             <Hourglass />
           </span>
           <h2 id="coming-soon-title" className="coming-soon-title">
-            {featureName} is coming soon
+            {request?.name} is coming soon
           </h2>
           <p id="coming-soon-text" className="coming-soon-text">
             We are still building this part of FaithLink. It will be ready in a future update.

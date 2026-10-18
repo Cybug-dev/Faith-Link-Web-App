@@ -1,4 +1,6 @@
 import { Navigate, Outlet, createBrowserRouter, type RouteObject } from 'react-router'
+import { ComingSoonProvider } from '@/components/coming-soon/coming-soon-provider'
+import { UnbuiltRoute } from '@/components/coming-soon/unbuilt-route'
 import { CreateAccountPage } from '@/features/auth/create-account-page'
 import { ForgotPasswordPage } from '@/features/auth/forgot-password-page'
 import { ResetPasswordPage } from '@/features/auth/reset-password-page'
@@ -7,10 +9,8 @@ import { VerifyEmailPage } from '@/features/auth/verify-email-page'
 import { OnboardingGate } from '@/features/onboarding/onboarding-gate'
 import { ONBOARDING_PATH } from '@/features/onboarding/onboarding-routes'
 import { loadOrReload } from '@/lib/load-or-reload'
-import { NotFoundPage } from '@/pages/not-found-page'
 
-/** Shared with tests (createMemoryRouter) so the routes are defined once. */
-export const routes: RouteObject[] = [
+const pageRoutes: RouteObject[] = [
   // The app opens on sign in. Once sessions exist, signed-in visitors should go to /home instead.
   { path: '/', element: <Navigate to="/sign-in" replace /> },
   // Signed-in area: onboarding first, then the app shell (sidebar / bottom nav) around each page.
@@ -48,7 +48,23 @@ export const routes: RouteObject[] = [
   { path: '/verify-email', element: <VerifyEmailPage /> },
   { path: '/forgot-password', element: <ForgotPasswordPage /> },
   { path: '/reset-password', element: <ResetPasswordPage /> },
-  { path: '*', element: <NotFoundPage /> },
+  // No "page not found" screen (owner): unbuilt or unknown addresses open the coming-soon popup.
+  { path: '*', element: <UnbuiltRoute /> },
+]
+
+/**
+ * Shared with tests (createMemoryRouter) so the routes are defined once.
+ * The coming-soon popup wraps every page, so auth screens and the app shell share one.
+ */
+export const routes: RouteObject[] = [
+  {
+    element: (
+      <ComingSoonProvider>
+        <Outlet />
+      </ComingSoonProvider>
+    ),
+    children: pageRoutes,
+  },
 ]
 
 export const router = createBrowserRouter(routes)
