@@ -30,6 +30,7 @@
     color: var(--color-text-primary);
     font: inherit;
     text-align: start;
+    text-decoration: none;
     cursor: pointer;
 
     @include tablet {
@@ -98,7 +99,7 @@
   }
 
   .quick-card:hover .quick-title {
-    color: var(--color-text-accent);
+    color: var(--color-text-accent-hover);
   }
 
   .quick-hint {

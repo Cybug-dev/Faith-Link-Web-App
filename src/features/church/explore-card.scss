@@ -1,0 +1,57 @@
+@use '@/styles/mixins' as *;
+
+// Brand orange over a photo (owner).
+.explore-card {
+  @include card;
+
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  gap: var(--space-2);
+  overflow: hidden;
+  background: var(--color-accent-bg-hover); // while the photo loads
+  color: var(--color-text-inverse);
+  text-shadow: 0 1px 2px rgb(15 18 23 / 0.35);
+  isolation: isolate;
+
+  &::before {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: var(--gradient-accent-overlay);
+    content: '';
+  }
+
+  .explore-photo {
+    position: absolute;
+    inset: 0;
+    z-index: -2;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .explore-title {
+    @include type-card-title;
+
+    margin: 0;
+  }
+
+  .explore-text {
+    @include type-body-sm;
+
+    max-width: var(--w-form);
+    margin: 0;
+  }
+
+  .explore-button {
+    margin-top: var(--space-2);
+
+    // The amber focus ring would vanish on orange.
+    &:focus-visible {
+      outline-color: var(--color-text-inverse);
+    }
+  }
+}

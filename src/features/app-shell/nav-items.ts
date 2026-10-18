@@ -3,9 +3,9 @@ import {
   CalendarDays,
   ClipboardList,
   Gamepad2,
+  Church,
   House,
   type LucideIcon,
-  MessageSquare,
   Settings,
   SquareCheckBig,
   TrendingUp,
@@ -39,6 +39,6 @@ export const SIDEBAR_NAV: NavItem[] = [
   { label: 'Groups', to: '/groups', icon: Users, isSoon: true },
   { label: 'Events', to: '/events', icon: CalendarDays, isSoon: true },
   { label: 'Leaderboard', to: '/leaderboard', icon: Trophy, isSoon: true },
-  { label: 'Messages', to: '/messages', icon: MessageSquare, isSoon: true },
+  { label: 'My Church', to: '/church', icon: Church },
   { label: 'Settings', to: '/settings', icon: Settings, isSoon: true },
 ]

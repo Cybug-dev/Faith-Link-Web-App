@@ -22,6 +22,7 @@
   --palette-amber-400: #f39c2b; /* brand (sampled from the onboarding reference) */
   --palette-amber-500: #da8826; /* deep end of the button gradient */
   --palette-amber-600: #c27419;
+  --palette-amber-700: #9a560c; /* hover text on cards: 5.4:1 on white */
 
   /* Warm neutrals — canvas, surfaces, borders. */
   --palette-neutral-0: #ffffff;
@@ -117,6 +118,8 @@
   --color-bg-glass-night: rgb(26 31 40 / 0.78); /* night frosted panel over a photo (focus banner stats) */
   --color-bg-glass-tile: rgb(255 255 255 / 0.07); /* tiles inside a night panel */
   --gradient-photo-left: linear-gradient(90deg, rgb(15 18 23 / 0.88) 0%, rgb(15 18 23 / 0.55) 45%, rgb(15 18 23 / 0.15) 100%); /* dark side behind text on a wide photo */
+  --gradient-photo-right: linear-gradient(270deg, rgb(15 18 23 / 0.75) 0%, rgb(15 18 23 / 0.5) 55%, rgb(15 18 23 / 0) 100%); /* dark side behind text on the right of a photo (church cover verse) */
+  --gradient-accent-overlay: linear-gradient(rgb(15 18 23 / 0.45), rgb(15 18 23 / 0.45)), linear-gradient(135deg, rgb(165 94 15 / 0.7), rgb(154 86 12 / 0.7)); /* soft orange plus a slight darkening over a photo: photo shows, white text reads (owner) */
   --gradient-photo-banner: linear-gradient(90deg, rgb(15 18 23 / 0.88) 0%, rgb(15 18 23 / 0.75) 45%, rgb(15 18 23 / 0.55) 100%); /* short photo banner: text stays >= 4.5:1 over any photo */
   /* Decorative backdrop only (soft glow, layered panels, confetti behind illustrations). Never behind text. */
   --color-deco-glow: rgb(243 156 43 / 0.16);
@@ -134,6 +137,7 @@
   --color-text-inverse: var(--palette-neutral-25);
   --color-text-inverse-muted: var(--palette-neutral-300); /* captions on an inverse surface: ~12:1 on night */
   --color-text-accent: var(--palette-amber-600); /* links, inline emphasis. Owner removed the brown: orange is ~3.3:1 on canvas, fine for bold/large text, weak for small text */
+  --color-text-accent-hover: var(--palette-amber-700); /* card titles on hover (owner: darker, readable) */
   --color-text-accent-on-photo: var(--palette-amber-200); /* light amber on a dark photo scrim */
   --color-text-on-accent: var(--palette-neutral-0); /* white on amber, as the reference. Only ~2.2:1: owner's trial, below WCAG AA */
 
@@ -277,6 +281,8 @@
 
   /* ── 6. Control sizing ───────────────────────────────────────────── */
 
+  --hero-min-h-sm: 13.5rem; /* top banners on phones (home focus, church cover) */
+  --hero-min-h: 15rem; /* top banners from tablet up */
   --control-h-xs: 1.75rem; /* 28 — phone top-bar bell and avatar (owner) */
   --control-h-sm: 2.25rem; /* 36 — chips, dense desktop actions; keep a 44px hit area */
   --control-h-md: 3rem; /* 48 — default button / input / select */

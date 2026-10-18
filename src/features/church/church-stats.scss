@@ -1,0 +1,91 @@
+@use '@/styles/mixins' as *;
+
+.church-stats {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-3);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+
+  @include tablet {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: var(--space-4);
+  }
+
+  .church-stat {
+    @include card;
+
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    padding: var(--space-3);
+
+    @include desktop {
+      padding: var(--space-4);
+    }
+  }
+
+  .church-stat-green {
+    --stat-bg: var(--color-tone-green-bg);
+    --stat-icon: var(--color-tone-green-solid);
+  }
+
+  .church-stat-amber {
+    --stat-bg: var(--color-tone-amber-bg);
+    --stat-icon: var(--color-tile-church-icon);
+  }
+
+  .church-stat-purple {
+    --stat-bg: var(--color-tone-purple-bg);
+    --stat-icon: var(--color-tone-purple-solid);
+  }
+
+  .church-stat-blue {
+    --stat-bg: var(--color-tone-blue-bg);
+    --stat-icon: var(--color-tone-blue-solid);
+  }
+
+  .church-stat-icon {
+    display: inline-flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    width: var(--space-8);
+    height: var(--space-8);
+    border-radius: var(--round-tile);
+    background: var(--stat-bg);
+    color: var(--stat-icon);
+
+    @include tablet {
+      width: var(--space-10);
+      height: var(--space-10);
+    }
+
+    svg {
+      width: var(--icon-sm);
+      height: var(--icon-sm);
+
+      @include tablet {
+        width: var(--icon-md);
+        height: var(--icon-md);
+      }
+    }
+  }
+
+  .church-stat-text {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+  }
+
+  .church-stat-value {
+    @include type-card-title;
+  }
+
+  .church-stat-label {
+    @include type-caption;
+
+    color: var(--color-text-secondary);
+  }
+}

@@ -1,13 +1,8 @@
-@use '@/styles/mixins' as *;
+@use "@/styles/mixins" as *;
 
-// "Today's focus" hero (owner's reference images). One DOM, CSS-only layout with
-// three states, chosen by the width the hero really has (container queries):
-//   1. wide:   one photo card, welcome panel inside it on the right
-//   2. medium: one photo card, welcome panel inside it, underneath the lesson, full width
-//   3. narrow: the panel steps out as its own card beside the lesson, in a swipeable row
-// Container queries can't read CSS variables; keep these in rem.
-$hero-inside: 37.5rem; // from here: states 1 and 2 (panel inside)
-$hero-inline: 62rem; // from here: state 1 (panel on the right)
+// Hero width breakpoints (container queries can't read CSS variables).
+$hero-inside: 37.5rem; // panel moves inside the card
+$hero-inline: 62rem; // panel sits on the right
 
 .focus-hero {
   container: focus-hero / inline-size;
@@ -19,7 +14,9 @@ $hero-inline: 62rem; // from here: state 1 (panel on the right)
   // with the page margin when it snaps.
   .focus-row {
     display: grid;
-    grid-auto-columns: calc(100% - var(--space-5)); // only a sliver of the next card shows
+    grid-auto-columns: calc(
+      100% - var(--space-5)
+    ); // only a sliver of the next card shows
     grid-auto-flow: column;
     gap: var(--space-2);
     margin-inline: calc(var(--page-margin) * -1);
@@ -40,7 +37,7 @@ $hero-inline: 62rem; // from here: state 1 (panel on the right)
     position: relative;
     isolation: isolate;
     min-width: 0;
-    min-height: 13.5rem; // owner: not too thin; grows with content
+    min-height: var(--hero-min-h-sm); // grows with content
     padding: var(--space-5);
     overflow: hidden;
     border-radius: var(--round-lg);
@@ -50,7 +47,7 @@ $hero-inline: 62rem; // from here: state 1 (panel on the right)
 
     // Darkening over the photo so the text stays readable.
     &::after {
-      content: '';
+      content: "";
       position: absolute;
       inset: 0;
       z-index: -1;
@@ -80,7 +77,7 @@ $hero-inline: 62rem; // from here: state 1 (panel on the right)
     .focus-row {
       position: relative;
       isolation: isolate;
-      min-height: 15rem;
+      min-height: var(--hero-min-h);
       grid-auto-columns: auto;
       grid-auto-flow: row;
       gap: var(--space-5);
@@ -92,7 +89,7 @@ $hero-inline: 62rem; // from here: state 1 (panel on the right)
       scroll-snap-type: none;
 
       &::after {
-        content: '';
+        content: "";
         position: absolute;
         inset: 0;
         z-index: -1;

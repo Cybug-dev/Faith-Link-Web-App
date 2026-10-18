@@ -31,6 +31,12 @@ const pageRoutes: RouteObject[] = [
               Component: (await loadOrReload(() => import('@/features/home/home-page'))).HomePage,
             }),
           },
+          {
+            path: '/church',
+            lazy: async () => ({
+              Component: (await loadOrReload(() => import('@/features/church/my-church-page'))).MyChurchPage,
+            }),
+          },
         ],
       },
     ],

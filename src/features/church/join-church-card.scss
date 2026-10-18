@@ -1,0 +1,30 @@
+@use '@/styles/mixins' as *;
+
+.join-church {
+  @include card;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: var(--space-4);
+
+  .join-church-form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+
+    @include tablet {
+      flex-direction: row;
+      align-items: center;
+    }
+  }
+
+  .join-church-label {
+    @include visually-hidden;
+  }
+
+  .join-church-field {
+    flex: 1;
+    min-width: 0;
+  }
+}
