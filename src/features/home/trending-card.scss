@@ -47,6 +47,8 @@
     text-align: start;
     cursor: pointer;
 
+    @include photo-zoom('.trending-photo');
+
     @include tablet {
       display: flex;
       flex-direction: column;
@@ -55,15 +57,13 @@
     }
   }
 
-  .trending-photo {
+  // Clips the hover zoom so the photo grows inside its rounded frame.
+  .trending-photo-frame {
     display: block;
-    width: 100%;
-    height: auto;
     grid-row: 1 / span 2;
-    aspect-ratio: 3 / 2;
+    overflow: hidden;
     border-radius: var(--round-tile);
     background: var(--color-bg-muted); // while the photo loads
-    object-fit: cover;
     transition: box-shadow var(--motion-duration-fast) var(--motion-ease-standard);
 
     @include tablet {
@@ -75,7 +75,15 @@
     }
   }
 
-  .trending-item:hover .trending-photo {
+  .trending-photo {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 3 / 2;
+    object-fit: cover;
+  }
+
+  .trending-item:hover .trending-photo-frame {
     box-shadow: var(--elevation-raised);
   }
 
@@ -145,6 +153,8 @@
     cursor: pointer;
     isolation: isolate;
     transition: box-shadow var(--motion-duration-fast) var(--motion-ease-standard);
+
+    @include photo-zoom('.group-photo');
 
     @include tablet {
       min-height: calc(var(--space-20) + var(--space-2));

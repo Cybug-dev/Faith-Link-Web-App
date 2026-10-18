@@ -9,6 +9,8 @@
     grid-area: sidebar;
     position: sticky;
     top: 0;
+    // Own layer above the page, so its tooltips aren't painted under banners that form their own layer.
+    z-index: var(--z-sticky);
     display: flex;
     flex-direction: column;
     gap: var(--space-8);

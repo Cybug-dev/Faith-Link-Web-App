@@ -1,0 +1,90 @@
+@use '@/styles/mixins' as *;
+
+// Search + topic picker, then category chips (owner's reference).
+.lesson-filters {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+
+  // Phones: full-width search, small topic picker under it. Tablet up: one row, picker at the far end.
+  .lesson-filter-row {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    justify-items: start;
+    gap: var(--space-3);
+
+    > :first-child {
+      justify-self: stretch;
+    }
+
+    @include tablet {
+      justify-items: stretch;
+      grid-template-columns: minmax(0, var(--w-reading)) minmax(0, calc(var(--space-20) * 2.5));
+      justify-content: space-between;
+      gap: var(--space-4);
+    }
+  }
+
+  // Scrolls sideways on narrow phones; the block padding keeps focus rings unclipped.
+  .lesson-chips {
+    display: flex;
+    gap: var(--space-2);
+    min-width: 0;
+    margin: 0 calc(var(--page-margin) * -1);
+    padding: var(--space-1) var(--page-margin);
+    border: 0;
+    overflow-x: auto;
+    scrollbar-width: none;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+
+    @include tablet {
+      flex-wrap: wrap;
+      gap: var(--space-3);
+      margin-inline: 0;
+      padding-inline: 0;
+      overflow-x: visible;
+    }
+  }
+
+  .visually-hidden {
+    @include visually-hidden;
+  }
+
+  .lesson-chip {
+    @include type-body-sm;
+
+    flex-shrink: 0;
+    min-height: var(--hit-min);
+    padding: 0 var(--space-4);
+    border: 0;
+    border-radius: var(--round-sm);
+    background: var(--color-bg-muted);
+    color: var(--color-text-secondary);
+    font-family: inherit;
+    font-weight: var(--weight-semibold);
+    white-space: nowrap;
+    cursor: pointer;
+    transition:
+      background-color var(--motion-duration-fast) var(--motion-ease-standard),
+      color var(--motion-duration-fast) var(--motion-ease-standard);
+
+    &:hover {
+      background: var(--color-bg-soft-hover);
+      color: var(--color-text-primary);
+    }
+
+    // Amber edge as well as the tint, so the chosen chip doesn't rely on colour fill alone.
+    &[aria-pressed='true'] {
+      background: var(--color-accent-subtle-bg);
+      box-shadow: inset 0 0 0 var(--border-width) var(--color-accent-border);
+      color: var(--color-text-primary);
+    }
+
+    @include reduced-motion {
+      transition: none;
+    }
+  }
+}

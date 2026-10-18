@@ -1,10 +1,11 @@
 import { Bell, Search } from 'lucide-react'
-import { NavLink, Outlet } from 'react-router'
+import { NavLink } from 'react-router'
 import { Logo } from '@/components/brand/logo'
 import { useComingSoon } from '@/components/coming-soon/coming-soon-context'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { PRIMARY_NAV } from './nav-items'
+import { PageTransition } from './page-transition'
 import { SAMPLE_VIEWER } from './sample-viewer'
 import { Sidebar } from './sidebar'
 import './app-shell.scss'
@@ -69,7 +70,7 @@ export function AppShell() {
       </header>
 
       <main id="main" className="app-content" tabIndex={-1}>
-        <Outlet />
+        <PageTransition />
       </main>
 
       <nav className="bottom-nav" aria-label="Main">

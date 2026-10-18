@@ -26,17 +26,19 @@ export function TrendingCard({ items }: { items: TrendingItem[] }) {
           {items.map((item) => (
             <li key={item.id}>
               <button type="button" className="trending-item" onClick={() => showComingSoon(item.title)}>
-                <img
-                  src={item.image.src}
-                  srcSet={item.image.srcSet}
-                  sizes="(min-width: 37.5rem) 12rem, 6rem"
-                  alt=""
-                  width={480}
-                  height={320}
-                  loading="lazy"
-                  decoding="async"
-                  className="trending-photo"
-                />
+                <span className="trending-photo-frame">
+                  <img
+                    src={item.image.src}
+                    srcSet={item.image.srcSet}
+                    sizes="(min-width: 37.5rem) 12rem, 6rem"
+                    alt=""
+                    width={480}
+                    height={320}
+                    loading="lazy"
+                    decoding="async"
+                    className="trending-photo"
+                  />
+                </span>
                 <span className="trending-title">{item.title}</span>
                 <span className="trending-meta">
                   {item.kind}

@@ -69,6 +69,28 @@ $bp-desktop: 64rem; // 1024px
   }
 }
 
+// Clickable photo cards (owner): the photo slowly zooms in on hover. Put on the clickable element;
+// the photo's parent must clip (overflow: hidden) so it grows inside its frame.
+@mixin photo-zoom($photo) {
+  #{$photo} {
+    transition: transform var(--motion-duration-slow) var(--motion-ease-out);
+  }
+
+  &:hover #{$photo} {
+    transform: scale(var(--motion-photo-zoom));
+  }
+
+  @include reduced-motion {
+    #{$photo} {
+      transition: none;
+    }
+
+    &:hover #{$photo} {
+      transform: none;
+    }
+  }
+}
+
 // ── Small type steps. Phones get the step below; tablet and up the base component's size. ──
 // Card and section titles: 14 → 16.
 @mixin type-card-title {

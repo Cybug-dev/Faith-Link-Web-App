@@ -33,7 +33,7 @@ export const PRIMARY_NAV: NavItem[] = [
 /** Desktop sidebar, in the order of the owner's Stitch desktop board. */
 export const SIDEBAR_NAV: NavItem[] = [
   { label: 'Home', to: '/home', icon: House },
-  { label: 'Bible Lessons', to: '/lessons', icon: BookOpen, isSoon: true },
+  { label: 'Bible Lessons', to: '/lessons', icon: BookOpen },
   { label: 'Quizzes', to: '/quizzes', icon: ClipboardList, isSoon: true },
   { label: 'Live Games', to: '/live-games', icon: Gamepad2, isSoon: true },
   { label: 'Groups', to: '/groups', icon: Users, isSoon: true },

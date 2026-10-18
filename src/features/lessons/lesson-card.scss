@@ -1,0 +1,141 @@
+@use '@/styles/mixins' as *;
+
+// Tile from Trending This Week (owner). Phones: a row with a large photo (2 of 5 parts) left of the text;
+// tablet up: photo on top.
+.lesson-card {
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) minmax(0, 3fr);
+  grid-template-rows: auto auto auto;
+  column-gap: var(--space-3);
+  row-gap: var(--space-1);
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--color-text-primary);
+  font: inherit;
+  text-align: start;
+  cursor: pointer;
+
+  @include photo-zoom('.lesson-photo');
+
+  @include tablet {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch; // the phone row centres vertically; here that would centre the text
+    gap: var(--space-1);
+  }
+
+  // Clips the zoom so the photo grows inside its rounded frame.
+  .lesson-photo-frame {
+    display: block;
+    grid-row: 1 / span 3;
+    overflow: hidden;
+    border-radius: var(--round-tile);
+    background: var(--color-bg-muted); // while the photo loads
+    transition: box-shadow var(--motion-duration-fast) var(--motion-ease-standard);
+
+    @include tablet {
+      margin-bottom: var(--space-2);
+    }
+  }
+
+  .lesson-photo {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 3 / 2;
+    object-fit: cover;
+  }
+
+  &:hover {
+    .lesson-photo-frame {
+      box-shadow: var(--elevation-raised);
+    }
+
+    .lesson-title {
+      color: var(--color-text-accent-hover);
+    }
+  }
+
+  .lesson-title {
+    @include type-card-title;
+
+    display: -webkit-box;
+    overflow: hidden;
+    font-weight: var(--weight-bold);
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    align-self: end;
+    transition: color var(--motion-duration-fast) var(--motion-ease-standard);
+
+    @include tablet {
+      align-self: auto;
+    }
+  }
+
+  .lesson-meta {
+    @include type-caption;
+
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-1);
+    color: var(--color-text-muted);
+  }
+
+  .lesson-dot {
+    width: var(--space-1);
+    height: var(--space-1);
+    border-radius: var(--round-full);
+    background: var(--color-border-soft);
+  }
+
+  // Tablet up: pushed to the bottom so the bars line up across a row.
+  .lesson-progress {
+    display: flex;
+    align-self: start;
+    align-items: center;
+    gap: var(--space-2);
+    width: 100%;
+    padding-top: var(--space-1);
+
+    @include tablet {
+      align-self: stretch;
+      margin-top: auto;
+      padding-top: var(--space-2);
+    }
+  }
+
+  .lesson-track {
+    flex: 1;
+    height: var(--space-1);
+    overflow: hidden;
+    border-radius: var(--round-full);
+    background: var(--color-bg-muted);
+  }
+
+  .lesson-fill {
+    display: block;
+    height: 100%;
+    border-radius: inherit;
+    background: var(--color-tone-green-solid);
+  }
+
+  .lesson-percent {
+    @include type-caption;
+
+    flex-shrink: 0;
+    color: var(--color-text-muted);
+  }
+
+  @include reduced-motion {
+    .lesson-photo-frame,
+    .lesson-title {
+      transition: none;
+    }
+  }
+}

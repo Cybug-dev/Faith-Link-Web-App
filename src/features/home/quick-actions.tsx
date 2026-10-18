@@ -14,7 +14,7 @@ type QuickAction = {
 }
 
 const QUICK_ACTIONS: QuickAction[] = [
-  { key: 'learn', title: 'Continue Learning', hint: 'Pick up where you left off', icon: BookOpen },
+  { key: 'learn', title: 'Bible Lessons', hint: 'Explore lesson series', icon: BookOpen, to: '/lessons' },
   { key: 'quiz', title: 'Join a Live Quiz', hint: 'Enter a game code', icon: Gamepad2 },
   { key: 'church', title: 'My Church', hint: 'View church activities', icon: Users, to: '/church' },
   { key: 'rank', title: 'View Leaderboard', hint: 'See top participants', icon: ChartNoAxesColumn },

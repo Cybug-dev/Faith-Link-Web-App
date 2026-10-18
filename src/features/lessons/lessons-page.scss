@@ -1,0 +1,79 @@
+@use '@/styles/mixins' as *;
+
+.lessons-page {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+  padding-inline: var(--page-margin);
+  padding-top: var(--space-2);
+  overflow-x: clip;
+
+  @include desktop {
+    padding-top: var(--space-4);
+  }
+
+  // Same title steps as the home greeting.
+  .lessons-title {
+    margin: 0;
+    font-size: var(--type-xl);
+    line-height: var(--type-xl-lh);
+    font-weight: var(--weight-bold);
+    letter-spacing: var(--ls-headline);
+
+    @include desktop {
+      font-size: var(--role-headline-lg-size);
+      line-height: var(--role-headline-lg-lh);
+    }
+  }
+
+  .lessons-subtitle {
+    margin: var(--space-1) 0 0;
+    color: var(--color-text-secondary);
+    font-size: var(--type-xs);
+    line-height: var(--type-xs-lh);
+
+    @include desktop {
+      font-size: var(--type-base);
+      line-height: var(--type-base-lh);
+    }
+  }
+
+  // Tiles straight on the page, no wrapping card (owner). Phones: one row per series; tablet two across; desktop four.
+  .lessons-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-4);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+
+    @include tablet {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: var(--space-6) var(--space-4);
+    }
+
+    @include desktop {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: var(--space-8) var(--space-6);
+    }
+  }
+
+  .lessons-count {
+    @include visually-hidden;
+  }
+
+  .lessons-empty {
+    @include card;
+    @include type-body-sm;
+
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-3);
+    color: var(--color-text-secondary);
+
+    p {
+      margin: 0;
+    }
+  }
+}

@@ -317,6 +317,7 @@
   --motion-duration-sweep: 1400ms; /* the small amber bar under the name */
   --motion-ease-standard: cubic-bezier(0.4, 0, 0.2, 1);
   --motion-ease-out: cubic-bezier(0.2, 0, 0, 1);
+  --motion-photo-zoom: 1.06; /* photo scale on hover in clickable photo cards (owner) */
 
   /* ── 9. Stacking ─────────────────────────────────────────────────── */
 
