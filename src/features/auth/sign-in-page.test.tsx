@@ -1,4 +1,4 @@
-import { screen } from '@testing-library/react'
+import { act, screen } from '@testing-library/react'
 import { renderRoute } from '@/test/render-route'
 import { LAZY_ROUTE } from '@/test/lazy-route'
 
@@ -111,10 +111,21 @@ describe('Sign in page', () => {
     expect(await screen.findByRole('heading', { name: 'Create your account' })).toBeInTheDocument()
   })
 
-  it('shows the Google button as busy while it redirects, then recovers', async () => {
+  it('covers the wait for Google with the loading screen, and recovers if it cannot start', async () => {
     const { user } = renderRoute('/sign-in')
     await user.click(screen.getByRole('button', { name: 'Continue with Google' }))
-    expect(await screen.findByRole('button', { name: 'Continue with Google' })).toBeEnabled()
+    // The browser is on its way to Google: the branded loading screen stays up until it leaves.
+    expect(await screen.findByText('Signing you in with Google')).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: 'Continue with Google' })).toHaveAttribute('aria-busy', 'true')
+
+    // Back from Google with the browser's Back button (page restored from cache): the button returns.
+    const restored = new Event('pageshow') as PageTransitionEvent
+    Object.defineProperty(restored, 'persisted', { value: true })
+    act(() => {
+      window.dispatchEvent(restored)
+    })
+    expect(screen.getByRole('button', { name: 'Continue with Google' })).toBeEnabled()
+    expect(screen.queryByText('Signing you in with Google')).not.toBeInTheDocument()
   })
 
   it('opens the forgot password page', async () => {

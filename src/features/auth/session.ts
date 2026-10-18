@@ -10,6 +10,8 @@ export type SessionState = { isSignedIn: boolean; isNewAccount: boolean }
 const SIGNED_OUT: SessionState = { isSignedIn: false, isNewAccount: false }
 
 let cached: Promise<SessionState> | null = null
+/** The last definite answer, readable without waiting (cleared with the cache). */
+let known: SessionState | undefined
 
 function toState(session: AuthSession | null): SessionState {
   if (!session) return SIGNED_OUT
@@ -31,15 +33,28 @@ function withTimeout<T>(promise: Promise<T>): Promise<T> {
  */
 export function getSessionState(): Promise<SessionState> {
   if (cached) return cached
-  const attempt = withTimeout(authClient.getSession()).then(toState, () => {
-    if (cached === attempt) cached = null
-    return SIGNED_OUT
-  })
+  const attempt = withTimeout(authClient.getSession()).then(
+    (session) => {
+      const state = toState(session)
+      if (cached === attempt) known = state
+      return state
+    },
+    () => {
+      if (cached === attempt) cached = null
+      return SIGNED_OUT
+    },
+  )
   cached = attempt
   return attempt
+}
+
+/** The answer if it is already known, so a page can render at once instead of waiting. */
+export function peekSessionState(): SessionState | undefined {
+  return known
 }
 
 /** Call right after signing in or out, so the next guard asks again instead of using the old answer. */
 export function forgetSessionState(): void {
   cached = null
+  known = undefined
 }

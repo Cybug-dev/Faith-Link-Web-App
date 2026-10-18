@@ -1,0 +1,122 @@
+@use '@/styles/mixins' as *;
+
+// Branded full-screen wait. Fixed so it also covers a page that is still on screen
+// (e.g. sign in while the browser leaves for Google).
+.splash-screen {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-overlay);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-4);
+  background: var(--color-bg-canvas);
+  outline: none; // focused only so keyboard focus leaves the page it covers
+  animation: splash-enter var(--motion-duration-slow) var(--motion-ease-out) both;
+
+  .splash-mark {
+    position: relative;
+    display: grid;
+    place-items: center;
+    width: var(--space-20);
+    height: var(--space-20);
+  }
+
+  // Soft amber halo that slowly grows and fades, like breathing.
+  .splash-glow {
+    position: absolute;
+    inset: calc(var(--space-6) * -1);
+    border-radius: var(--round-full);
+    background: radial-gradient(circle, var(--color-deco-glow) 0%, transparent 70%);
+    animation: splash-breathe var(--motion-duration-breathe) var(--motion-ease-standard) infinite;
+  }
+
+  .splash-tile {
+    position: relative;
+    display: grid;
+    place-items: center;
+    width: var(--space-16);
+    height: var(--space-16);
+    border-radius: var(--round-md);
+    background: var(--color-bg-surface);
+    box-shadow: var(--elevation-raised);
+  }
+
+  .splash-cross {
+    width: var(--space-8);
+    height: var(--space-8);
+  }
+
+  .splash-name {
+    margin: 0;
+    color: var(--color-text-primary);
+    font-size: var(--type-lg);
+    line-height: var(--type-lg-lh);
+    font-weight: var(--weight-bold);
+    letter-spacing: var(--ls-headline);
+  }
+
+  // A short amber sweep under the name: says "still working" without a spinner.
+  .splash-bar {
+    position: relative;
+    width: var(--space-16);
+    height: var(--space-1);
+    overflow: hidden;
+    border-radius: var(--round-full);
+    background: var(--color-accent-subtle-bg);
+  }
+
+  .splash-bar-fill {
+    position: absolute;
+    inset-block: 0;
+    width: 40%;
+    border-radius: var(--round-full);
+    background: var(--color-accent-bg);
+    animation: splash-sweep var(--motion-duration-sweep) var(--motion-ease-standard) infinite;
+  }
+
+  .splash-status {
+    @include visually-hidden;
+  }
+
+  @include reduced-motion {
+    animation: none;
+
+    .splash-glow,
+    .splash-bar-fill {
+      animation: none;
+    }
+
+    .splash-bar-fill {
+      left: 30%;
+    }
+  }
+}
+
+@keyframes splash-enter {
+  from {
+    opacity: 0;
+  }
+}
+
+@keyframes splash-breathe {
+  0%,
+  100% {
+    opacity: 0.6;
+    transform: scale(0.9);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.1);
+  }
+}
+
+@keyframes splash-sweep {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(250%);
+  }
+}

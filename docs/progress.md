@@ -39,6 +39,7 @@ UI inventory (tokens, components, screens, drops) lives in [`ui/ui-registry.md`]
 - Recent Achievements removed (badges already show in Your Progress); new Trending This Week card (photo tiles + Join a Group banner, Unsplash photos) takes its place. Desktop rows mirror each other: Upcoming Events (wide) | Your Progress, then Recent Activity | Trending (wide). Phones: full-width blocks; trending series as rows. Onboarding back to once per device (temporary every-sign-in switch removed).
 - "Page not found" screen removed (owner): any unbuilt or unknown address opens the coming-soon popup and goes back; the popup now wraps every route. Bell, avatar menu, search, Join and View open it too. Phone focus banner row now slides edge to edge.
 - Signed-in people opening the site land on home; signed-out on sign in; the app requires sign-in. Onboarding is only for brand-new accounts (after email verification, or a Google account made in the last 30 minutes). Sign in replaces itself in history, so Back from home no longer bounces back to it.
+- Branded loading screen (logo, breathing glow, sweep bar) covers the first sign-in check, the wait after Continue with Google until the browser leaves (and the return), and a signed-in person typing /sign-in or /create-account. A failed Google start now shows an error under the button.
 
 ## Next
 

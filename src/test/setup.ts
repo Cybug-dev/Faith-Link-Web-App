@@ -1,7 +1,7 @@
 /// <reference types="vitest/jsdom" />
 import '@testing-library/jest-dom/vitest'
-import { afterEach, vi } from 'vitest'
-import { forgetSessionState } from '@/features/auth/session'
+import { afterEach, beforeEach, vi } from 'vitest'
+import { forgetSessionState, getSessionState } from '@/features/auth/session'
 import { fakeSession } from './fake-auth-client'
 
 // Tests never reach Neon Auth: keep the real types and AuthError, swap the client.
@@ -22,6 +22,13 @@ if (typeof globalThis.localStorage?.clear !== 'function') {
     configurable: true,
   })
 }
+
+// Every test starts signed out with that answer already known, as for a real signed-out visitor
+// once the first check is done, so sign in renders at once. fakeSession.signIn() clears it.
+fakeSession.setOnSessionChange(forgetSessionState)
+beforeEach(async () => {
+  await getSessionState()
+})
 
 afterEach(() => {
   sessionStorage.clear()

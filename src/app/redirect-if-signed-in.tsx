@@ -1,25 +1,32 @@
-import { useEffect, type ReactNode } from 'react'
+import { useEffect, useState, type ReactNode } from 'react'
 import { useNavigate } from 'react-router'
-import { getSessionState } from '@/features/auth/session'
+import { SplashScreen } from '@/components/splash/splash-screen'
+import { getSessionState, peekSessionState, type SessionState } from '@/features/auth/session'
 
 /**
- * Sign in and create account: shown straight away (no blank wait on the network), then a
- * signed-in person is moved on to home as soon as the session check answers. Never while
- * they're using the form: moving them then would lose what they typed and their focus.
+ * Sign in and create account. A signed-out person gets the form at once when the answer is
+ * already known; otherwise the branded loading screen covers the short check, so a signed-in
+ * person typing these addresses never sees the form flash before being moved to home (owner).
  */
 export function RedirectIfSignedIn({ children }: { children: ReactNode }) {
   const navigate = useNavigate()
+  const [session, setSession] = useState<SessionState | undefined>(peekSessionState)
 
   useEffect(() => {
+    if (session) return
     let isActive = true
-    void getSessionState().then(({ isSignedIn }) => {
-      const isUsingForm = document.activeElement?.closest('form') != null
-      if (isActive && isSignedIn && !isUsingForm) void navigate('/home', { replace: true })
+    void getSessionState().then((state) => {
+      if (isActive) setSession(state)
     })
     return () => {
       isActive = false
     }
-  }, [navigate])
+  }, [session])
 
+  useEffect(() => {
+    if (session?.isSignedIn) void navigate('/home', { replace: true })
+  }, [session, navigate])
+
+  if (!session || session.isSignedIn) return <SplashScreen />
   return children
 }

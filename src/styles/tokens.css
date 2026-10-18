@@ -306,6 +306,9 @@
   --motion-duration-fast: 150ms;
   --motion-duration-base: 200ms;
   --motion-duration-slow: 300ms;
+  /* Loading screen only (owner): slow, calm loops; they stop under reduced motion. */
+  --motion-duration-breathe: 2400ms; /* the amber glow behind the logo */
+  --motion-duration-sweep: 1400ms; /* the small amber bar under the name */
   --motion-ease-standard: cubic-bezier(0.4, 0, 0.2, 1);
   --motion-ease-out: cubic-bezier(0.2, 0, 0, 1);
 

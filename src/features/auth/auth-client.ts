@@ -27,7 +27,7 @@ export type AuthClient = {
   }): Promise<void>;
   verifyEmail(input: { email: string; otp: string }): Promise<void>;
   resendVerificationCode(input: { email: string }): Promise<void>;
-  /** Leaves the page for Google; resolves only if the redirect could not start. */
+  /** Starts the redirect to Google: resolves once the browser is on its way, rejects if it could not start. */
   signInWithGoogle(): Promise<void>;
   /** Always resolves for a well-formed email, even an unknown one (anti-enumeration). */
   requestPasswordReset(input: { email: string }): Promise<void>;
@@ -154,12 +154,14 @@ export const authClient: AuthClient = {
       c.emailOtp.sendVerificationOtp({ email, type: "email-verification" }),
     ),
   signInWithGoogle: () =>
-    call((c) =>
-      c.signIn.social({
+    call(async (c) => {
+      const result = await c.signIn.social({
         provider: "google",
         callbackURL: `${window.location.origin}${AFTER_SIGN_IN_PATH}`,
-      }),
-    ),
+      });
+      // Better Auth reports a failed start in the result instead of throwing.
+      if (result.error) throw new AuthError("UNKNOWN");
+    }),
   requestPasswordReset: ({ email }) =>
     call((c) =>
       c.emailOtp.sendVerificationOtp({ email, type: "forget-password" }),

@@ -1,8 +1,10 @@
-import { afterEach, vi } from 'vitest'
+import { afterEach, beforeEach, vi } from 'vitest'
 import { authClient } from './auth-client'
 import { forgetSessionState, getSessionState } from './session'
 
 describe('Session check', () => {
+  // setup.ts answers "signed out" before every test; start each of these from a clean slate.
+  beforeEach(() => forgetSessionState())
   afterEach(() => vi.restoreAllMocks())
 
   it('asks once and shares the answer until it is forgotten', async () => {

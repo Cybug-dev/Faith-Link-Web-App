@@ -1,6 +1,7 @@
 import { Outlet, type RouteObject } from 'react-router'
 import { ComingSoonProvider } from '@/components/coming-soon/coming-soon-provider'
 import { UnbuiltRoute } from '@/components/coming-soon/unbuilt-route'
+import { SplashScreen } from '@/components/splash/splash-screen'
 import { CreateAccountPage } from '@/features/auth/create-account-page'
 import { ForgotPasswordPage } from '@/features/auth/forgot-password-page'
 import { ResetPasswordPage } from '@/features/auth/reset-password-page'
@@ -75,11 +76,9 @@ export const routes: RouteObject[] = [
         <Outlet />
       </ComingSoonProvider>
     ),
-    // Shown while the first session check runs on a fresh page load: blank, so no wrong screen
-    // flashes, with a status line so screen readers know something is happening.
-    HydrateFallback: () => (
-      <output className="sr-only">Loading FaithLink</output>
-    ),
+    // Shown while the first session check runs on a fresh page load (also when Google sends
+    // people back), so no wrong screen flashes.
+    HydrateFallback: SplashScreen,
     children: pageRoutes,
   },
 ]

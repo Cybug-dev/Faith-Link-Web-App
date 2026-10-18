@@ -25,11 +25,18 @@ function checkCode(otp: string): void {
 
 /** Signed out by default; a successful sign-in or verification signs in (see setup.ts for the reset). */
 let session: AuthSession | null = null
+/** Set by setup.ts to clear the app's remembered answer (importing session.ts here would loop). */
+let onSessionChange: () => void = () => {}
 
 export const fakeSession = {
   /** Start a test signed in. `isNewAccount` makes the account brand new (onboarding shows). */
   signIn({ isNewAccount = false }: { isNewAccount?: boolean } = {}) {
     session = { createdAt: isNewAccount ? new Date() : new Date('2025-01-01') }
+    // The app must ask again rather than keep the "signed out" answer from the test's start.
+    onSessionChange()
+  },
+  setOnSessionChange(listener: () => void) {
+    onSessionChange = listener
   },
   reset() {
     session = null
