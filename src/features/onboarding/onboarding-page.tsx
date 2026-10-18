@@ -7,7 +7,6 @@ import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/cn'
 import { useDocumentTitle } from '@/lib/use-document-title'
 import { useSwipe } from '@/lib/use-swipe'
-import { FROM_ONBOARDING } from './onboarding-routes'
 import { markOnboardingSeen } from './onboarding-storage'
 import { ONBOARDING_STEPS } from './onboarding-steps'
 import './onboarding.scss'
@@ -55,7 +54,7 @@ export function OnboardingPage() {
 
   const finish = useCallback(() => {
     markOnboardingSeen()
-    navigate('/home', { replace: true, state: FROM_ONBOARDING })
+    navigate('/home', { replace: true })
   }, [navigate])
 
   const next = useCallback(() => {

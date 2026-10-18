@@ -10,6 +10,8 @@ import { clearPendingEmail, getPendingEmail, maskEmail } from '@/lib/pending-ema
 import { formatClock, useCountdown } from '@/lib/use-countdown'
 import { useDocumentTitle } from '@/lib/use-document-title'
 import { AuthError, authClient } from './auth-client'
+import { forgetSessionState } from './session'
+import { ONBOARDING_PATH } from '@/features/onboarding/onboarding-routes'
 import { AuthLayout } from './auth-layout'
 import { OTP_LENGTH, verifyEmailSchema, type VerifyEmailValues } from './schemas'
 
@@ -51,7 +53,9 @@ function VerifyEmailForm({ email }: { email: string }) {
     try {
       await authClient.verifyEmail({ email, otp })
       clearPendingEmail()
-      navigate('/home', { viewTransition: true })
+      forgetSessionState()
+      // A just-verified account is new: onboarding once, then home.
+      navigate(ONBOARDING_PATH, { replace: true, viewTransition: true })
     } catch (error) {
       if (error instanceof AuthError && error.code === 'INVALID_CODE') {
         setError('otp', { message: 'That code isn’t right. Check the code in your email and try again.' })

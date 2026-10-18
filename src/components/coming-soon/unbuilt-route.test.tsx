@@ -1,5 +1,5 @@
 import { screen, waitFor } from '@testing-library/react'
-import { FROM_ONBOARDING } from '@/features/onboarding/onboarding-routes'
+import { fakeSession } from '@/test/fake-auth-client'
 import { LAZY_ROUTE } from '@/test/lazy-route'
 import { renderRoute } from '@/test/render-route'
 
@@ -18,7 +18,8 @@ describe('Unbuilt addresses', () => {
   })
 
   it('returns to the page the link was on', async () => {
-    const { user, router } = renderRoute({ pathname: '/home', state: FROM_ONBOARDING })
+    fakeSession.signIn()
+    const { user, router } = renderRoute('/home')
     await user.click(await screen.findByRole('link', { name: 'See all events' }, LAZY_ROUTE))
     expect(await screen.findByRole('heading', { name: 'Activities is coming soon' })).toBeInTheDocument()
     await waitFor(() => expect(router.state.location.pathname).toBe('/home'))

@@ -1,5 +1,6 @@
 import { fireEvent, screen } from '@testing-library/react'
 import { LAZY_ROUTE } from '@/test/lazy-route'
+import { fakeSession } from '@/test/fake-auth-client'
 import { renderRoute } from '@/test/render-route'
 import { hasSeenOnboarding, markOnboardingSeen } from './onboarding-storage'
 
@@ -22,7 +23,11 @@ describe('Onboarding', () => {
     60000,
   )
 
-  it('shows once on this device before home', async () => {
+  // Onboarding is only for signed-in people; most tests here open it directly.
+  beforeEach(() => fakeSession.signIn())
+
+  it('shows before home for a brand-new account', async () => {
+    fakeSession.signIn({ isNewAccount: true })
     const { router } = renderRoute('/home')
     expect(await heading('You’re in the right place')).toBeInTheDocument()
     expect(router.state.location.pathname).toBe('/onboarding')
@@ -73,9 +78,15 @@ describe('Onboarding', () => {
     expect(hasSeenOnboarding()).toBe(true)
   })
 
+  it('never shows for a returning account', async () => {
+    renderRoute('/home')
+    expect(await homeHeading()).toBeInTheDocument()
+  })
+
   // Last: marking as seen also sets an in-memory flag that lasts for the rest of this file.
-  it('goes straight to home once it has been seen', async () => {
+  it('goes straight to home once a new account has seen it', async () => {
     markOnboardingSeen()
+    fakeSession.signIn({ isNewAccount: true })
     renderRoute('/home')
     expect(await homeHeading()).toBeInTheDocument()
   })

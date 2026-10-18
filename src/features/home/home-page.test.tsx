@@ -1,10 +1,13 @@
 import { screen, within } from '@testing-library/react'
-import { FROM_ONBOARDING } from '@/features/onboarding/onboarding-routes'
 import { LAZY_ROUTE } from '@/test/lazy-route'
+import { fakeSession } from '@/test/fake-auth-client'
 import { renderRoute as renderAnyRoute } from '@/test/render-route'
 
-// Arrive as onboarding hands over, so the gate lets us through even on a device that has not seen onboarding.
-const renderRoute = (pathname: string) => renderAnyRoute({ pathname, state: FROM_ONBOARDING })
+// A returning, signed-in account: no onboarding on the way.
+const renderRoute = (pathname: string) => {
+  fakeSession.signIn()
+  return renderAnyRoute(pathname)
+}
 
 describe('Home page', () => {
   beforeAll(

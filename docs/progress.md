@@ -38,6 +38,7 @@ UI inventory (tokens, components, screens, drops) lives in [`ui/ui-registry.md`]
 - Owner direction (2026-10-18): Stitch "Upcoming Events" (Desktop Home, Collapsed Sidebar) is the base component. Green, blue, purple and teal palettes now use its exact colours (amber and navy unchanged; its brown link colour is never used). Every home card shares one edge, hover, header, "See All →" link, icon tiles and small type steps (phones a step smaller). Upcoming Events and Your Progress rebuilt to match; badges are tinted tiles with coloured hexagons; new Button variants `solid`/`soft` and size `xs` for in-card actions.
 - Recent Achievements removed (badges already show in Your Progress); new Trending This Week card (photo tiles + Join a Group banner, Unsplash photos) takes its place. Desktop rows mirror each other: Upcoming Events (wide) | Your Progress, then Recent Activity | Trending (wide). Phones: full-width blocks; trending series as rows. Onboarding back to once per device (temporary every-sign-in switch removed).
 - "Page not found" screen removed (owner): any unbuilt or unknown address opens the coming-soon popup and goes back; the popup now wraps every route. Bell, avatar menu, search, Join and View open it too. Phone focus banner row now slides edge to edge.
+- Signed-in people opening the site land on home; signed-out on sign in; the app requires sign-in. Onboarding is only for brand-new accounts (after email verification, or a Google account made in the last 30 minutes). Sign in replaces itself in history, so Back from home no longer bounces back to it.
 
 ## Next
 
@@ -47,7 +48,7 @@ UI inventory (tokens, components, screens, drops) lives in [`ui/ui-registry.md`]
 - Home: swap sample data for the API (and WebSocket updates); loading skeleton and error state once data is fetched.
 - Backend: enforce the same password and name rules (client-side only today; Neon Auth accepts any name).
 - Unbuilt linked pages: `/terms`, `/privacy`.
-- Session handling and route guards (`/home` does not check sign-in yet); show an error when Google sign-in cannot start.
+- Sign out (must call `forgetSessionState()`); show an error when Google sign-in cannot start.
 - Set `VITE_NEON_AUTH_URL` and `VITE_API_BASE_URL` in Vercel, then redeploy.
 - First browser-level check (screenshot + axe); so far only jsdom tests, build and typecheck.
 

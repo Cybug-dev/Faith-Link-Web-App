@@ -47,7 +47,7 @@ Phone and tablet: wordmark, photo banner, tabs, title, form, "or continue with",
 
 ## Onboarding layout
 
-Shown once per device, before home. Always exactly one screen tall so Next is visible (illustrations shrink to fit; only the middle scrolls on very short screens). Phone: logo and Skip, a 4-segment progress bar, centred title and body, the illustration filling the rest, then Back and Next (step 1: the arrow on the verse card instead; last step: "Get started"). Desktop (>= 1024px): "Step X of 4", title, body and a feature list on the left, illustration on the right, Back and Next along the bottom. Skip and Get started go to home.
+Shown once to brand-new accounts, before home. Always exactly one screen tall so Next is visible (illustrations shrink to fit; only the middle scrolls on very short screens). Phone: logo and Skip, a 4-segment progress bar, centred title and body, the illustration filling the rest, then Back and Next (step 1: the arrow on the verse card instead; last step: "Get started"). Desktop (>= 1024px): "Step X of 4", title, body and a feature list on the left, illustration on the right, Back and Next along the bottom. Skip and Get started go to home.
 
 ## Imagery and scripture
 

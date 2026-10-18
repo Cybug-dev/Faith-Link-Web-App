@@ -1,6 +1,8 @@
 /// <reference types="vitest/jsdom" />
 import '@testing-library/jest-dom/vitest'
 import { afterEach, vi } from 'vitest'
+import { forgetSessionState } from '@/features/auth/session'
+import { fakeSession } from './fake-auth-client'
 
 // Tests never reach Neon Auth: keep the real types and AuthError, swap the client.
 vi.mock('@/features/auth/auth-client', async (importOriginal) => {
@@ -24,6 +26,8 @@ if (typeof globalThis.localStorage?.clear !== 'function') {
 afterEach(() => {
   sessionStorage.clear()
   localStorage.clear()
+  fakeSession.reset()
+  forgetSessionState()
 })
 
 // jsdom has no <dialog> modal API yet; a minimal stand-in so popups can open and close in tests.

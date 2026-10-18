@@ -1,4 +1,4 @@
-import { Navigate, Outlet, createBrowserRouter, type RouteObject } from 'react-router'
+import { Outlet, type RouteObject } from 'react-router'
 import { ComingSoonProvider } from '@/components/coming-soon/coming-soon-provider'
 import { UnbuiltRoute } from '@/components/coming-soon/unbuilt-route'
 import { CreateAccountPage } from '@/features/auth/create-account-page'
@@ -6,21 +6,18 @@ import { ForgotPasswordPage } from '@/features/auth/forgot-password-page'
 import { ResetPasswordPage } from '@/features/auth/reset-password-page'
 import { SignInPage } from '@/features/auth/sign-in-page'
 import { VerifyEmailPage } from '@/features/auth/verify-email-page'
-import { OnboardingGate } from '@/features/onboarding/onboarding-gate'
+import { RedirectIfSignedIn } from './redirect-if-signed-in'
+import { requireSignedIn, requireSignedInApp, startPage } from './route-guards'
 import { ONBOARDING_PATH } from '@/features/onboarding/onboarding-routes'
 import { loadOrReload } from '@/lib/load-or-reload'
 
 const pageRoutes: RouteObject[] = [
-  // The app opens on sign in. Once sessions exist, signed-in visitors should go to /home instead.
-  { path: '/', element: <Navigate to="/sign-in" replace /> },
-  // Signed-in area: onboarding first, then the app shell (sidebar / bottom nav) around each page.
+  // The site's address: home when signed in, sign in otherwise.
+  { path: '/', loader: startPage },
+  // Signed-in area (a brand-new account sees onboarding once first), then the app shell (sidebar / bottom nav) around each page.
   // Shell and pages load on demand, in parallel, so sign-in never downloads them.
   {
-    element: (
-      <OnboardingGate>
-        <Outlet />
-      </OnboardingGate>
-    ),
+    loader: requireSignedInApp,
     children: [
       {
         lazy: async () => ({
@@ -40,11 +37,26 @@ const pageRoutes: RouteObject[] = [
   // Loaded on demand: keeps the animation library and onboarding photos out of the sign-in download.
   {
     path: ONBOARDING_PATH,
+    loader: requireSignedIn,
     lazy: async () => ({ Component: (await loadOrReload(() => import('@/features/onboarding/onboarding-page'))).OnboardingPage,
     }),
   },
-  { path: '/sign-in', element: <SignInPage /> },
-  { path: '/create-account', element: <CreateAccountPage /> },
+  {
+    path: '/sign-in',
+    element: (
+      <RedirectIfSignedIn>
+        <SignInPage />
+      </RedirectIfSignedIn>
+    ),
+  },
+  {
+    path: '/create-account',
+    element: (
+      <RedirectIfSignedIn>
+        <CreateAccountPage />
+      </RedirectIfSignedIn>
+    ),
+  },
   { path: '/verify-email', element: <VerifyEmailPage /> },
   { path: '/forgot-password', element: <ForgotPasswordPage /> },
   { path: '/reset-password', element: <ResetPasswordPage /> },
@@ -63,8 +75,11 @@ export const routes: RouteObject[] = [
         <Outlet />
       </ComingSoonProvider>
     ),
+    // Shown while the first session check runs on a fresh page load: blank, so no wrong screen
+    // flashes, with a status line so screen readers know something is happening.
+    HydrateFallback: () => (
+      <output className="sr-only">Loading FaithLink</output>
+    ),
     children: pageRoutes,
   },
 ]
-
-export const router = createBrowserRouter(routes)

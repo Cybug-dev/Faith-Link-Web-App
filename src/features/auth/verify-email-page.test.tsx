@@ -50,7 +50,7 @@ describe('Verify email page', () => {
     const { user } = renderRoute('/verify-email')
     await user.type(codeBox(), '123456')
     await user.click(screen.getByRole('button', { name: 'Verify email' }))
-    // First sign-in on this device goes through onboarding on the way to home.
+    // A just-verified account is new: onboarding comes first.
     expect(await screen.findByRole('heading', { name: 'You’re in the right place' }, LAZY_ROUTE)).toBeInTheDocument()
     expect(sessionStorage.getItem('faithlink.pendingEmail')).toBeNull()
   })

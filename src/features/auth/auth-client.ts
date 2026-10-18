@@ -38,6 +38,13 @@ export type AuthClient = {
     otp: string;
     password: string;
   }): Promise<void>;
+  /** The signed-in account, or null when signed out. Rejects when auth can't be reached, so callers don't mistake a failure for "signed out". */
+  getSession(): Promise<AuthSession | null>;
+};
+
+export type AuthSession = {
+  /** When the account was created; tells a brand-new account (onboarding) from a returning one. */
+  createdAt: Date | null;
 };
 
 /** Where Google sends people back to after a successful sign-in. */
@@ -162,4 +169,16 @@ export const authClient: AuthClient = {
       c.emailOtp.checkVerificationOtp({ email, otp, type: "forget-password" }),
     ),
   resetPassword: resetPasswordViaBackend,
+  getSession: async () => {
+    let result: Awaited<ReturnType<NeonClient["getSession"]>>;
+    try {
+      result = await getNeon().getSession();
+    } catch (error) {
+      throw toAuthError(error);
+    }
+    if (result.error) throw new AuthError("UNKNOWN");
+    const user = result.data?.user;
+    if (!user) return null;
+    return { createdAt: user.createdAt ? new Date(user.createdAt) : null };
+  },
 };

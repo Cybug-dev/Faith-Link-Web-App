@@ -10,7 +10,7 @@
  *   code "111111"                  -> TOO_MANY_ATTEMPTS
  * Anything else succeeds.
  */
-import type { AuthClient } from '@/features/auth/auth-client'
+import type { AuthClient, AuthSession } from '@/features/auth/auth-client'
 import { AuthError } from '@/features/auth/auth-errors'
 
 function failOnErrorEmail(email: string): void {
@@ -23,17 +23,32 @@ function checkCode(otp: string): void {
   if (otp === '111111') throw new AuthError('TOO_MANY_ATTEMPTS')
 }
 
+/** Signed out by default; a successful sign-in or verification signs in (see setup.ts for the reset). */
+let session: AuthSession | null = null
+
+export const fakeSession = {
+  /** Start a test signed in. `isNewAccount` makes the account brand new (onboarding shows). */
+  signIn({ isNewAccount = false }: { isNewAccount?: boolean } = {}) {
+    session = { createdAt: isNewAccount ? new Date() : new Date('2025-01-01') }
+  },
+  reset() {
+    session = null
+  },
+}
+
 export const fakeAuthClient: AuthClient = {
   async signInWithEmail({ email, password }) {
     failOnErrorEmail(email)
     if (email.includes('unverified')) throw new AuthError('EMAIL_NOT_VERIFIED')
     if (password === 'wrong-password') throw new AuthError('INVALID_CREDENTIALS')
+    fakeSession.signIn()
   },
   async signUpWithEmail({ email }) {
     failOnErrorEmail(email)
   },
   async verifyEmail({ otp }) {
     checkCode(otp)
+    fakeSession.signIn({ isNewAccount: true })
   },
   async resendVerificationCode() {},
   async signInWithGoogle() {},
@@ -47,5 +62,8 @@ export const fakeAuthClient: AuthClient = {
   async resetPassword({ email, otp }) {
     failOnErrorEmail(email)
     checkCode(otp)
+  },
+  async getSession() {
+    return session
   },
 }

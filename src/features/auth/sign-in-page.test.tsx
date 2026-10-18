@@ -89,8 +89,10 @@ describe('Sign in page', () => {
   it('continues on success', async () => {
     const { user } = renderRoute('/sign-in')
     await fillAndSubmit(user, 'alex@example.com', 'correct-horse')
-    // First sign-in on this device goes through onboarding on the way to home.
-    expect(await screen.findByRole('heading', { name: 'You’re in the right place' }, LAZY_ROUTE)).toBeInTheDocument()
+    // A returning account goes straight to home; onboarding is only for new accounts.
+    expect(
+      await screen.findByRole('heading', { level: 1, name: /^Good (morning|afternoon|evening), David$/ }, LAZY_ROUTE),
+    ).toBeInTheDocument()
   })
 
   it('toggles password visibility with an accessible button', async () => {

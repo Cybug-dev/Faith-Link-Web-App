@@ -1,6 +1,6 @@
 import { screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { FROM_ONBOARDING } from '@/features/onboarding/onboarding-routes'
+import { fakeSession } from '@/test/fake-auth-client'
 import { LAZY_ROUTE } from '@/test/lazy-route'
 import { renderRoute } from '@/test/render-route'
 
@@ -9,7 +9,8 @@ describe('Sidebar', () => {
   beforeAll(() => Promise.all([import('./app-shell'), import('@/features/home/home-page')]), 60000)
 
   async function renderHome() {
-    renderRoute({ pathname: '/home', state: FROM_ONBOARDING })
+    fakeSession.signIn()
+    renderRoute('/home')
     return screen.findByRole('complementary', { name: 'Sidebar' }, LAZY_ROUTE)
   }
 

@@ -14,6 +14,7 @@ import { setPendingEmail } from '@/lib/pending-email'
 import { fieldTone } from '@/lib/field-tone'
 import { useDocumentTitle } from '@/lib/use-document-title'
 import { AuthError, authClient } from './auth-client'
+import { forgetSessionState } from './session'
 import { AuthLayout } from './auth-layout'
 import { AuthTabs } from './auth-tabs'
 import { GoogleButton } from './google-button'
@@ -48,7 +49,9 @@ export function SignInPage() {
     setFormError(null)
     try {
       await authClient.signInWithEmail(values)
-      navigate('/home', { viewTransition: true })
+      forgetSessionState()
+      // Replace: sign in must not sit behind home in history, or Back would just bounce to home again.
+      navigate('/home', { replace: true, viewTransition: true })
     } catch (error) {
       if (error instanceof AuthError && error.code === 'EMAIL_NOT_VERIFIED') {
         setPendingEmail(values.email)
