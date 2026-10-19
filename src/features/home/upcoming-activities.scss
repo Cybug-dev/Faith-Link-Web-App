@@ -40,23 +40,14 @@
     }
   }
 
+  // Every date tile wears the shared amber emblem (owner, 2026-10-19), View events included.
   .date-tile {
-    display: flex;
+    @include amber-emblem;
+
     flex-direction: column;
-    flex-shrink: 0;
-    align-items: center;
-    justify-content: center;
     width: var(--space-12);
     height: var(--space-12);
     margin-inline-end: calc(var(--space-1) / 2 * -1); // 14px to the text, as Stitch
-    border-radius: var(--round-md);
-    background: var(--color-accent-bg);
-    color: var(--color-text-on-accent);
-  }
-
-  .date-tile-quiet {
-    background: var(--color-card-fill-muted);
-    color: var(--color-card-text);
   }
 
   .date-tile-month {

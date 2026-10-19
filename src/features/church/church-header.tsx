@@ -1,5 +1,5 @@
 import '@fontsource-variable/caveat'
-import { EllipsisVertical, Settings } from 'lucide-react'
+import { ArrowLeft, EllipsisVertical, Settings } from 'lucide-react'
 import { useComingSoon } from '@/components/coming-soon/coming-soon-context'
 import { Button } from '@/components/ui/button'
 import type { Church } from './church-types'
@@ -22,9 +22,11 @@ type ChurchHeaderProps = {
   /** Shown only to people allowed to edit the church. */
   onOpenSettings?: () => void
   onOpenMore: () => void
+  /** Back to the previous page, shown at the top right of the cover. */
+  onBack?: () => void
 }
 
-export function ChurchHeader({ church, activeTab, onTabChange, onOpenSettings, onOpenMore }: ChurchHeaderProps) {
+export function ChurchHeader({ church, activeTab, onTabChange, onOpenSettings, onOpenMore, onBack }: ChurchHeaderProps) {
   const showComingSoon = useComingSoon()
   return (
     <header className="church-header">
@@ -39,6 +41,12 @@ export function ChurchHeader({ church, activeTab, onTabChange, onOpenSettings, o
           fetchPriority="high"
           className="church-cover-photo"
         />
+        {onBack && (
+          <button type="button" className="church-back" onClick={onBack}>
+            <ArrowLeft aria-hidden className="church-back-icon" />
+            Back
+          </button>
+        )}
         <figure className="church-cover-verse">
           <blockquote className="church-cover-verse-text">“{church.coverVerse.text}”</blockquote>
           <figcaption className="church-cover-verse-ref">{church.coverVerse.reference}</figcaption>

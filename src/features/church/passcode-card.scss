@@ -1,0 +1,160 @@
+@use '@/styles/mixins' as *;
+
+// Stitch "Join via church passcode": warm glow in the corner, amber emblem icon, dark button.
+.passcode-card {
+  @include card;
+
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: calc(var(--space-8) * -1);
+    right: calc(var(--space-8) * -1);
+    z-index: -1;
+    width: calc(var(--space-12) * 2 + var(--space-4));
+    height: calc(var(--space-12) * 2 + var(--space-4));
+    border-radius: var(--round-full);
+    background: var(--color-amber-glow-soft);
+    filter: blur(var(--space-5));
+  }
+
+  .passcode-head {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+  }
+
+  .passcode-icon {
+    @include amber-emblem;
+
+    width: var(--space-10);
+    height: var(--space-10);
+    border-radius: var(--round-tile);
+
+    svg {
+      width: var(--icon-md);
+      height: var(--icon-md);
+    }
+  }
+
+  .passcode-title {
+    margin: 0;
+    color: var(--color-card-title);
+    font-size: var(--type-sm);
+    line-height: var(--type-sm-lh);
+    font-weight: var(--weight-bold);
+  }
+
+  .passcode-subtitle {
+    margin: 0;
+    color: var(--color-card-muted);
+    font-size: var(--type-meta);
+    line-height: var(--type-meta-lh);
+  }
+
+  .passcode-text {
+    margin: 0;
+    color: var(--color-card-label);
+    font-size: var(--type-xs);
+    line-height: 1.625;
+  }
+
+  .passcode-form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+  }
+
+  .passcode-label {
+    @include visually-hidden;
+  }
+
+  .passcode-field {
+    position: relative;
+  }
+
+  .passcode-input {
+    width: 100%;
+    height: calc(var(--space-10) + 2 * var(--border-width));
+    padding-inline: calc(var(--space-3) + var(--space-1) / 2) var(--space-20);
+    border: var(--border-width) solid var(--color-card-control-border);
+    border-radius: var(--round-tile);
+    background: var(--color-card-fill-subtle);
+    color: var(--color-card-title);
+    font: inherit;
+    font-size: var(--type-xs);
+    font-weight: var(--weight-bold);
+    letter-spacing: var(--ls-widest);
+    text-align: center;
+    text-transform: uppercase;
+    transition:
+      background-color var(--motion-duration-fast) var(--motion-ease-standard),
+      border-color var(--motion-duration-fast) var(--motion-ease-standard);
+
+    &::placeholder {
+      color: var(--color-card-faint);
+      font-weight: var(--weight-regular);
+      letter-spacing: normal;
+    }
+
+    &:focus-visible {
+      border-color: var(--color-accent-border);
+      background: var(--color-bg-surface);
+      outline: none;
+    }
+  }
+
+  .passcode-paste {
+    position: absolute;
+    top: 50%;
+    inset-inline-end: var(--space-2);
+    padding: var(--space-1) calc(var(--space-2) + var(--space-1) / 2);
+    border: var(--border-width) solid var(--color-card-control-border);
+    border-radius: var(--round-chip);
+    background: var(--color-bg-surface);
+    color: var(--color-card-muted);
+    font: inherit;
+    font-size: var(--type-2xs);
+    font-weight: var(--weight-bold);
+    transform: translateY(-50%);
+    cursor: pointer;
+    transition: color var(--motion-duration-fast) var(--motion-ease-standard);
+
+    &:hover {
+      color: var(--color-card-title);
+    }
+  }
+
+  .passcode-submit {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: calc(var(--space-1) * 1.5);
+    padding-block: calc(var(--space-2) + var(--space-1) / 2);
+    border: 0;
+    border-radius: var(--round-tile);
+    background: var(--color-dark-button);
+    box-shadow: var(--elevation-xs);
+    color: var(--color-text-inverse);
+    font: inherit;
+    font-size: var(--type-xs);
+    font-weight: var(--weight-bold);
+    cursor: pointer;
+    transition: background-color var(--motion-duration-fast) var(--motion-ease-standard);
+
+    &:hover {
+      background: var(--color-dark-button-hover);
+    }
+  }
+
+  .passcode-submit-icon {
+    width: var(--icon-sm);
+    height: var(--icon-sm);
+  }
+}

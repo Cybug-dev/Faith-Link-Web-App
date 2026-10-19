@@ -1,45 +1,330 @@
 @use '@/styles/mixins' as *;
 
-// Functional layout only; will be redesigned.
+// Stitch "Plant or register": amber strip on top, slate fields in pairs, note and button at the foot.
 .create-church {
   @include card;
+
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+  overflow: hidden;
+  animation: create-open var(--motion-duration-slow) var(--motion-ease-out);
+
+  @include desktop {
+    padding: var(--space-8);
+  }
+
+  @include reduced-motion {
+    animation: none;
+  }
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0 0 auto;
+    height: var(--space-1);
+    background: var(--gradient-accent-strip);
+  }
+
+  .create-head {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: var(--space-4);
+  }
+
+  .create-head-text {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+  }
+
+  .create-title-row {
+    display: flex;
+    align-items: center;
+    gap: calc(var(--space-2) + var(--space-1) / 2);
+  }
+
+  .create-title-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: var(--space-8);
+    height: var(--space-8);
+    border: var(--border-width) solid var(--color-accent-border);
+    border-radius: var(--round-sm);
+    background: var(--color-tone-amber-bg);
+    color: var(--color-text-accent);
+
+    svg {
+      width: var(--icon-md);
+      height: var(--icon-md);
+    }
+  }
+
+  .create-title {
+    margin: 0;
+    color: var(--color-card-title);
+    font-size: var(--type-lg);
+    line-height: var(--type-lg-lh);
+    font-weight: var(--weight-bold);
+    letter-spacing: var(--ls-tight);
+  }
+
+  .create-subtitle {
+    max-width: 36rem;
+    margin: 0;
+    color: var(--color-card-muted);
+    font-size: var(--type-xs);
+    line-height: 1.625;
+  }
+
+  .create-cancel {
+    display: inline-flex;
+    flex-shrink: 0;
+    align-items: center;
+    gap: var(--space-1);
+    padding: calc(var(--space-1) * 1.5) var(--space-3);
+    border: var(--border-width) solid var(--color-card-control-border);
+    border-radius: var(--round-full);
+    background: var(--color-card-fill-muted);
+    color: var(--color-card-text);
+    font: inherit;
+    font-size: var(--type-xs);
+    font-weight: var(--weight-bold);
+    cursor: pointer;
+    transition: background-color var(--motion-duration-fast) var(--motion-ease-standard);
+
+    &:hover {
+      background: var(--color-card-control-border);
+    }
+  }
+
+  .create-cancel-icon {
+    width: var(--icon-sm);
+    height: var(--icon-sm);
+  }
 
   .create-church-form {
     display: flex;
     flex-direction: column;
-    gap: var(--space-3);
-  }
-
-  .create-field {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-1);
-
-    > label,
-    > small {
-      @include type-caption;
-
-      color: var(--color-text-secondary);
-    }
+    gap: var(--space-5);
   }
 
   .create-pair {
     display: grid;
-    gap: var(--space-3);
+    gap: var(--space-5);
 
     @include tablet {
       grid-template-columns: repeat(2, minmax(0, 1fr));
     }
   }
 
-  .create-textarea {
-    @include type-body-sm;
+  .create-field {
+    display: flex;
+    flex-direction: column;
+    gap: calc(var(--space-1) * 1.5);
+    min-width: 0;
+  }
 
-    padding: var(--space-3) var(--space-4);
-    border: 1px solid var(--color-border-soft);
+  // City waits, dimmed, until a country is picked, then fades in.
+  .create-field-waiting,
+  .create-field-ready {
+    transition: opacity var(--motion-duration-slow) var(--motion-ease-out);
+  }
+
+  .create-field-waiting {
+    opacity: 0.6;
+  }
+
+  .create-label-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-2);
+  }
+
+  .create-label {
+    color: var(--color-card-title);
+    font-size: var(--type-xs);
+    line-height: var(--type-xs-lh);
+    font-weight: var(--weight-bold);
+  }
+
+  .create-required {
+    color: var(--color-required);
+  }
+
+  .create-aside,
+  .create-hint {
+    color: var(--color-card-faint);
+    font-size: var(--type-2xs);
+    line-height: var(--type-2xs-lh);
+  }
+
+  // Stitch's slate field: 42px, 12px corners, hairline, white with an amber edge when focused.
+  %slate-field {
+    height: calc(var(--space-10) + 2 * var(--border-width));
+    border: var(--border-width) solid var(--color-card-control-border);
     border-radius: var(--round-tile);
-    background: var(--color-bg-surface);
-    color: var(--color-text-primary);
-    resize: vertical;
+    background: var(--color-card-fill-subtle);
+    box-shadow: none;
+    color: var(--color-card-title);
+    font-size: var(--type-xs);
+    font-weight: var(--weight-semibold);
+    transition:
+      background-color var(--motion-duration-fast) var(--motion-ease-standard),
+      border-color var(--motion-duration-fast) var(--motion-ease-standard);
+
+    &::placeholder {
+      color: var(--color-card-faint);
+      font-weight: var(--weight-regular);
+    }
+
+    &:focus-visible {
+      border-color: var(--color-accent-border);
+      background: var(--color-bg-surface);
+    }
+  }
+
+  .create-input {
+    @extend %slate-field;
+
+    padding-inline: calc(var(--space-3) + var(--space-1) / 2);
+  }
+
+  .create-slug {
+    display: flex;
+    overflow: hidden;
+    border: var(--border-width) solid var(--color-card-control-border);
+    border-radius: var(--round-tile);
+    background: var(--color-card-fill-subtle);
+    transition: border-color var(--motion-duration-fast) var(--motion-ease-standard);
+
+    &:focus-within {
+      border-color: var(--color-accent-border);
+    }
+  }
+
+  .create-slug-prefix {
+    display: flex;
+    align-items: center;
+    padding-inline: var(--space-3);
+    border-inline-end: var(--border-width) solid var(--color-card-control-border);
+    background: var(--color-card-fill-muted);
+    color: var(--color-card-muted);
+    font-size: var(--type-xs);
+    font-weight: var(--weight-semibold);
+    white-space: nowrap;
+  }
+
+  .create-slug-input {
+    flex: 1;
+    min-width: 0;
+    height: var(--space-10);
+    padding-inline: var(--space-3);
+    border: 0;
+    background: transparent;
+    color: var(--color-card-title);
+    font: inherit;
+    font-size: var(--type-xs);
+    font-weight: var(--weight-semibold);
+
+    &::placeholder {
+      color: var(--color-card-faint);
+    }
+
+    &:focus-visible {
+      outline: none;
+    }
+
+    &[aria-invalid='true'] {
+      color: var(--color-required);
+    }
+  }
+
+  .create-select {
+    position: relative;
+  }
+
+  .create-select-icon {
+    position: absolute;
+    top: 50%;
+    inset-inline-start: var(--space-3);
+    z-index: 1;
+    width: var(--icon-sm);
+    height: var(--icon-sm);
+    color: var(--color-card-faint);
+    transform: translateY(-50%);
+    pointer-events: none;
+  }
+
+  .create-select-field {
+    @extend %slate-field;
+
+    padding-inline-start: var(--space-10);
+
+    &:disabled {
+      background: var(--color-card-fill-subtle);
+      color: var(--color-card-faint);
+    }
+  }
+
+  .create-textarea {
+    @extend %slate-field;
+
+    height: auto;
+    padding: calc(var(--space-2) + var(--space-1) / 2) calc(var(--space-3) + var(--space-1) / 2);
+    font-weight: var(--weight-regular);
+    resize: none;
+  }
+
+  .create-footer {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-4);
+    padding-top: var(--space-3);
+    border-top: var(--border-width) solid var(--color-border-row);
+  }
+
+  .create-note {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    margin: 0;
+    color: var(--color-card-muted);
+    font-size: var(--type-xs);
+  }
+
+  .create-note-icon {
+    width: var(--icon-md);
+    height: var(--icon-md);
+    color: var(--color-tone-green-solid);
+  }
+
+  .create-submit {
+    height: auto;
+    padding: calc(var(--space-2) + var(--space-1) / 2) var(--space-6);
+    border-radius: var(--round-tile);
+    background: var(--gradient-accent-button);
+    box-shadow: var(--elevation-accent-button);
+    color: var(--color-text-on-accent);
+    font-size: var(--type-xs);
+    font-weight: var(--weight-bold);
+  }
+
+  .create-submit-icon {
+    width: var(--icon-sm);
+    height: var(--icon-sm);
+  }
+}
+
+@keyframes create-open {
+  from {
+    opacity: 0;
+    transform: translateY(var(--space-2));
   }
 }

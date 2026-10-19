@@ -11,8 +11,6 @@ import { ChurchMembers } from './church-members'
 import { ChurchMoreActions } from './church-more-actions'
 import { ChurchSettingsForm } from './church-settings-form'
 import { ChurchStats } from './church-stats'
-import { ExploreCard } from './explore-card'
-import { JoinChurchCard } from './join-church-card'
 import { PrimaryTransferBanner } from './primary-transfer-banner'
 import { errorMessage, useChurchAction } from './use-church-action'
 import { useMemberList } from './use-member-list'
@@ -22,10 +20,11 @@ type ChurchWorkspaceProps = {
   myUserId: string
   /** Membership changed in a way the page must re-read (left the church, became primary admin). */
   onMembershipChange: () => void
+  onBack?: () => void
 }
 
 /** One church the viewer belongs to. Every control shown comes from the backend's `viewer.permissions`. */
-export function ChurchWorkspace({ churchId, myUserId, onMembershipChange }: ChurchWorkspaceProps) {
+export function ChurchWorkspace({ churchId, myUserId, onMembershipChange, onBack }: ChurchWorkspaceProps) {
   const churchData = useAsyncData(() => churchApi.getChurch(churchId), [churchId])
   const memberList = useMemberList(churchId)
   const action = useChurchAction()
@@ -82,6 +81,7 @@ export function ChurchWorkspace({ churchId, myUserId, onMembershipChange }: Chur
         onTabChange={setTab}
         onOpenSettings={viewer.permissions.includes('church.update') ? () => togglePanel('settings') : undefined}
         onOpenMore={() => togglePanel('more')}
+        onBack={onBack}
       />
 
       {action.error && (
@@ -122,10 +122,6 @@ export function ChurchWorkspace({ churchId, myUserId, onMembershipChange }: Chur
           <ChurchStats stats={display.stats} />
           <AboutChurch church={display} />
           <ChurchLeaders leaders={display.leaders} onViewAll={() => setTab('members')} />
-          <div className="church-join-row">
-            <JoinChurchCard />
-            <ExploreCard />
-          </div>
         </>
       ) : (
         <ChurchMembers church={church} viewer={viewer} myUserId={myUserId} list={memberList} action={action} onChanged={refresh} />

@@ -118,6 +118,12 @@
   --palette-sun-400: #fbbf24;
   --palette-sun-950: #451a03;
   --palette-teal-300: #5eead4;
+  --palette-rose-50: #fff1f2;
+  --palette-rose-200: #fecdd3;
+  --palette-rose-500: #f43f5e;
+  --palette-rose-600: #e11d48;
+  --palette-sky-500: #0ea5e9;
+  --palette-cool-850: #151f32;
 
   /* ── 2. Semantic colour ──────────────────────────────────────────── */
 
@@ -205,6 +211,45 @@
   --color-chip-green-text: var(--palette-green-700);
   --color-chip-blue-bg: var(--palette-blue-100);
   --color-chip-blue-text: var(--palette-blue-700);
+
+  /* Amber emblem (Stitch church badge, owner 2026-10-19): church initials, the passcode icon, home date tiles. */
+  --gradient-emblem-amber: linear-gradient(135deg, var(--palette-amber-400), var(--palette-amber-500));
+  --color-emblem-amber-ring: var(--palette-amber-50);
+  --gradient-emblem-green: linear-gradient(135deg, var(--palette-green-600), var(--palette-green-700));
+  --color-emblem-green-ring: var(--palette-green-50);
+
+  /* Church page (Stitch "My Church - Ultra Modern Desktop"). */
+  --color-verified: var(--palette-sky-500);
+  --color-crumb-separator: var(--palette-cool-300);
+  --color-title-underline: var(--palette-amber-300);
+  --color-online: var(--palette-green-500);
+  --color-live-bg: var(--palette-rose-50);
+  --color-live-border: var(--palette-rose-200);
+  --color-live-dot: var(--palette-rose-500);
+  --color-live-text: var(--palette-rose-600);
+  --color-required: var(--palette-rose-500);
+  --gradient-active-church: linear-gradient(90deg, rgb(16 185 129 / 0.1), rgb(236 253 245 / 0.5), var(--palette-neutral-0));
+  --color-active-church-border: rgb(16 185 129 / 0.2);
+  --color-active-church-glow: rgb(16 185 129 / 0.1);
+  --color-active-pill-border: rgb(16 185 129 / 0.3);
+  --color-amber-glow-soft: rgb(254 243 199 / 0.6);
+  --gradient-journey: linear-gradient(135deg, var(--palette-cool-900), var(--palette-cool-850), var(--palette-cool-900));
+  --color-journey-border: rgb(243 156 43 / 0.2);
+  --color-journey-glow: rgb(243 156 43 / 0.15);
+  --color-journey-pill-bg: rgb(243 156 43 / 0.15);
+  --color-journey-pill-border: rgb(243 156 43 / 0.3);
+  --color-journey-quote-bg: rgb(255 255 255 / 0.05);
+  --color-journey-quote-rule: rgb(243 156 43 / 0.6);
+  --color-journey-ghost-bg: rgb(255 255 255 / 0.1);
+  --color-journey-ghost-bg-hover: rgb(255 255 255 / 0.2);
+  --gradient-explore: linear-gradient(90deg, var(--palette-sun-400), var(--palette-amber-400));
+  --gradient-register: linear-gradient(135deg, rgb(243 156 43 / 0.1), rgb(243 156 43 / 0.05), transparent);
+  --gradient-accent-strip: linear-gradient(90deg, var(--palette-amber-500), var(--palette-amber-400), var(--palette-amber-600));
+  --gradient-playbook: linear-gradient(90deg, var(--palette-amber-50), var(--palette-neutral-0), var(--palette-amber-50));
+  --color-suite-pill-bg: rgb(243 156 43 / 0.15);
+  --color-suite-pill-border: rgb(243 156 43 / 0.3);
+  --color-dark-button: var(--palette-cool-900);
+  --color-dark-button-hover: var(--palette-cool-800);
 
   /* Desktop top bar (Stitch premium board): frosted white with a hairline under it. */
   --color-bg-topbar: rgb(255 255 255 / 0.8);
@@ -337,6 +382,8 @@
   --elevation-panel-night: 0 25px 50px -12px rgb(0 0 0 / 0.25);
   --elevation-accent-button: 0 10px 15px -3px rgb(243 156 43 / 0.3), 0 4px 6px -4px rgb(243 156 43 / 0.3);
   --elevation-xs: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --elevation-amber-glow: 0 8px 24px -4px rgb(243 156 43 / 0.35);
+  --elevation-green-glow: 0 4px 6px -1px rgb(16 185 129 / 0.25);
   --elevation-raised: 0 1px 2px rgb(26 30 36 / 0.06), 0 4px 12px rgb(26 30 36 / 0.06); /* sticky bars, selected cards */
   --elevation-popover: 0 8px 24px rgb(26 30 36 / 0.12), 0 2px 6px rgb(26 30 36 / 0.06); /* menus, popovers, toasts */
   --elevation-modal: 0 16px 40px rgb(26 30 36 / 0.18); /* dialogs, bottom sheets */

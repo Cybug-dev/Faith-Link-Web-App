@@ -51,6 +51,20 @@ $bp-desktop: 64rem; // 1024px
   }
 }
 
+// Amber emblem (Stitch church badge): gradient tile, soft amber ring, white bold text.
+// Church initials, the passcode icon and home date tiles all share it (owner, 2026-10-19).
+@mixin amber-emblem {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--round-md);
+  background: var(--gradient-emblem-amber);
+  box-shadow: 0 0 0 calc(var(--border-width) * 4) var(--color-emblem-amber-ring), var(--elevation-xs);
+  color: var(--color-text-on-accent);
+  font-weight: var(--weight-bold);
+}
+
 // One hover for clickable cards (owner, 2026-10-19): no border change; the card rises and its shadow deepens.
 @mixin card-hover {
   transition:

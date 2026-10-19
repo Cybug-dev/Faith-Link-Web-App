@@ -1,0 +1,168 @@
+@use '@/styles/mixins' as *;
+
+// One layout for every church row and the active-church banner (owner, 2026-10-19):
+// emblem, then name + verified mark, pills, details, all starting at the same left edge.
+.church-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  min-width: 0;
+
+  .row-body {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    gap: calc(var(--space-1) * 1.5);
+    min-width: 0;
+  }
+
+  .row-name {
+    display: flex;
+    align-items: center;
+    gap: calc(var(--space-1) * 1.5);
+    min-width: 0;
+    margin: 0;
+    color: var(--color-card-title);
+    font-size: var(--type-sm);
+    line-height: var(--type-sm-lh);
+    font-weight: var(--weight-bold);
+  }
+
+  .row-name-text {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  // Filled light-blue check, as the Stitch mobile board.
+  .row-verified {
+    width: var(--icon-sm);
+    height: var(--icon-sm);
+    flex-shrink: 0;
+    fill: var(--color-verified);
+    color: var(--color-bg-surface);
+  }
+
+  .row-pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: calc(var(--space-1) * 1.5);
+    margin: 0;
+
+    &:empty {
+      display: none;
+    }
+  }
+
+  .row-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: calc(var(--space-1) * 1.5);
+    padding: calc(var(--space-1) / 2) var(--space-2);
+    border: var(--border-width) solid transparent;
+    border-radius: var(--round-full);
+    font-size: var(--type-2xs);
+    line-height: var(--type-2xs-lh);
+    font-weight: var(--weight-bold);
+  }
+
+  .row-pill-dot {
+    width: calc(var(--space-1) * 1.5);
+    height: calc(var(--space-1) * 1.5);
+    border-radius: var(--round-full);
+    background: currentcolor;
+    animation: row-pulse 2s var(--motion-ease-standard) infinite;
+
+    @include reduced-motion {
+      animation: none;
+    }
+  }
+
+  .row-pill-live {
+    border-color: var(--color-live-border);
+    background: var(--color-live-bg);
+    color: var(--color-live-text);
+  }
+
+  .row-pill-neutral {
+    background: var(--color-card-fill-muted);
+    color: var(--color-card-label);
+    font-weight: var(--weight-semibold);
+  }
+
+  .row-pill-active {
+    border-color: var(--color-active-pill-border);
+    background: var(--color-tone-green-bg);
+    box-shadow: var(--elevation-xs);
+    color: var(--color-chip-green-text);
+    letter-spacing: var(--ls-wide);
+    text-transform: uppercase;
+  }
+
+  .row-meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-1) var(--space-3);
+    min-width: 0;
+    margin: 0;
+    color: var(--color-card-muted);
+    font-size: var(--type-xs);
+    line-height: var(--type-xs-lh);
+    font-weight: var(--weight-semibold);
+  }
+
+  .row-meta-item {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-1);
+    min-width: 0;
+
+    & + .row-meta-item::before {
+      content: '•';
+      margin-inline-end: var(--space-2);
+      color: var(--color-crumb-separator);
+    }
+  }
+
+  // Long places are cut short with an ellipsis (owner).
+  .row-meta-place {
+    max-width: 14rem;
+    color: var(--color-card-label);
+  }
+
+  .row-meta-text {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .row-meta-icon {
+    width: var(--type-sm);
+    height: var(--type-sm);
+    flex-shrink: 0;
+    color: var(--color-card-faint);
+  }
+
+  .row-meta-amber {
+    color: var(--color-tone-amber-text);
+
+    .row-meta-icon {
+      color: var(--color-accent-bg);
+    }
+  }
+
+  .row-meta-green {
+    color: var(--color-chip-green-text);
+
+    .row-meta-icon {
+      color: var(--color-tone-green-dot);
+    }
+  }
+}
+
+@keyframes row-pulse {
+  50% {
+    opacity: 0.4;
+  }
+}

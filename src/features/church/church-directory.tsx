@@ -1,18 +1,26 @@
 import { type FormEvent, useState } from 'react'
-import { Search } from 'lucide-react'
+import { ArrowRight, BadgeCheck, BookOpen, Church, Clock, ListChecks, MapPin, Search, UserPlus, Users } from 'lucide-react'
+import { useComingSoon } from '@/components/coming-soon/coming-soon-context'
 import { Alert } from '@/components/ui/alert'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import { HomeSection } from '@/features/home/home-section'
+import { Select } from '@/components/ui/select'
+import { CardHead } from '@/features/home/card-head'
 import { useAsyncData } from '@/lib/use-async-data'
 import { churchApi, PAGE_SIZE } from './church-api'
+import { ChurchEmblem } from './church-emblem'
+import { SAMPLE_REGIONS, sampleExtrasFor } from './church-page-sample-data'
 import { errorMessage, type ChurchAction } from './use-church-action'
 import './church-directory.scss'
+import './church-row.scss'
 
 type ChurchDirectoryProps = { action: ChurchAction; onJoined: () => void }
 
-/** Every church on FaithLink, searchable by name or city, each with a Join button. */
+const DETAIL_ICONS = { amber: BookOpen, green: ListChecks, plain: Clock } as const
+
+/** Every church on FaithLink (Stitch "Featured & recommended"), searchable by name or city, each with Join. */
 export function ChurchDirectory({ action, onJoined }: ChurchDirectoryProps) {
+  const showComingSoon = useComingSoon()
   const [draft, setDraft] = useState('')
   const [query, setQuery] = useState('')
   const [shown, setShown] = useState(1)
@@ -35,21 +43,39 @@ export function ChurchDirectory({ action, onJoined }: ChurchDirectoryProps) {
   }
 
   return (
-    <HomeSection id="church-directory" title="Find your church" className="church-directory">
-      <search>
-        <form className="directory-search" onSubmit={handleSearch}>
-        <Input
-          aria-label="Search churches by name or city"
-          placeholder="Search by name or city"
-          startIcon={Search}
-          value={draft}
-          onChange={(e) => setDraft(e.target.value)}
-          maxLength={100}
+    <section aria-labelledby="church-directory-heading" className="church-directory">
+      <div className="directory-head">
+        <CardHead
+          id="church-directory-heading"
+          title="Featured & recommended churches"
+          subtitle="Churches with open services and active small groups"
+          icon={<Church />}
         />
-        <Button type="submit" variant="soft" size="sm">
-          Search
-        </Button>
-      </form>
+        <Select
+          aria-label="Region"
+          defaultValue={SAMPLE_REGIONS[0]}
+          onChange={() => showComingSoon('Churches by region')}
+          className="directory-region"
+        >
+          {SAMPLE_REGIONS.map((region) => (
+            <option key={region}>{region}</option>
+          ))}
+        </Select>
+      </div>
+
+      <search>
+        <form onSubmit={handleSearch}>
+          <Input
+            type="search"
+            aria-label="Search churches by name or city"
+            placeholder="Search churches by name, city or pastor"
+            startIcon={Search}
+            value={draft}
+            onChange={(e) => setDraft(e.target.value)}
+            maxLength={100}
+            className="directory-search"
+          />
+        </form>
       </search>
 
       {results.error !== undefined && !results.data && (
@@ -68,32 +94,66 @@ export function ChurchDirectory({ action, onJoined }: ChurchDirectoryProps) {
       <ul className="directory-list">
         {churches.map((church) => {
           const place = [church.city, church.country].filter(Boolean).join(', ')
+          const extras = sampleExtrasFor(church.id)
+          const DetailIcon = extras.detail && DETAIL_ICONS[extras.detail.tone]
           return (
-            <li key={church.id} className="directory-row">
-              <div className="directory-info">
-                <span className="directory-name">{church.name}</span>
-                <span className="directory-meta">
-                  {[place, `${church.memberCount} ${church.memberCount === 1 ? 'member' : 'members'}`].filter(Boolean).join(' · ')}
-                </span>
+            <li key={church.id} className="directory-item church-row">
+              <ChurchEmblem name={church.name} logoUrl={church.logoUrl} />
+              <div className="row-body">
+                <h3 className="row-name">
+                  <span className="row-name-text">{church.name}</span>
+                  {extras.isVerified && <BadgeCheck aria-label="Verified church" className="row-verified" />}
+                </h3>
+                <p className="row-pills">
+                  {extras.pills?.map((pill) => (
+                    <span key={pill.label} className={`row-pill row-pill-${pill.tone}`}>
+                      {pill.tone === 'live' && <span aria-hidden className="row-pill-dot" />}
+                      {pill.label}
+                    </span>
+                  ))}
+                </p>
+                <p className="row-meta">
+                  {place && (
+                    <span className="row-meta-item row-meta-place" title={place}>
+                      <MapPin aria-hidden className="row-meta-icon" />
+                      <span className="row-meta-text">{place}</span>
+                    </span>
+                  )}
+                  <span className="row-meta-item">
+                    <Users aria-hidden className="row-meta-icon" />
+                    {`${church.memberCount} ${church.memberCount === 1 ? 'member' : 'members'}`}
+                  </span>
+                  {extras.detail && DetailIcon && (
+                    <span className={`row-meta-item row-meta-${extras.detail.tone}`}>
+                      <DetailIcon aria-hidden className="row-meta-icon" />
+                      {extras.detail.label}
+                    </span>
+                  )}
+                </p>
               </div>
-              <Button
-                variant="solid"
-                size="xs"
+              <button
+                type="button"
+                className="directory-join"
                 disabled={action.isPending}
                 aria-label={`Join ${church.name}`}
                 onClick={() => join(church.id, church.name)}
               >
-                Join
-              </Button>
+                <UserPlus aria-hidden className="directory-join-icon" />
+                Join church
+              </button>
             </li>
           )
         })}
       </ul>
+
       {churches.length < total && !results.isLoading && (
-        <Button variant="soft" size="sm" onClick={() => setShown((n) => n + 1)}>
-          Show more churches
-        </Button>
+        <div className="directory-more">
+          <button type="button" className="directory-more-button" onClick={() => setShown((n) => n + 1)}>
+            View {total - churches.length} more churches
+            <ArrowRight aria-hidden className="directory-more-icon" />
+          </button>
+        </div>
       )}
-    </HomeSection>
+    </section>
   )
 }

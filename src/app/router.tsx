@@ -38,6 +38,12 @@ const pageRoutes: RouteObject[] = [
             }),
           },
           {
+            path: '/church/:churchId',
+            lazy: async () => ({
+              Component: (await loadOrReload(() => import('@/features/church/church-portal-page'))).ChurchPortalPage,
+            }),
+          },
+          {
             path: '/lessons',
             lazy: async () => ({
               Component: (await loadOrReload(() => import('@/features/lessons/lessons-page'))).LessonsPage,
