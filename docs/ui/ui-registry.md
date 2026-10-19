@@ -97,6 +97,11 @@ Role classes and base rules are in Tailwind layers, so utilities (`text-fg-secon
 | AuthLayout | `src/features/auth/auth-layout.tsx` | `banner` slot (text over the phone/tablet photo) + desktop photo/verse panel, sticky at viewport height; per-photo crop in `authImages`. Sign in: brand line; Create account: verse |
 | AuthTabs | `src/features/auth/auth-tabs.tsx` | Sign in / Create account (NavLink); active pill slides on switch (view transition) |
 | SignInBanner, CreateAccountBanner | `src/features/auth/auth-banners.tsx` | text over the photo banner, per Stitch |
+| Modal | `src/components/ui/modal.tsx` + `.scss` | generic accessible dialog (`<dialog>`), backdrop blur dismissal, Escape key, smooth scale/slide entrance. Sizes `sm`, `md`, `lg`, `full-mobile` (adapts to high height on mobile, centered on desktop) |
+| Skeleton | `src/components/ui/skeleton.tsx` + `.scss` | generic loading primitive with restrained shimmer animation (`skeleton-shimmer`), variants `text`, `circular`, `rectangular`, `button`, `badge`. Used across app for API loading states |
+| ChurchPageSkeleton, ChurchRowSkeleton | `src/features/church/church-skeleton.tsx` + `.scss` | structured shimmer skeleton for church directory rows and full church page initial load |
+| WelcomeChurchModal | `src/features/church/welcome-church-modal.tsx` + `.scss` | formal celebration modal triggered when a member joins a church fellowship; ambient glow, church details, portal button |
+| ChurchResourcesCard | `src/features/church/church-resources-card.tsx` + `.scss` | leadership resources toolkit sitting under Register Church; sermon study kits, hybrid guides, volunteer tracks |
 | GoogleButton | `src/features/auth/google-button.tsx` | |
 | ScriptureCard | `src/features/auth/scripture-card.tsx` | phone/tablet verse under the form |
 

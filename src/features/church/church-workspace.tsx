@@ -10,6 +10,7 @@ import { ChurchLeaders } from './church-leaders'
 import { ChurchMembers } from './church-members'
 import { ChurchMoreActions } from './church-more-actions'
 import { ChurchSettingsForm } from './church-settings-form'
+import { ChurchPageSkeleton } from './church-skeleton'
 import { ChurchStats } from './church-stats'
 import { PrimaryTransferBanner } from './primary-transfer-banner'
 import { errorMessage, useChurchAction } from './use-church-action'
@@ -32,7 +33,7 @@ export function ChurchWorkspace({ churchId, myUserId, onMembershipChange, onBack
   const [panel, setPanel] = useState<'settings' | 'more' | null>(null)
 
   if (!churchData.data) {
-    if (churchData.isLoading) return <output>Loading your church…</output>
+    if (churchData.isLoading) return <ChurchPageSkeleton />
     return (
       <Alert variant="danger" title="Couldn’t load your church">
         {errorMessage(churchData.error)}{' '}

@@ -80,11 +80,10 @@
     }
   }
 
-  // Amber with a soft underline, as Stitch.
+  // Lighter orange, capitalized with no underline (owner, 2026-10-19).
   .hero-title-accent {
-    padding-bottom: calc(var(--space-1) / 2);
-    background: linear-gradient(var(--color-title-underline), var(--color-title-underline)) no-repeat left bottom / 100% 0.18em;
-    color: var(--color-text-accent);
+    color: var(--palette-amber-400);
+    text-transform: capitalize;
   }
 
   .hero-subtitle {
@@ -164,10 +163,23 @@
     align-items: center;
     justify-content: space-between;
     gap: var(--space-4);
+    margin-inline: calc(var(--page-margin) * -1);
+    padding-inline: var(--page-margin);
     padding-top: var(--space-5);
     border-top: var(--border-width) solid var(--color-border-row);
     overflow-x: auto;
+    overscroll-behavior-x: contain;
     scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+
+    @include desktop {
+      margin-inline: 0;
+      padding-inline: 0;
+    }
   }
 
   .hero-filter-list {
@@ -175,7 +187,12 @@
     gap: calc(var(--space-1) * 1.5);
     margin: 0;
     padding: 0;
+    padding-inline-end: var(--space-8); // slightly reveals the next tab option so users know it's scrollable
     list-style: none;
+
+    @include desktop {
+      padding-inline-end: 0;
+    }
   }
 
   .hero-filter {

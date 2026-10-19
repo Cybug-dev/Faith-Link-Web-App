@@ -2,29 +2,39 @@
 
 // Stitch "Plant or register": amber strip on top, slate fields in pairs, note and button at the foot.
 .create-church {
-  @include card;
-
   position: relative;
   display: flex;
   flex-direction: column;
   gap: var(--space-6);
-  overflow: hidden;
-  animation: create-open var(--motion-duration-slow) var(--motion-ease-out);
 
-  @include desktop {
-    padding: var(--space-8);
+  &:not(.create-church-modal-content) {
+    @include card;
+
+    overflow: hidden;
+    animation: create-open var(--motion-duration-slow) var(--motion-ease-out);
+
+    @include desktop {
+      padding: var(--space-8);
+    }
+
+    @include reduced-motion {
+      animation: none;
+    }
+
+    &::before {
+      content: '';
+      position: absolute;
+      inset: 0 0 auto;
+      height: var(--space-1);
+      background: var(--gradient-accent-strip);
+    }
   }
 
-  @include reduced-motion {
-    animation: none;
-  }
-
-  &::before {
-    content: '';
-    position: absolute;
-    inset: 0 0 auto;
-    height: var(--space-1);
-    background: var(--gradient-accent-strip);
+  &.create-church-modal-content {
+    background: transparent;
+    border: 0;
+    box-shadow: none;
+    padding: 0;
   }
 
   .create-head {

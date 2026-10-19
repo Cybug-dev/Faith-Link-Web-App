@@ -225,7 +225,7 @@ describe('My Church page', () => {
     api.getMe.mockResolvedValue({ user: { id: ME }, memberships: [] })
     await user.click(screen.getByRole('button', { name: 'Leave church' }))
     expect(api.leaveChurch).toHaveBeenCalledWith(CHURCH.id)
-    expect(await screen.findByRole('heading', { level: 1, name: /Find your church/ })).toBeInTheDocument()
+    expect(await screen.findByRole('heading', { level: 1, name: /Find your church/ }, LAZY_ROUTE)).toBeInTheDocument()
   })
 
   it('lets an admin rename roles in Church Settings', async () => {

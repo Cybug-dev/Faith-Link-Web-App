@@ -127,7 +127,7 @@
     display: inline-flex;
     flex: 1;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-start;
     gap: calc(var(--space-1) * 1.5);
     padding: calc(var(--space-2) + var(--space-1) / 2) var(--space-4);
     border-radius: var(--round-tile);
@@ -147,6 +147,7 @@
   .journey-explore-icon {
     width: var(--icon-sm);
     height: var(--icon-sm);
+    margin-inline-start: auto;
   }
 
   .journey-audio {

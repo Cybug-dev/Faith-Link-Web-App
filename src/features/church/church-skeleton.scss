@@ -1,0 +1,196 @@
+@use '@/styles/mixins' as *;
+
+.church-directory-skeleton-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  width: 100%;
+}
+
+.church-row-skeleton {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  padding: var(--space-4);
+  border: var(--border-width) solid var(--color-border-card);
+  border-radius: var(--round-md);
+  background: var(--color-bg-surface);
+
+  @include desktop {
+    padding: var(--space-5);
+  }
+
+  .skeleton-emblem {
+    width: var(--space-11);
+    height: var(--space-11);
+    flex-shrink: 0;
+
+    @include desktop {
+      width: var(--space-12);
+      height: var(--space-12);
+    }
+  }
+
+  .skeleton-body {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    flex: 1;
+    min-width: 0;
+  }
+
+  .skeleton-title-row {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+  }
+
+  .skeleton-name {
+    width: min(60%, 14rem);
+    height: 1.125rem;
+  }
+
+  .skeleton-badge {
+    width: 4rem;
+    height: 1rem;
+  }
+
+  .skeleton-pills-row {
+    display: flex;
+    gap: var(--space-2);
+  }
+
+  .skeleton-pill {
+    width: 5rem;
+    height: 0.875rem;
+  }
+
+  .skeleton-meta-row {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+  }
+
+  .skeleton-meta {
+    width: 7rem;
+    height: 0.75rem;
+  }
+
+  .skeleton-meta-short {
+    width: 4.5rem;
+    height: 0.75rem;
+  }
+
+  .skeleton-action {
+    width: 4.5rem;
+    height: 2rem;
+    flex-shrink: 0;
+
+    @include desktop {
+      width: 6.5rem;
+      height: 2.25rem;
+    }
+  }
+}
+
+.church-page-skeleton {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+
+  .skeleton-hero-card {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+    margin-inline: calc(var(--page-margin) * -1);
+    padding: var(--space-6) var(--page-margin);
+    border-bottom: var(--border-width) solid var(--color-border-topbar);
+    background: var(--color-bg-surface);
+  }
+
+  .skeleton-hero-crumb {
+    width: 10rem;
+    height: 0.875rem;
+  }
+
+  .skeleton-hero-title {
+    width: min(90%, 28rem);
+    height: 2rem;
+  }
+
+  .skeleton-hero-subtitle {
+    width: min(80%, 36rem);
+    height: 1rem;
+  }
+
+  .skeleton-hero-tabs {
+    display: flex;
+    gap: var(--space-2);
+    padding-top: var(--space-4);
+  }
+
+  .skeleton-tab {
+    width: 7rem;
+    height: 2rem;
+    border-radius: var(--round-tile);
+  }
+
+  .skeleton-columns {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-6);
+
+    @include desktop {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 24rem);
+      align-items: start;
+    }
+  }
+
+  .skeleton-column-main {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-6);
+  }
+
+  .skeleton-directory-box {
+    @include card;
+
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-5);
+  }
+
+  .skeleton-dir-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-4);
+  }
+
+  .skeleton-dir-title {
+    width: 16rem;
+    height: 1.5rem;
+  }
+
+  .skeleton-dir-select {
+    width: 8rem;
+    height: 2rem;
+  }
+
+  .skeleton-search-bar {
+    height: 2.75rem;
+    border-radius: var(--round-tile);
+  }
+
+  .skeleton-column-side {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-6);
+  }
+
+  .skeleton-side-card {
+    height: 14rem;
+    border-radius: var(--round-lg);
+  }
+}

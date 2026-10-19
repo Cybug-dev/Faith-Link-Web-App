@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button'
 import { useAsyncData } from '@/lib/use-async-data'
 import { useDocumentTitle } from '@/lib/use-document-title'
 import { churchApi } from './church-api'
+import { ChurchPageSkeleton } from './church-skeleton'
 import { ChurchWorkspace } from './church-workspace'
 import { errorMessage } from './use-church-action'
 import './my-church-page.scss'
@@ -23,7 +24,7 @@ export function ChurchPortalPage() {
     return (
       <div className="my-church-page church-portal-page">
         {me.isLoading ? (
-          <output>Loading your church…</output>
+          <ChurchPageSkeleton />
         ) : (
           <Alert variant="danger" title="Couldn’t load your church">
             {errorMessage(me.error)}{' '}

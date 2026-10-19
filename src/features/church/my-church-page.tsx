@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Alert } from '@/components/ui/alert'
 import { Button } from '@/components/ui/button'
+import { Modal } from '@/components/ui/modal'
 import { useAsyncData } from '@/lib/use-async-data'
 import { useDocumentTitle } from '@/lib/use-document-title'
 import { ActiveChurchBanner } from './active-church-banner'
@@ -8,6 +9,9 @@ import { AdminSuiteCard } from './admin-suite-card'
 import { churchApi } from './church-api'
 import { ChurchDirectory } from './church-directory'
 import { ChurchHero } from './church-hero'
+import type { FilterCategory } from './church-page-sample-data'
+import { ChurchResourcesCard } from './church-resources-card'
+import { ChurchPageSkeleton } from './church-skeleton'
 import { CreateChurchForm } from './create-church-form'
 import { JourneyCard } from './journey-card'
 import { PasscodeCard } from './passcode-card'
@@ -24,12 +28,13 @@ export function MyChurchPage() {
   const me = useAsyncData(() => churchApi.getMe(), [])
   const action = useChurchAction()
   const [isRegistering, setIsRegistering] = useState(false)
+  const [activeFilter, setActiveFilter] = useState<FilterCategory>('Explore all churches')
 
   if (!me.data) {
     return (
       <div className="my-church-page">
         {me.isLoading ? (
-          <output className="church-page-status">Loading your church…</output>
+          <ChurchPageSkeleton />
         ) : (
           <Alert variant="danger" title="Couldn’t load My Church">
             {errorMessage(me.error)}{' '}
@@ -46,7 +51,7 @@ export function MyChurchPage() {
 
   return (
     <div className="my-church-page">
-      <ChurchHero />
+      <ChurchHero activeFilter={activeFilter} onSelectFilter={setActiveFilter} />
       {memberships.map((membership) => (
         <ActiveChurchBanner key={membership.church.id} membership={membership} />
       ))}
@@ -59,19 +64,9 @@ export function MyChurchPage() {
 
       <div className="church-columns">
         <div className="church-column-main">
-          <ChurchDirectory action={action} onJoined={me.reload} />
-          {isRegistering ? (
-            <CreateChurchForm
-              action={action}
-              onCreated={() => {
-                setIsRegistering(false)
-                me.reload()
-              }}
-              onCancel={() => setIsRegistering(false)}
-            />
-          ) : (
-            <RegisterChurchCard onStart={() => setIsRegistering(true)} />
-          )}
+          <ChurchDirectory action={action} onJoined={me.reload} activeFilter={activeFilter} />
+          <RegisterChurchCard onStart={() => setIsRegistering(true)} />
+          <ChurchResourcesCard />
         </div>
         <div className="church-column-side">
           <PasscodeCard />
@@ -79,6 +74,23 @@ export function MyChurchPage() {
           <AdminSuiteCard />
         </div>
       </div>
+
+      <Modal
+        open={isRegistering}
+        onClose={() => setIsRegistering(false)}
+        size="full-mobile"
+        hideCloseButton
+      >
+        <CreateChurchForm
+          action={action}
+          isModal
+          onCreated={() => {
+            setIsRegistering(false)
+            me.reload()
+          }}
+          onCancel={() => setIsRegistering(false)}
+        />
+      </Modal>
     </div>
   )
 }

@@ -1,0 +1,202 @@
+@use '@/styles/mixins' as *;
+
+.welcome-church-dialog {
+  .welcome-church-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding-top: var(--space-2);
+  }
+
+  .welcome-church-glow-icon {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: var(--space-4);
+
+    &::before {
+      content: '';
+      position: absolute;
+      inset: -8px;
+      border-radius: var(--round-full);
+      background: var(--color-active-church-glow);
+      filter: blur(12px);
+      z-index: 0;
+    }
+  }
+
+  .welcome-icon-ring {
+    position: relative;
+    z-index: 1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: var(--space-14);
+    height: var(--space-14);
+    border: var(--border-width) solid var(--color-accent-border);
+    border-radius: var(--round-full);
+    background: var(--color-tone-amber-bg);
+    color: var(--color-text-accent);
+    box-shadow: var(--elevation-xs);
+  }
+
+  .welcome-icon-svg {
+    width: var(--icon-lg);
+    height: var(--icon-lg);
+  }
+
+  .welcome-church-heading {
+    margin: 0;
+    color: var(--color-card-title);
+    font-size: var(--type-2xl);
+    line-height: var(--type-2xl-lh);
+    font-weight: var(--weight-extrabold);
+    letter-spacing: var(--ls-tight);
+  }
+
+  .welcome-church-subtext {
+    max-width: 28rem;
+    margin: var(--space-2) 0 var(--space-6);
+    color: var(--color-card-muted);
+    font-size: var(--type-xs);
+    line-height: 1.6;
+  }
+
+  .welcome-church-name {
+    color: var(--color-card-title);
+    font-weight: var(--weight-bold);
+  }
+
+  // Preview card of the church joined
+  .welcome-church-card {
+    display: flex;
+    align-items: center;
+    gap: var(--space-4);
+    width: 100%;
+    padding: var(--space-4);
+    border: var(--border-width) solid var(--color-border-card);
+    border-radius: var(--round-md);
+    background: var(--color-card-fill-subtle);
+    text-align: left;
+    margin-bottom: var(--space-6);
+  }
+
+  .welcome-card-info {
+    display: flex;
+    flex-direction: column;
+    gap: calc(var(--space-1) / 2);
+    flex: 1;
+    min-width: 0;
+  }
+
+  .welcome-card-title-row {
+    display: flex;
+    align-items: center;
+    gap: var(--space-1);
+    min-width: 0;
+  }
+
+  .welcome-card-name {
+    color: var(--color-card-title);
+    font-size: var(--type-sm);
+    font-weight: var(--weight-bold);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .welcome-card-verified {
+    width: var(--icon-sm);
+    height: var(--icon-sm);
+    flex-shrink: 0;
+    fill: var(--color-verified);
+    color: var(--color-bg-surface);
+  }
+
+  .welcome-card-location {
+    margin: 0;
+    color: var(--color-card-muted);
+    font-size: var(--type-2xs);
+    line-height: var(--type-2xs-lh);
+  }
+
+  .welcome-card-stats {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    margin: var(--space-1) 0 0;
+    font-size: var(--type-2xs);
+  }
+
+  .welcome-card-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-1);
+    padding: 2px var(--space-2);
+    border-radius: var(--round-full);
+    background: var(--color-tone-green-bg);
+    color: var(--color-chip-green-text);
+    font-weight: var(--weight-bold);
+  }
+
+  .welcome-card-icon {
+    width: var(--type-xs);
+    height: var(--type-xs);
+  }
+
+  .welcome-card-members {
+    color: var(--color-card-muted);
+    font-weight: var(--weight-medium);
+  }
+
+  .welcome-church-actions {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    width: 100%;
+
+    @include tablet {
+      flex-direction: row;
+      justify-content: center;
+    }
+  }
+
+  .welcome-portal-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-2);
+    padding: calc(var(--space-2) + var(--space-1) / 2) var(--space-6);
+    border-radius: var(--round-tile);
+    background: var(--gradient-accent-button);
+    box-shadow: var(--elevation-accent-button);
+    color: var(--color-text-on-accent);
+    font-size: var(--type-xs);
+    font-weight: var(--weight-bold);
+    text-decoration: none;
+    transition:
+      transform var(--motion-duration-base) var(--motion-ease-out),
+      box-shadow var(--motion-duration-base) var(--motion-ease-out);
+
+    &:hover {
+      box-shadow: var(--elevation-amber-glow);
+      transform: translateY(var(--motion-lift));
+    }
+  }
+
+  .welcome-btn-icon {
+    width: var(--icon-sm);
+    height: var(--icon-sm);
+  }
+
+  .welcome-dismiss-btn {
+    color: var(--color-card-muted);
+    font-size: var(--type-xs);
+
+    &:hover {
+      color: var(--color-card-title);
+    }
+  }
+}

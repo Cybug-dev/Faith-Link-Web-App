@@ -9,7 +9,12 @@ import { slugify } from './church-roles'
 import type { ChurchAction } from './use-church-action'
 import './create-church-form.scss'
 
-type CreateChurchFormProps = { action: ChurchAction; onCreated: () => void; onCancel: () => void }
+type CreateChurchFormProps = {
+  action: ChurchAction
+  onCreated: () => void
+  onCancel: () => void
+  isModal?: boolean
+}
 
 const SLUG_PATTERN = /^[a-z0-9]+(?:-[a-z0-9]+)*$/
 const COUNTRIES = Object.keys(SAMPLE_LOCATIONS)
@@ -31,7 +36,7 @@ function FieldLabel({ htmlFor, children, isRequired = false, aside }: { htmlFor:
 }
 
 /** Starts a church (Stitch "Plant or register"); the backend makes the creator its admin and protected primary admin. */
-export function CreateChurchForm({ action, onCreated, onCancel }: CreateChurchFormProps) {
+export function CreateChurchForm({ action, onCreated, onCancel, isModal = false }: CreateChurchFormProps) {
   const id = useId()
   const [name, setName] = useState('')
   const [slug, setSlug] = useState('')
@@ -64,7 +69,10 @@ export function CreateChurchForm({ action, onCreated, onCancel }: CreateChurchFo
   }
 
   return (
-    <section aria-labelledby={`${id}-heading`} className="create-church">
+    <section
+      aria-labelledby={`${id}-heading`}
+      className={isModal ? 'create-church create-church-modal-content' : 'create-church'}
+    >
       <div className="create-head">
         <div className="create-head-text">
           <div className="create-title-row">
@@ -201,10 +209,15 @@ export function CreateChurchForm({ action, onCreated, onCancel }: CreateChurchFo
             <ShieldCheck aria-hidden className="create-note-icon" />
             You become the church’s admin and can invite your leaders.
           </p>
-          <Button type="submit" className="create-submit" disabled={!canSubmit} loading={action.isPending}>
-            <Rocket aria-hidden className="create-submit-icon" />
-            Create church
-          </Button>
+          <div className="create-actions">
+            <Button type="button" variant="ghost" className="create-footer-cancel" onClick={onCancel}>
+              Cancel
+            </Button>
+            <Button type="submit" className="create-submit" disabled={!canSubmit} loading={action.isPending}>
+              <Rocket aria-hidden className="create-submit-icon" />
+              Create church
+            </Button>
+          </div>
         </div>
       </form>
     </section>
