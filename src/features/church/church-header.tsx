@@ -5,15 +5,26 @@ import { Button } from '@/components/ui/button'
 import type { Church } from './church-types'
 import './church-header.scss'
 
-const TABS = [
-  { label: 'Overview', isBuilt: true },
-  { label: 'Members', isBuilt: false },
-  { label: 'Announcements', isBuilt: false },
-  { label: 'Events', isBuilt: false },
-  { label: 'Resources', isBuilt: false },
-] as const
+export type ChurchTab = 'overview' | 'members'
 
-export function ChurchHeader({ church }: { church: Church }) {
+const TABS: readonly { label: string; tab?: ChurchTab }[] = [
+  { label: 'Overview', tab: 'overview' },
+  { label: 'Members', tab: 'members' },
+  { label: 'Announcements' },
+  { label: 'Events' },
+  { label: 'Resources' },
+]
+
+type ChurchHeaderProps = {
+  church: Church
+  activeTab: ChurchTab
+  onTabChange: (tab: ChurchTab) => void
+  /** Shown only to people allowed to edit the church. */
+  onOpenSettings?: () => void
+  onOpenMore: () => void
+}
+
+export function ChurchHeader({ church, activeTab, onTabChange, onOpenSettings, onOpenMore }: ChurchHeaderProps) {
   const showComingSoon = useComingSoon()
   return (
     <header className="church-header">
@@ -40,11 +51,13 @@ export function ChurchHeader({ church }: { church: Church }) {
           <p className="church-tagline">{church.tagline}</p>
         </div>
         <div className="church-actions">
-          <Button variant="soft" size="xs" onClick={() => showComingSoon('Church settings')}>
-            <Settings aria-hidden className="church-action-icon" />
-            Church Settings
-          </Button>
-          <Button variant="soft" size="xs" aria-label="More church options" onClick={() => showComingSoon('More church options')}>
+          {onOpenSettings && (
+            <Button variant="soft" size="xs" onClick={onOpenSettings}>
+              <Settings aria-hidden className="church-action-icon" />
+              Church Settings
+            </Button>
+          )}
+          <Button variant="soft" size="xs" aria-label="More church options" onClick={onOpenMore}>
             <EllipsisVertical aria-hidden className="church-action-icon" />
           </Button>
         </div>
@@ -52,14 +65,18 @@ export function ChurchHeader({ church }: { church: Church }) {
 
       <nav aria-label="Church sections" className="church-tabs">
         <ul className="church-tab-list">
-          {TABS.map(({ label, isBuilt }) => (
+          {TABS.map(({ label, tab }) => (
             <li key={label}>
-              {isBuilt ? (
+              {tab === activeTab ? (
                 <span aria-current="page" className="church-tab church-tab-current">
                   {label}
                 </span>
               ) : (
-                <button type="button" className="church-tab" onClick={() => showComingSoon(`Church ${label.toLowerCase()}`)}>
+                <button
+                  type="button"
+                  className="church-tab"
+                  onClick={() => (tab ? onTabChange(tab) : showComingSoon(`Church ${label.toLowerCase()}`))}
+                >
                   {label}
                 </button>
               )}

@@ -10,7 +10,8 @@ export type ChurchLeader = {
   id: string
   name: string
   role: string
-  photo: string
+  /** Missing when the member has no profile picture; initials show instead. */
+  photo?: string
 }
 
 export type ChurchVerse = { text: string; reference: string }

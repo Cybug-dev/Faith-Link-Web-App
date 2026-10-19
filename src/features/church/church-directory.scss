@@ -1,0 +1,52 @@
+@use '@/styles/mixins' as *;
+
+// Functional layout only; discovery will be redesigned.
+.church-directory {
+  .directory-search {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+
+    > :first-child {
+      flex: 1;
+      min-width: 0;
+    }
+  }
+
+  .directory-list {
+    display: flex;
+    flex-direction: column;
+    list-style: none;
+  }
+
+  .directory-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-3);
+    padding-block: var(--space-3);
+
+    & + .directory-row {
+      border-top: 1px solid var(--color-border-soft);
+    }
+  }
+
+  .directory-info {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+  }
+
+  .directory-name {
+    @include type-body-sm;
+
+    font-weight: var(--weight-bold);
+  }
+
+  .directory-meta,
+  .directory-status {
+    @include type-caption;
+
+    color: var(--color-text-secondary);
+  }
+}

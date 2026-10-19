@@ -1,0 +1,17 @@
+@use '@/styles/mixins' as *;
+
+// Functional layout only; will be redesigned.
+.church-more-actions {
+  @include card;
+
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-3);
+
+  .more-actions-note {
+    @include type-body-sm;
+
+    color: var(--color-text-secondary);
+  }
+}

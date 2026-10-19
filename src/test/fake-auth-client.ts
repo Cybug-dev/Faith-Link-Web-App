@@ -73,4 +73,7 @@ export const fakeAuthClient: AuthClient = {
   async getSession() {
     return session
   },
+  async getApiToken() {
+    return session ? 'fake-api-token' : null
+  },
 }

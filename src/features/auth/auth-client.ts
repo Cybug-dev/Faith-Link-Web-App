@@ -40,6 +40,8 @@ export type AuthClient = {
   }): Promise<void>;
   /** The signed-in account, or null when signed out. Rejects when auth can't be reached, so callers don't mistake a failure for "signed out". */
   getSession(): Promise<AuthSession | null>;
+  /** Short-lived JWT for the FaithLink API (`Authorization: Bearer`), or null when signed out. */
+  getApiToken(): Promise<string | null>;
 };
 
 export type AuthSession = {
@@ -182,5 +184,16 @@ export const authClient: AuthClient = {
     const user = result.data?.user;
     if (!user) return null;
     return { createdAt: user.createdAt ? new Date(user.createdAt) : null };
+  },
+  // The SDK puts the JWT on the session and refreshes it before it expires.
+  getApiToken: async () => {
+    let result: Awaited<ReturnType<NeonClient["getSession"]>>;
+    try {
+      result = await getNeon().getSession();
+    } catch (error) {
+      throw toAuthError(error);
+    }
+    if (result.error) throw new AuthError("UNKNOWN");
+    return result.data?.session?.token ?? null;
   },
 };
