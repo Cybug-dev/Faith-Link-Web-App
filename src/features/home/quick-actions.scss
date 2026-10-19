@@ -27,15 +27,18 @@
     width: 100%;
     height: 100%;
     padding: var(--space-3);
-    color: var(--color-text-primary);
+    color: var(--color-card-title);
     font: inherit;
     text-align: start;
     text-decoration: none;
     cursor: pointer;
 
+    // Stitch premium tile: 16px corners, 20px padding, hairline only at rest.
     @include tablet {
-      gap: var(--space-3);
-      padding: var(--space-4);
+      gap: var(--space-4);
+      padding: var(--space-5);
+      border-radius: var(--round-md);
+      box-shadow: none;
     }
   }
 
@@ -89,6 +92,7 @@
   .quick-text {
     display: flex;
     flex-direction: column;
+    gap: calc(var(--space-1) / 2);
   }
 
   .quick-title {
@@ -99,12 +103,12 @@
   }
 
   .quick-card:hover .quick-title {
-    color: var(--color-text-accent-hover);
+    color: var(--color-card-link-hover);
   }
 
   .quick-hint {
     @include type-caption;
 
-    color: var(--color-text-secondary);
+    color: var(--color-card-muted);
   }
 }

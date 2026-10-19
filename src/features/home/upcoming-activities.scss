@@ -1,19 +1,22 @@
 @use '@/styles/mixins' as *;
 
-// The base component (Stitch "Upcoming Events", owner 2026-10-18). Every other card
-// takes its edge, hover, type steps and tones from here (see _mixins.scss and tokens.css).
+// Upcoming events (Stitch premium board, owner 2026-10-19): rows split by hairlines, solid amber date tile,
+// flat tinted chips, small amber Join button.
 .upcoming {
   @include card;
 
   display: flex;
   flex-direction: column;
-  gap: var(--space-3);
+  gap: var(--space-1);
   min-width: 0;
+
+  .card-head-divided {
+    padding-bottom: var(--space-5);
+  }
 
   .upcoming-list {
     display: flex;
     flex-direction: column;
-    gap: var(--space-3);
     margin: 0;
     padding: 0;
     list-style: none;
@@ -22,19 +25,19 @@
   .upcoming-empty {
     @include type-body-sm;
 
-    margin: 0;
-    color: var(--color-text-secondary);
+    margin: var(--space-3) 0 0;
+    color: var(--color-card-muted);
   }
 
   .upcoming-row {
-    @include card-hover;
-
     display: flex;
     align-items: center;
-    gap: var(--space-3);
-    padding: var(--space-3);
-    border: var(--border-width) solid var(--color-border-row);
-    border-radius: var(--round-md);
+    gap: var(--space-4);
+    padding-block: var(--space-4);
+
+    & + .upcoming-row {
+      border-top: var(--border-width) solid var(--color-border-row);
+    }
   }
 
   .date-tile {
@@ -43,46 +46,31 @@
     flex-shrink: 0;
     align-items: center;
     justify-content: center;
-    width: var(--space-10);
-    height: var(--space-10);
-    border-radius: var(--round-tile);
-    background: var(--gradient-date-accent);
-    box-shadow: var(--elevation-card);
-    color: var(--color-text-primary);
-
-    @include tablet {
-      width: var(--space-12);
-      height: var(--space-12);
-    }
+    width: var(--space-12);
+    height: var(--space-12);
+    margin-inline-end: calc(var(--space-1) / 2 * -1); // 14px to the text, as Stitch
+    border-radius: var(--round-md);
+    background: var(--color-accent-bg);
+    color: var(--color-text-on-accent);
   }
 
   .date-tile-quiet {
-    border: var(--border-width) solid var(--color-border-soft);
-    background: var(--gradient-date-quiet);
-    box-shadow: none;
-
-    .date-tile-month {
-      color: var(--color-text-secondary);
-    }
+    background: var(--color-card-fill-muted);
+    color: var(--color-card-text);
   }
 
   .date-tile-month {
-    @include type-micro;
-
-    line-height: 1;
-    letter-spacing: 0.05em;
+    font-size: var(--type-3xs);
+    line-height: var(--type-3xs-lh);
+    font-weight: var(--weight-bold);
+    letter-spacing: var(--ls-wide);
     text-transform: uppercase;
   }
 
   .date-tile-day {
-    @include type-body-sm;
-
-    font-weight: var(--weight-bold);
-
-    @include tablet {
-      font-size: var(--type-base);
-      line-height: var(--type-base-lh);
-    }
+    font-size: var(--type-base);
+    line-height: 1;
+    font-weight: var(--weight-extrabold);
   }
 
   .upcoming-text {
@@ -98,56 +86,49 @@
   }
 
   .upcoming-title {
-    @include type-body-sm;
-
     margin: 0;
     overflow: hidden;
+    color: var(--color-card-title);
+    font-size: var(--type-xs);
+    line-height: var(--type-xs-lh);
     font-weight: var(--weight-bold);
     text-overflow: ellipsis;
     white-space: nowrap;
-    transition: color var(--motion-duration-fast) var(--motion-ease-standard);
-  }
-
-  .upcoming-row:hover .upcoming-title {
-    color: var(--color-text-accent-hover);
   }
 
   .upcoming-status {
-    @include type-micro;
-
     flex-shrink: 0;
-    padding: 0 var(--space-2);
-    border: var(--border-width) solid;
-    border-radius: var(--round-full);
+    padding: calc(var(--space-1) / 2) var(--space-2);
+    border-radius: var(--round-chip);
+    font-size: var(--type-2xs);
+    line-height: var(--type-2xs-lh);
+    font-weight: var(--weight-semibold);
   }
 
   .upcoming-status-amber {
-    border-color: var(--color-accent-border);
-    background: var(--color-accent-subtle-bg);
+    background: var(--color-chip-amber-bg);
     color: var(--color-tone-amber-text);
   }
 
   .upcoming-status-green {
-    border-color: var(--color-tone-green-border);
-    background: var(--color-tone-green-bg);
-    color: var(--color-tone-green-text);
+    background: var(--color-chip-green-bg);
+    color: var(--color-chip-green-text);
   }
 
   .upcoming-status-blue {
-    border-color: var(--color-tone-blue-border);
-    background: var(--color-tone-blue-bg);
-    color: var(--color-tone-blue-text);
+    background: var(--color-chip-blue-bg);
+    color: var(--color-chip-blue-text);
   }
 
   .upcoming-meta {
-    @include type-caption;
-
     display: flex;
     align-items: center;
     gap: var(--space-2);
     min-width: 0;
     margin: var(--space-1) 0 0;
-    color: var(--color-text-secondary);
+    color: var(--color-card-muted);
+    font-size: var(--type-meta);
+    line-height: var(--type-meta-lh);
   }
 
   .upcoming-time {
@@ -155,13 +136,12 @@
     flex-shrink: 0;
     align-items: center;
     gap: var(--space-1);
-    font-weight: var(--weight-semibold);
   }
 
   .upcoming-time-icon {
     width: var(--type-xs);
     height: var(--type-xs);
-    color: var(--color-text-disabled);
+    color: var(--color-card-faint);
   }
 
   .upcoming-meta-dot {
@@ -169,7 +149,7 @@
     height: var(--space-1);
     flex-shrink: 0;
     border-radius: var(--round-full);
-    background: var(--color-border-soft);
+    background: var(--color-card-muted);
   }
 
   .visually-hidden {
@@ -180,5 +160,35 @@
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+  }
+
+  // Stitch premium: 28px button, 12px corners, solid amber with white text; the quiet View is slate.
+  .upcoming-action {
+    height: auto;
+    padding: calc(var(--space-1) * 1.5) var(--space-4);
+    border: 0;
+    border-radius: var(--round-tile);
+    background: var(--color-accent-bg);
+    box-shadow: var(--elevation-xs);
+    color: var(--color-text-on-accent);
+    font-size: var(--type-xs);
+    line-height: var(--type-xs-lh);
+    font-weight: var(--weight-semibold);
+    transition: background-color var(--motion-duration-fast) var(--motion-ease-standard);
+
+    &:hover {
+      background: var(--color-accent-bg-active);
+    }
+  }
+
+  .upcoming-action-quiet {
+    border: var(--border-width) solid var(--color-card-control-border);
+    background: var(--color-card-fill-muted);
+    box-shadow: none;
+    color: var(--color-card-text);
+
+    &:hover {
+      background: var(--color-card-control-border);
+    }
   }
 }

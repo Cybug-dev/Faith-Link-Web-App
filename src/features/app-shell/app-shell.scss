@@ -30,9 +30,14 @@
     padding: var(--space-2) var(--page-margin);
     background: var(--color-bg-canvas);
 
+    // Desktop (Stitch premium board): 80px frosted white bar with a hairline under it.
     @include desktop {
       grid-area: topbar;
-      padding-block: var(--space-4);
+      min-height: var(--space-20);
+      padding-block: 0;
+      border-bottom: var(--border-width) solid var(--color-border-topbar);
+      background: var(--color-bg-topbar);
+      backdrop-filter: blur(var(--blur-glass));
     }
   }
 
@@ -54,12 +59,57 @@
       flex: 1;
       max-width: var(--w-reading); // wide, as the Stitch desktop board
     }
+
+    // Stitch premium search field: 42px slate-tinted pill with a hairline, white with an amber ring when typing.
+    .topbar-search-input {
+      height: calc(var(--space-10) + 2 * var(--border-width));
+      border: var(--border-width) solid var(--color-card-control-border);
+      background: var(--color-card-fill-subtle);
+      box-shadow: none;
+      color: var(--color-card-text);
+      font-size: var(--type-sm);
+      transition:
+        background-color var(--motion-duration-fast) var(--motion-ease-standard),
+        border-color var(--motion-duration-fast) var(--motion-ease-standard);
+
+      &::placeholder {
+        color: var(--color-card-faint);
+      }
+
+      &:focus-visible {
+        border-color: var(--palette-sun-400);
+        background: var(--color-bg-surface);
+      }
+    }
+
+    svg {
+      inset-inline-start: var(--space-4);
+      width: var(--icon-sm);
+      height: var(--icon-sm);
+      color: var(--color-card-faint);
+    }
   }
 
   .topbar-actions {
     display: flex;
     align-items: center;
     gap: var(--space-3);
+
+    @include desktop {
+      gap: var(--space-5);
+      padding-inline-start: var(--space-6);
+    }
+  }
+
+  .topbar-divider {
+    display: none;
+
+    @include desktop {
+      display: block;
+      width: var(--border-width);
+      height: var(--space-8);
+      background: var(--color-card-control-border);
+    }
   }
 
   // Small white bell, as the owner's reference: 28px on phones, 36px on desktop
@@ -69,9 +119,29 @@
     width: var(--control-h-xs);
     height: var(--control-h-xs);
 
+    // Desktop: a plain bell, no white button (Stitch premium board).
     @include desktop {
       width: var(--control-h-sm);
       height: var(--control-h-sm);
+      background: transparent;
+      box-shadow: none;
+      color: var(--color-card-muted);
+
+      &:hover {
+        background: var(--color-card-fill-muted);
+        color: var(--color-card-title);
+      }
+
+      .notify-icon {
+        width: var(--icon-md);
+        height: var(--icon-md);
+      }
+
+      .notify-dot {
+        top: calc(var(--space-1) * 1.5);
+        inset-inline-end: calc(var(--space-1) * 1.5);
+        background: var(--color-accent-bg);
+      }
     }
   }
 
@@ -119,12 +189,11 @@
     text-align: start;
     cursor: pointer;
 
-    // Desktop: white pill with avatar and name, as the owner's reference.
+    // Desktop (Stitch premium board): avatar and name on the bar itself, no pill.
     @include desktop {
-      gap: var(--space-2);
-      padding: var(--space-1) var(--space-3) var(--space-1) var(--space-1);
-      background: var(--color-bg-surface);
-      box-shadow: var(--elevation-raised);
+      &:hover .profile-name {
+        color: var(--color-card-link-hover);
+      }
     }
   }
 
@@ -142,9 +211,22 @@
     font-weight: var(--weight-semibold);
 
     @include desktop {
-      width: var(--space-8);
-      height: var(--space-8);
+      width: var(--space-10);
+      height: var(--space-10);
+      border: calc(var(--border-width) * 2) solid var(--color-card-fill-muted);
+      background: var(--color-bg-inverse);
+      box-shadow: var(--elevation-xs);
+      font-size: var(--type-sm);
+      font-weight: var(--weight-bold);
+      letter-spacing: var(--ls-tight);
     }
+  }
+
+  .avatar-photo {
+    width: 100%;
+    height: 100%;
+    border-radius: var(--round-full);
+    object-fit: cover;
   }
 
   .profile-text {
@@ -153,20 +235,26 @@
     @include desktop {
       display: flex;
       flex-direction: column;
-      padding-inline-end: var(--space-2);
     }
   }
 
   .profile-name {
-    font-size: var(--type-sm);
-    line-height: var(--type-sm-lh);
+    max-width: 10ch;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    color: var(--color-card-title);
+    font-size: var(--type-xs);
+    line-height: var(--type-xs-lh);
     font-weight: var(--weight-semibold);
+    transition: color var(--motion-duration-fast) var(--motion-ease-standard);
   }
 
   .profile-role {
-    color: var(--color-text-muted);
-    font-size: var(--type-xs);
-    line-height: var(--type-xs-lh);
+    color: var(--color-card-muted);
+    font-size: var(--type-meta);
+    line-height: var(--type-meta-lh);
+    font-weight: var(--weight-semibold);
   }
 
   // ── Content ────────────────────────────────────────────────────────

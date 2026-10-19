@@ -101,6 +101,24 @@
   --palette-gold-300: #e8c46a;
   --palette-gold-900: #6b4400;
 
+  /* Cool slate and sun tints from the Stitch "FaithLink Premium Design System" board (owner, 2026-10-19):
+     card text, card edges, the desktop top bar and the focus banner. Amber fills stay the brand amber. */
+  --palette-cool-50: #f8fafc;
+  --palette-cool-100: #f1f5f9;
+  --palette-cool-200: #e2e8f0;
+  --palette-cool-300: #cbd5e1;
+  --palette-cool-400: #94a3b8;
+  --palette-cool-500: #64748b;
+  --palette-cool-600: #475569;
+  --palette-cool-700: #334155;
+  --palette-cool-800: #1e293b;
+  --palette-cool-900: #0f172a;
+  --palette-sun-100: #fef3c7;
+  --palette-sun-300: #fcd34d;
+  --palette-sun-400: #fbbf24;
+  --palette-sun-950: #451a03;
+  --palette-teal-300: #5eead4;
+
   /* ── 2. Semantic colour ──────────────────────────────────────────── */
 
   /* Backgrounds */
@@ -167,10 +185,49 @@
   --color-stat-glow: rgb(243 156 43 / 0.6); /* glow around the flame and star */
   --color-bg-glass-tile-hover: rgb(255 255 255 / 0.12);
 
-  /* Cards and rows (base component: Stitch "Upcoming Events"). Every card in the app uses these. */
-  --color-border-card: var(--palette-neutral-150); /* the card's own 1px edge */
-  --color-border-row: var(--palette-neutral-75); /* rows and dividers inside a card */
+  /* Cards and rows (Stitch "FaithLink Premium Design System", owner 2026-10-19). Every card in the app uses these. */
+  --color-border-card: rgb(226 232 240 / 0.9); /* the card's own 1px edge */
+  --color-border-row: var(--palette-cool-100); /* rows and dividers inside a card */
   --color-bg-row-hover: var(--palette-neutral-10);
+
+  /* Text and fills inside home cards (Stitch premium board). */
+  --color-card-title: var(--color-text-primary); /* navy ink, not Stitch's slate-900 (owner, 2026-10-19) */
+  --color-card-text: var(--palette-cool-700);
+  --color-card-label: var(--palette-cool-600);
+  --color-card-muted: var(--palette-cool-500);
+  --color-card-faint: var(--palette-cool-400); /* timestamps and meta icons, as Stitch: ~2.6:1, not for body text */
+  --color-card-link-hover: var(--palette-amber-600);
+  --color-card-fill-subtle: var(--palette-cool-50);
+  --color-card-fill-muted: var(--palette-cool-100);
+  --color-card-control-border: var(--palette-cool-200);
+  --color-chip-amber-bg: var(--palette-sun-100);
+  --color-chip-green-bg: var(--palette-green-100);
+  --color-chip-green-text: var(--palette-green-700);
+  --color-chip-blue-bg: var(--palette-blue-100);
+  --color-chip-blue-text: var(--palette-blue-700);
+
+  /* Desktop top bar (Stitch premium board): frosted white with a hairline under it. */
+  --color-bg-topbar: rgb(255 255 255 / 0.8);
+  --color-border-topbar: rgb(226 232 240 / 0.8);
+
+  /* Focus banner (Stitch premium board). */
+  --color-banner-border: var(--palette-cool-200);
+  --gradient-accent-button: linear-gradient(90deg, var(--palette-amber-400), var(--palette-amber-500));
+  --gradient-accent-button-hover: linear-gradient(90deg, var(--palette-amber-500), var(--palette-amber-600));
+  --color-focus-tag-bg: rgb(243 156 43 / 0.9);
+  --color-focus-tag-text: var(--palette-sun-950);
+  --color-text-verse-on-photo: var(--palette-cool-200);
+  --color-verse-rule-on-photo: var(--palette-sun-400);
+  --color-verse-ref-on-photo: var(--palette-sun-300);
+  --color-panel-night-bg: rgb(15 23 42 / 0.8);
+  --color-panel-night-border: rgb(51 65 85 / 0.6);
+  --color-panel-night-divider: var(--palette-cool-800);
+  --color-panel-night-title: var(--palette-cool-300);
+  --color-panel-night-muted: var(--palette-cool-400);
+  --color-panel-night-verse: rgb(252 211 77 / 0.9);
+  --color-panel-night-tile-bg: rgb(30 41 59 / 0.8);
+  --color-panel-night-tile-border: var(--palette-cool-700);
+  --color-panel-night-level: var(--palette-teal-300);
 
   /* Tones (base component). bg + border for chips and tiles, solid for icon fills,
      dot for small keys, text for words on the tint. */
@@ -258,6 +315,7 @@
      banners, sheets, hero media = md. Checkboxes, small tags = sm. */
 
   --round-xs: 0.25rem; /* 4 — small checkbox */
+  --round-chip: 0.375rem; /* 6 — status chips and the focus tag (Stitch premium board) */
   --round-sm: 0.5rem; /* 8 */
   --round-tile: 0.75rem; /* 12 — date tiles, icon tiles, small buttons inside cards (base component) */
   --round-md: 1rem; /* 16 */
@@ -273,7 +331,12 @@
   /* Cards at rest: a 1px --color-border-card edge plus the faint --elevation-card shadow
      (base component, owner 2026-10-18). Bigger shadows are for things that float. */
 
-  --elevation-card: 0 1px 2px rgb(15 23 42 / 0.05); /* every card at rest, with --color-border-card (base component) */
+  --elevation-card: 0 1px 3px 0 rgb(0 0 0 / 0.05), 0 1px 2px 0 rgb(0 0 0 / 0.03); /* every card at rest, with --color-border-card (Stitch premium) */
+  --elevation-card-hover: 0 10px 15px -3px rgb(0 0 0 / 0.07), 0 4px 6px -2px rgb(0 0 0 / 0.03); /* clickable card lifted on hover */
+  --elevation-banner: 0 4px 6px -1px rgb(0 0 0 / 0.04), 0 2px 4px -1px rgb(0 0 0 / 0.02);
+  --elevation-panel-night: 0 25px 50px -12px rgb(0 0 0 / 0.25);
+  --elevation-accent-button: 0 10px 15px -3px rgb(243 156 43 / 0.3), 0 4px 6px -4px rgb(243 156 43 / 0.3);
+  --elevation-xs: 0 1px 2px 0 rgb(0 0 0 / 0.05);
   --elevation-raised: 0 1px 2px rgb(26 30 36 / 0.06), 0 4px 12px rgb(26 30 36 / 0.06); /* sticky bars, selected cards */
   --elevation-popover: 0 8px 24px rgb(26 30 36 / 0.12), 0 2px 6px rgb(26 30 36 / 0.06); /* menus, popovers, toasts */
   --elevation-modal: 0 16px 40px rgb(26 30 36 / 0.18); /* dialogs, bottom sheets */
@@ -318,6 +381,7 @@
   --motion-ease-standard: cubic-bezier(0.4, 0, 0.2, 1);
   --motion-ease-out: cubic-bezier(0.2, 0, 0, 1);
   --motion-photo-zoom: 1.06; /* photo scale on hover in clickable photo cards (owner) */
+  --motion-lift: -2px; /* how far a card or button rises on hover */
 
   /* ── 9. Stacking ─────────────────────────────────────────────────── */
 

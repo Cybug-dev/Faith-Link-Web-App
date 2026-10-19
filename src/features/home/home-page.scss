@@ -1,8 +1,8 @@
 @use '@/styles/mixins' as *;
 
-// Phones: one column, each card a full-width block, in the desktop order. Desktop: three equal
-// tracks, so row one is wide | narrow (Upcoming | Progress) and row two the mirror, narrow | wide
-// (Recent | Trending), with the same 2:1 proportions (owner).
+// Phones: one column, each card a full-width block, in the desktop order. Desktop: three tracks,
+// row one wider | narrower (Upcoming | Progress), row two the mirror (Recent | Trending).
+// Both rows split about 58 : 42 so neither side squeezes the other (owner, 2026-10-19).
 .home-page {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
@@ -21,7 +21,7 @@
   overflow-x: clip;
 
   @include desktop {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-columns: minmax(0, 1fr) minmax(0, 0.4fr) minmax(0, 1fr);
     grid-template-areas:
       'greeting greeting greeting'
       'hero hero hero'

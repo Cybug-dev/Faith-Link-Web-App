@@ -1,6 +1,6 @@
 @use '@/styles/mixins' as *;
 
-// Accent text, never Stitch's brown amber-800 (owner). Padded so the tap target stays comfortable.
+// Stitch premium board: muted slate text that turns amber on hover. Padded so the tap target stays comfortable.
 .section-link {
   @include type-caption;
 
@@ -14,15 +14,15 @@
   border: 0;
   border-radius: var(--round-sm);
   background: none;
-  color: var(--color-text-accent);
+  color: var(--color-card-muted);
   font-family: inherit;
   font-weight: var(--weight-semibold);
   text-decoration: none;
   cursor: pointer;
-  transition: background-color var(--motion-duration-fast) var(--motion-ease-standard);
+  transition: color var(--motion-duration-fast) var(--motion-ease-standard);
 
   &:hover {
-    background-color: var(--color-tone-amber-bg);
+    color: var(--color-card-link-hover);
   }
 
   @include reduced-motion {

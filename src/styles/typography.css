@@ -24,8 +24,13 @@
   --weight-regular: 400;
   --weight-semibold: 600;
   --weight-bold: 700;
+  --weight-extrabold: 800; /* banner title, date-tile day, progress percent (Stitch premium board) */
 
   /* Size + line-height pairs. */
+  --type-3xs: 0.5625rem; /* 9 — date-tile month, ring caption (Stitch premium board) */
+  --type-3xs-lh: 0.75rem;
+  --type-meta: 0.6875rem; /* 11 — meta lines, timestamps (Stitch premium board) */
+  --type-meta-lh: 1rem;
   --type-2xs: 0.625rem; /* 10 — chips, date-tile month, phone captions (base component) */
   --type-2xs-lh: 0.875rem;
   --type-xs: 0.75rem; /* 12 */
@@ -48,6 +53,9 @@
   --ls-display: -0.02em;
   --ls-headline: -0.015em;
   --ls-normal: 0;
+  --ls-tight: -0.025em;
+  --ls-wide: 0.05em; /* all-caps labels (owner-approved exception, Stitch premium board) */
+  --ls-widest: 0.1em;
 
   /* Reading measure. Lesson text never exceeds this. */
   --measure-prose: 65ch;

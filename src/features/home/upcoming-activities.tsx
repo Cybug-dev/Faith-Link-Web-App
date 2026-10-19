@@ -50,6 +50,7 @@ export function UpcomingActivities({ activities }: { activities: ActivityItem[] 
                 <Button
                   variant={canJoin ? 'solid' : 'soft'}
                   size="xs"
+                  className={canJoin ? 'upcoming-action' : 'upcoming-action upcoming-action-quiet'}
                   aria-label={`${canJoin ? 'Join' : 'View'} ${activity.title}`}
                   onClick={() => showComingSoon(canJoin ? 'Joining events' : 'Event details')}
                 >

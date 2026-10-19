@@ -12,7 +12,7 @@ const KIND_ICON: Record<RecentItem['kind'], LucideIcon> = {
 export function RecentActivity({ items }: { items: RecentItem[] }) {
   return (
     <section aria-labelledby="recent-heading" className="recent">
-      <CardHead id="recent-heading" title="Recent Activity" subtitle="What you did this week" />
+      <CardHead id="recent-heading" title="Recent Activity" subtitle="What you did this week" hasDivider />
       {items.length === 0 ? (
         <p className="recent-empty">Lessons, quizzes and activities you finish will show here.</p>
       ) : (

@@ -1,14 +1,18 @@
 @use '@/styles/mixins' as *;
 
+// Recent activity (Stitch premium board, owner 2026-10-19): hairline under the heading, open rows, no dividers.
 .recent {
   @include card;
 
   display: flex;
   flex-direction: column;
-  gap: var(--space-2);
+  gap: var(--space-4);
   min-width: 0;
 
   .recent-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
     margin: 0;
     padding: 0;
     list-style: none;
@@ -18,18 +22,13 @@
     @include type-body-sm;
 
     margin: 0;
-    color: var(--color-text-secondary);
+    color: var(--color-card-muted);
   }
 
   .recent-row {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     gap: var(--space-3);
-    padding-block: var(--space-3);
-
-    & + .recent-row {
-      border-top: var(--border-width) solid var(--color-border-row);
-    }
   }
 
   .recent-row-lesson {
@@ -65,23 +64,26 @@
   }
 
   .recent-text {
-    @include type-body-sm;
-
     flex: 1;
     min-width: 0;
     margin: 0;
-    color: var(--color-text-secondary);
+    padding-top: calc(var(--space-1) / 2);
+    color: var(--color-card-text);
+    font-size: var(--type-xs);
+    line-height: var(--type-xs-lh);
 
     strong {
-      color: var(--color-text-primary);
-      font-weight: var(--weight-semibold);
+      color: var(--color-card-title);
+      font-weight: var(--weight-bold);
     }
   }
 
   .recent-when {
-    @include type-caption;
-
     flex-shrink: 0;
-    color: var(--color-text-muted);
+    padding-top: calc(var(--space-1) / 2);
+    color: var(--color-card-faint);
+    font-size: var(--type-meta);
+    line-height: var(--type-meta-lh);
+    font-weight: var(--weight-semibold);
   }
 }

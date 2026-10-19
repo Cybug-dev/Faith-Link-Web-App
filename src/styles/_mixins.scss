@@ -37,12 +37,12 @@ $bp-desktop: 64rem; // 1024px
   border: 0;
 }
 
-// ── Cards (base component: Stitch "Upcoming Events", owner 2026-10-18) ──
-// One look for every card in the app: hairline warm edge, faint shadow, 16px corners.
+// ── Cards (Stitch "FaithLink Premium Design System", owner 2026-10-19) ──
+// One look for every card in the app: hairline slate edge, faint shadow, 24px corners.
 @mixin card {
   padding: var(--space-4);
   border: var(--border-width) solid var(--color-border-card);
-  border-radius: var(--round-md);
+  border-radius: var(--round-lg);
   background: var(--color-bg-surface);
   box-shadow: var(--elevation-card);
 
@@ -51,21 +51,23 @@ $bp-desktop: 64rem; // 1024px
   }
 }
 
-// One hover for anything clickable that is, or sits on, a card: amber edge, warm fill, lifted shadow.
+// One hover for clickable cards (owner, 2026-10-19): no border change; the card rises and its shadow deepens.
 @mixin card-hover {
   transition:
-    border-color var(--motion-duration-fast) var(--motion-ease-standard),
-    background-color var(--motion-duration-fast) var(--motion-ease-standard),
-    box-shadow var(--motion-duration-fast) var(--motion-ease-standard);
+    transform var(--motion-duration-base) var(--motion-ease-out),
+    box-shadow var(--motion-duration-base) var(--motion-ease-out);
 
   &:hover {
-    border-color: var(--color-accent-border);
-    background-color: var(--color-bg-row-hover);
-    box-shadow: var(--elevation-raised);
+    box-shadow: var(--elevation-card-hover);
+    transform: translateY(var(--motion-lift));
   }
 
   @include reduced-motion {
     transition: none;
+
+    &:hover {
+      transform: none;
+    }
   }
 }
 

@@ -88,7 +88,7 @@ export function FocusBanner({
           </div>
           <ul className="welcome-stats">
             {stats.map((stat) => (
-              <li key={stat.key} className="welcome-stat">
+              <li key={stat.key} className={`welcome-stat welcome-stat-${stat.key}`}>
                 <span className="welcome-stat-icon">{stat.icon}</span>
                 <span className="welcome-stat-text">
                   <span className="welcome-stat-value">{stat.value}</span>

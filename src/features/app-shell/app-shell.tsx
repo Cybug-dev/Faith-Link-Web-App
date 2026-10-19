@@ -10,6 +10,12 @@ import { SAMPLE_VIEWER } from './sample-viewer'
 import { Sidebar } from './sidebar'
 import './app-shell.scss'
 
+const PROFILE_NAME_MAX_LENGTH = 12
+
+function truncateName(name: string, maxLength: number): string {
+  return name.length > maxLength ? `${name.slice(0, maxLength - 1)}…` : name
+}
+
 function NotificationsButton({ unread, onClick }: { unread: number; onClick: () => void }) {
   const label = unread > 0 ? `Notifications, ${unread} new` : 'Notifications'
   return (
@@ -47,11 +53,13 @@ export function AppShell() {
               startIcon={Search}
               placeholder="Search lessons, quizzes and activities"
               aria-label="Search"
+              className="topbar-search-input"
             />
           </form>
         </search>
         <div className="topbar-actions">
           <NotificationsButton unread={viewer.unreadNotifications} onClick={() => showComingSoon('Notifications')} />
+          <span aria-hidden className="topbar-divider" />
           <button
             type="button"
             className="profile-button"
@@ -59,10 +67,10 @@ export function AppShell() {
             onClick={() => showComingSoon('Account menu')}
           >
             <span aria-hidden className="avatar">
-              {viewer.initials}
+              {viewer.photoUrl ? <img src={viewer.photoUrl} alt="" className="avatar-photo" /> : viewer.initials}
             </span>
             <span className="profile-text">
-              <span className="profile-name">{viewer.fullName}</span>
+              <span className="profile-name">{truncateName(viewer.firstName, PROFILE_NAME_MAX_LENGTH)}</span>
               <span className="profile-role">{viewer.role}</span>
             </span>
           </button>

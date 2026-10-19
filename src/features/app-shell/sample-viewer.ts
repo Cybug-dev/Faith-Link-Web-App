@@ -6,6 +6,7 @@ export type Viewer = {
   firstName: string
   fullName: string
   initials: string
+  photoUrl?: string
   role: 'Member' | 'Leader' | 'Pastor' | 'Admin'
   churchName: string
   unreadNotifications: number
