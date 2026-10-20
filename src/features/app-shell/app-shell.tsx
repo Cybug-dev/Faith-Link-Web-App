@@ -7,7 +7,7 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { PRIMARY_NAV } from './nav-items'
 import { PageTransition } from './page-transition'
-import { SAMPLE_VIEWER } from './sample-viewer'
+import { useViewer } from './use-viewer'
 import { Sidebar } from './sidebar'
 import './app-shell.scss'
 
@@ -43,7 +43,7 @@ function NotificationsButton({ unread, onClick }: { unread: number; onClick: () 
  * The shell stays mounted between pages so only the content changes.
  */
 export function AppShell() {
-  const viewer = SAMPLE_VIEWER
+  const viewer = useViewer()
   const showComingSoon = useComingSoon()
   const { pathname } = useLocation()
   const pill = pagePill(pathname)

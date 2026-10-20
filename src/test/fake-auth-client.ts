@@ -31,7 +31,7 @@ let onSessionChange: () => void = () => {}
 export const fakeSession = {
   /** Start a test signed in. `isNewAccount` makes the account brand new (onboarding shows). */
   signIn({ isNewAccount = false }: { isNewAccount?: boolean } = {}) {
-    session = { createdAt: isNewAccount ? new Date() : new Date('2025-01-01') }
+    session = { createdAt: isNewAccount ? new Date() : new Date('2025-01-01'), name: 'Alex Turner' }
     // The app must ask again rather than keep the "signed out" answer from the test's start.
     onSessionChange()
   },

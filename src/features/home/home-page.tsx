@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useDocumentTitle } from '@/lib/use-document-title'
-import { SAMPLE_VIEWER } from '@/features/app-shell/sample-viewer'
+import { useViewer } from '@/features/app-shell/use-viewer'
 import { FocusBanner } from './focus-banner'
 import {
   SAMPLE_ACHIEVEMENTS,
@@ -32,9 +32,10 @@ function greetingFor(hour: number): string {
  */
 export function HomePage() {
   useDocumentTitle('Home')
+  const viewer = useViewer()
   // Read the clock once when the page opens, not on every render.
   const [timeOfDay] = useState(() => greetingFor(new Date().getHours()))
-  const greeting = `${timeOfDay}, ${SAMPLE_VIEWER.firstName}`
+  const greeting = `${timeOfDay}, ${viewer.firstName}`
 
   return (
     <div className="home-page">
@@ -48,7 +49,7 @@ export function HomePage() {
       </header>
 
       <div className="home-hero">
-        <FocusBanner lesson={SAMPLE_FOCUS} welcome={SAMPLE_WELCOME} firstName={SAMPLE_VIEWER.firstName} />
+        <FocusBanner lesson={SAMPLE_FOCUS} welcome={SAMPLE_WELCOME} firstName={viewer.firstName} />
       </div>
 
       <div className="home-actions">

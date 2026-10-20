@@ -47,6 +47,8 @@ export type AuthClient = {
 export type AuthSession = {
   /** When the account was created; tells a brand-new account (onboarding) from a returning one. */
   createdAt: Date | null;
+  /** The signed-in user's display name as stored in Neon Auth (e.g. "David Johnson"). */
+  name?: string | null;
 };
 
 /** Where Google sends people back to after a successful sign-in. */
@@ -183,7 +185,10 @@ export const authClient: AuthClient = {
     if (result.error) throw new AuthError("UNKNOWN");
     const user = result.data?.user;
     if (!user) return null;
-    return { createdAt: user.createdAt ? new Date(user.createdAt) : null };
+    return {
+      createdAt: user.createdAt ? new Date(user.createdAt) : null,
+      name: (user as { name?: string | null }).name ?? null,
+    };
   },
   // The SDK puts the JWT on the session and refreshes it before it expires.
   getApiToken: async () => {
