@@ -1,4 +1,4 @@
-@use "@/styles/mixins" as *;
+﻿@use "@/styles/mixins" as *;
 
 // Hero width breakpoints (container queries can't read CSS variables).
 $hero-inside: 37.5rem; // panel moves inside the card
@@ -311,28 +311,39 @@ $hero-inline: 62rem; // panel sits on the right
     border-radius: var(--round-md);
     background: var(--color-bg-glass-tile);
     transition:
-      transform var(--motion-duration-base) var(--motion-ease-out),
-      background-color var(--motion-duration-base) var(--motion-ease-standard);
+      background-color var(--motion-duration-base) var(--motion-ease-standard),
+      box-shadow var(--motion-duration-base) var(--motion-ease-out);
+
+    &.welcome-stat-streak {
+      --color-stat-glow: color-mix(in srgb, var(--color-stat-streak) 76%, transparent);
+    }
+
+    &.welcome-stat-points {
+      --color-stat-glow: color-mix(in srgb, var(--color-stat-points) 76%, transparent);
+    }
+
+    &.welcome-stat-level {
+      --color-stat-glow: color-mix(in srgb, var(--color-stat-level) 76%, transparent);
+    }
 
     @include tablet {
       padding: var(--space-3);
     }
 
     &:hover {
-      background: var(--color-bg-glass-tile-hover);
-      transform: translateY(calc(-1 * var(--space-1)));
+      background: color-mix(in srgb, var(--color-bg-glass-tile-hover) 92%, var(--color-stat-level) 8%);
+      box-shadow: var(--elevation-stat-glow);
 
       .welcome-stat-icon {
-        transform: scale(1.12);
+        filter: drop-shadow(0 0 6px var(--color-stat-glow));
       }
     }
 
     @include reduced-motion {
       transition: none;
 
-      &:hover,
-      &:hover .welcome-stat-icon {
-        transform: none;
+      .welcome-stat-icon {
+        transition: none;
       }
     }
   }
@@ -372,10 +383,10 @@ $hero-inline: 62rem; // panel sits on the right
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: var(--icon-md);
-    height: var(--icon-md);
+    width: calc(var(--icon-md) * 1.3);
+    height: calc(var(--icon-md) * 1.3);
     flex-shrink: 0;
-    transition: transform var(--motion-duration-base) var(--motion-ease-out);
+    transition: filter var(--motion-duration-glow) var(--motion-ease-out);
 
     svg {
       width: 100%;
@@ -465,6 +476,7 @@ $hero-inline: 62rem; // panel sits on the right
   }
 
   .focus-action {
+    position: relative;
     height: auto;
     margin-top: var(--space-4);
     padding: calc(var(--space-2) + var(--space-1) / 2) var(--space-5);
@@ -474,24 +486,67 @@ $hero-inline: 62rem; // panel sits on the right
     color: var(--color-text-on-accent);
     font-size: var(--type-xs);
     font-weight: var(--weight-semibold);
+    overflow: hidden;
     transition:
-      transform var(--motion-duration-base) var(--motion-ease-out),
-      background var(--motion-duration-base) var(--motion-ease-standard);
+      background var(--motion-duration-base) var(--motion-ease-standard),
+      box-shadow var(--motion-duration-base) var(--motion-ease-out);
+
+    .focus-action-icon {
+      transition: transform var(--motion-duration-base) var(--motion-ease-out);
+    }
+
+    &::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background: linear-gradient(
+        105deg,
+        transparent 30%,
+        color-mix(in srgb, var(--color-text-inverse) 28%, transparent) 50%,
+        transparent 70%
+      );
+      translate: -100% 0;
+    }
 
     @include tablet {
       margin-top: var(--space-5);
     }
 
-    &:hover {
+    &:is(:hover, :focus-visible) {
       background: var(--gradient-accent-button-hover);
-      transform: translateY(var(--motion-lift));
+      box-shadow: var(--elevation-accent-button-hover);
+
+      .focus-action-icon {
+        transform: translateX(var(--space-1));
+      }
+
+      &::before {
+        animation: focus-action-shimmer var(--motion-duration-shimmer) var(--motion-ease-standard) both;
+      }
     }
 
     @include reduced-motion {
-      transition: none;
+      transition: background var(--motion-duration-base) var(--motion-ease-standard);
 
-      &:hover {
+      &::before {
+        display: none;
+        animation: none;
+      }
+
+      .focus-action-icon {
         transform: none;
+        transition: none;
+      }
+    }
+
+    @keyframes focus-action-shimmer {
+      from {
+        translate: -100% 0;
+      }
+
+      to {
+        translate: 150% 0;
       }
     }
   }

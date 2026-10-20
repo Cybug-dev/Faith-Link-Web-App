@@ -1,4 +1,4 @@
-@use '@/styles/mixins' as *;
+@use "@/styles/mixins" as *;
 
 // Phones: one column, each card a full-width block, in the desktop order. Desktop: three tracks,
 // row one wider | narrower (Upcoming | Progress), row two the mirror (Recent | Trending).
@@ -7,13 +7,13 @@
   display: grid;
   grid-template-columns: minmax(0, 1fr);
   grid-template-areas:
-    'greeting'
-    'hero'
-    'actions'
-    'upcoming'
-    'progress'
-    'recent'
-    'trending';
+    "greeting"
+    "hero"
+    "actions"
+    "upcoming"
+    "progress"
+    "recent"
+    "trending";
   gap: var(--space-8);
   padding-inline: var(--page-margin);
   padding-top: var(--space-2);
@@ -23,11 +23,11 @@
   @include desktop {
     grid-template-columns: minmax(0, 1fr) minmax(0, 0.4fr) minmax(0, 1fr);
     grid-template-areas:
-      'greeting greeting greeting'
-      'hero hero hero'
-      'actions actions actions'
-      'upcoming upcoming progress'
-      'recent trending trending';
+      "greeting greeting greeting"
+      "hero hero hero"
+      "actions actions actions"
+      "upcoming upcoming progress"
+      "recent trending trending";
     gap: var(--space-8) var(--space-6);
     padding-top: var(--space-4);
   }

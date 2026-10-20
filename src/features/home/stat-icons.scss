@@ -14,7 +14,7 @@
 // ── Flame ────────────────────────────────────────────────────────────
 
 .stat-flame {
-  filter: drop-shadow(0 0 4px var(--color-stat-glow));
+  filter: drop-shadow(0 0 6px var(--color-stat-glow));
   animation: stat-glow 1.8s ease-in-out infinite;
 
   .flame-outer {
@@ -61,7 +61,7 @@
 
 .stat-star {
   fill: var(--color-stat-points);
-  filter: drop-shadow(0 0 4px var(--color-stat-glow));
+  filter: drop-shadow(0 0 6px var(--color-stat-glow));
   animation:
     star-float 3s ease-in-out infinite,
     stat-glow 3s ease-in-out infinite;
@@ -81,10 +81,10 @@
 @keyframes stat-glow {
   0%,
   100% {
-    filter: drop-shadow(0 0 2px var(--color-stat-glow));
+    filter: drop-shadow(0 0 3px var(--color-stat-glow));
   }
   50% {
-    filter: drop-shadow(0 0 7px var(--color-stat-glow));
+    filter: drop-shadow(0 0 10px var(--color-stat-glow));
   }
 }
 
