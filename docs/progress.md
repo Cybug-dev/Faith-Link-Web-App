@@ -6,6 +6,7 @@ UI inventory (tokens, components, screens, drops) lives in [`ui/ui-registry.md`]
 
 ## Done
 
+- FaithLink browser icon now uses a project-unique URL so its cached favicon cannot collide with another local app using the generic `/favicon.svg` path.
 - Token system, typography and Tailwind v4 theme (`src/styles/`).
 - UI kit: Button, Input, PasswordInput, FormField, Alert, Checkbox, OrDivider, OtpInput, Logo, GoogleIcon.
 - Auth screens, responsive: Sign in, Create account, Verify email (stub auth client).
